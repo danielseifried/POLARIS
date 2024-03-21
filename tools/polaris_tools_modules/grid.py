@@ -47,14 +47,25 @@ class Grid:
                 self.nr_gas_densities = 1
             else:
                 self.nr_gas_densities = len(self.model.parameter['gas_mass'])
+        elif self.data.get_gas_density_distribution() is not None:
+            if isinstance(self.data.get_gas_density_distribution(), (float, int)):
+                self.nr_gas_densities = 1
+            else:
+                self.nr_gas_densities = len(self.data.get_gas_density_distribution())
         else:
             self.nr_gas_densities = 0
+
         # Number of dust density distributions
         if self.model.parameter['dust_mass'] is not None:
             if isinstance(self.model.parameter['dust_mass'], (float, int)):
                 self.nr_dust_densities = 1
             else:
                 self.nr_dust_densities = len(self.model.parameter['dust_mass'])
+        elif self.data.get_dust_density_distribution() is not None:
+            if isinstance(self.data.get_dust_density_distribution(), (float, int)):
+                self.nr_dust_densities = 1
+            else:
+                self.nr_dust_densities = len(self.data.get_dust_density_distribution())
         else:
             self.nr_dust_densities = 0
 
