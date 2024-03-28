@@ -3960,6 +3960,15 @@ class CGridBasic
     double * numberDensityTab;
     double * totalCellEmissionTab;
     uint max_wavelengths;
+
+    bool getPolarRTGridParameterWorker(double max_len,
+				       double pixel_width,
+				       uint max_subpixel_lvl,
+				       dlist & _listR,
+				       uint & N_polar_r,
+				       uint *& N_polar_phi,
+				       const uint &N_r,
+				       const double *listR);
 };
 
 #endif

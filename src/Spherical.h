@@ -457,52 +457,14 @@ class CGridSpherical : public CGridBasic
                                  uint & N_polar_r,
                                  uint *& N_polar_ph)
     {
-        uint subpixel_multiplier = pow(2, max_subpixel_lvl);
-
-        // Add same number of cell in the inner region
-        uint N_r_inner = min(uint(ceil(subpixel_multiplier * listR[0] / listR[N_r] * N_r)), N_r);
-        for(uint i_r = 0; i_r <= N_r_inner; i_r++)
-            _listR.push_back(listR[0] * (i_r / double(N_r_inner)));
-
-        for(uint i_r = 1; i_r <= N_r; i_r++)
-        {
-            double r1 = _listR[_listR.size() - 1];
-            double r2 = listR[i_r];
-            uint N_r_sub = min(subpixel_multiplier, uint(ceil((r2 - r1) * 5.0 / pixel_width)));
-
-            for(uint i_r_sub = 1; i_r_sub <= N_r_sub; i_r_sub++)
-                _listR.push_back(r1 + (r2 - r1) * i_r_sub / double(N_r_sub));
-
-            // break if sidelength is smaller than full grid
-            if(_listR.back() > max_len)
-            {
-                _listR.pop_back();
-                _listR.push_back(max_len);
-                break;
-            }
-        }
-
-        if(_listR.back() < max_len)
-        {
-            // Calculate additional rings for the outer rings
-            uint N_r_outer = uint(ceil((max_len - listR[N_r]) / (listR[N_r] - listR[N_r - 1])));
-
-            for(uint i_r = 1; i_r <= N_r_outer; i_r++)
-                _listR.push_back(listR[N_r] + (max_len - listR[N_r]) * i_r / double(N_r_outer));
-        }
-
-        // Set total size of the radial cells
-        N_polar_r = _listR.size() - 1;
-
-        // Calc the number of phi background grid pixel
-        N_polar_ph = new uint[N_polar_r];
-        for(uint i_r = 0; i_r < N_polar_r; i_r++)
-        {
-            N_polar_ph[i_r] = min(uint(subpixel_multiplier * 360.0),
-                                  uint(ceil(PIx2 * _listR[i_r + 1] / (_listR[i_r + 1] - _listR[i_r]))));
-        }
-
-        return true;
+	return CGridBasic::getPolarRTGridParameterWorker(max_len,
+							 pixel_width,
+							 max_subpixel_lvl,
+							 _listR,
+							 N_polar_r,
+							 N_polar_ph,
+							 N_r,
+							 listR);
     }
 
   private:
