@@ -1789,7 +1789,7 @@ class CMathFunctions
         if(den == 0)
             return 1;
 
-        return 1.0 * B * B / den;
+        return B * B / den;
     }
 
     static inline double calc_mach(double vel, double Tg, double mu)
@@ -1799,7 +1799,7 @@ class CMathFunctions
 
     static inline double calc_larm_limit(double B, double Td, double Tg, double ng, double s, double larm_f)
     {
-        double den = 1.0 * ng * Td * sqrt(Tg);
+        double den = ng * Td * sqrt(Tg);
 
         if(den == 0)
             return 1;

@@ -3774,7 +3774,7 @@ void CDustComponent::calcCrossSections(CGridBasic * grid,
             if((alignment & ALIG_INTERNAL) == ALIG_INTERNAL)
             {
                 double cossq_zeta = getInternalGOLD(Td, Tg, vlength);
-                Rgold *= 1.5 * (cossq_zeta - 1.0 / 3.0) * (1 + f_cor);
+                Rgold *= (1.5 * cossq_zeta - 0.5) * (1 + f_cor);
             }
         }
     }
@@ -3793,12 +3793,12 @@ void CDustComponent::calcCrossSections(CGridBasic * grid,
 
         double cossq_beta = (1 - sqrt(zeta_sq / (1 - zeta_sq)) * asin(sqrt(1 - zeta_sq))) / (1 - zeta_sq);
 
-        Ridg = 1.5 * (cossq_beta - 1.0 / 3.0);
+        Ridg = 1.5 * cossq_beta - 0.5;
 
         if((alignment & ALIG_INTERNAL) == ALIG_INTERNAL)
         {
             double cossq_zeta = getInternalIDG(Td, Tg);
-            Ridg *= 1.5 * (cossq_zeta - 1.0 / 3.0) * (1 + f_cor);
+            Ridg *= (1.5 * cossq_zeta - 0.5) * (1 + f_cor);
         }
     }
 
@@ -4359,7 +4359,7 @@ double CDustComponent::calcGoldReductionFactor(const Vector3D & v, const Vector3
         else
         {
             cossq_beta =
-                (sqrt(g) * asin(sqrt(-s / (1 + g)))) / (s * atan(sqrt((-s * g) / (1 + s + g)))) - 1 / s;
+                (sqrt(g) * asin(sqrt(-s / (1 + g)))) / (s * atanh(sqrt((-s * g) / (1 + s + g)))) - 1 / s;
         }
     }
     else
@@ -4372,11 +4372,11 @@ double CDustComponent::calcGoldReductionFactor(const Vector3D & v, const Vector3
         else
         {
             cossq_beta =
-                (sqrt(g) * asinh(sqrt(s / (1 + g)))) / (s * atanh(sqrt((s * g) / (1 + s + g)))) - 1 / s;
+                (sqrt(g) * asinh(sqrt(s / (1 + g)))) / (s * atan(sqrt((s * g) / (1 + s + g)))) - 1 / s;
         }
     }
 
-    R = 1.5 * (cossq_beta - 1.0 / 3.0);
+    R = 1.5 * cossq_beta - 0.5;
 
     if(R <= -0.5)
         R = -0.499999999999;
