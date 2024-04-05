@@ -985,12 +985,8 @@ StokesVector CSourceBackground::getStokesVector(photon_package * pp)
 {
     double F, T, I, Q, U, V, pl;
     StokesVector res;
-    Vector3D pos = pp->getPosition();
 
     uint wID = pp->getDustWavelengthID();
-
-    uint x = uint((pos.X() + 0.5 * sidelength) / sidelength * double(bins));
-    uint y = uint((pos.Y() + 0.5 * sidelength) / sidelength * double(bins));
 
     if(constant)
     {
@@ -1018,6 +1014,11 @@ StokesVector CSourceBackground::getStokesVector(photon_package * pp)
     }
     else
     {
+	Vector3D pos = pp->getPosition();
+
+	uint x = uint((pos.X() + 0.5 * sidelength) / sidelength * double(bins));
+	uint y = uint((pos.Y() + 0.5 * sidelength) / sidelength * double(bins));
+
         F = f(x, y);
         T = temp(x, y);
         Q = q(x, y);

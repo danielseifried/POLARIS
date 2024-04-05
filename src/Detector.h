@@ -792,14 +792,20 @@ class CDetector
         {
             Vector3D pos = pp.getPosition();
 
-            uint x = uint((pos.X() + 0.5 * sidelength_x - map_shift_x) / sidelength_x * double(bins_x));
+	    double float_x = (pos.X() + 0.5 * sidelength_x - map_shift_x) / sidelength_x * double(bins_x);
+	    if (float_x < 0.) // integer casting leads to zeros from negative and positive side which results in too much flux in the lowest row
+		return; 
+	    uint x = uint(float_x);
 
-            if(x < 0 || x >= bins_x)
+            if(x >= bins_x) 
                 return;
 
-            uint y = uint((pos.Y() + 0.5 * sidelength_y - map_shift_y) / sidelength_y * double(bins_y));
+	    double float_y = (pos.Y() + 0.5 * sidelength_y - map_shift_y) / sidelength_y * double(bins_y);
+	    if (float_y < 0.) // integer casting leads to zeros from negative and positive side which results in too much flux in the lowest column
+		return;
+            uint y = uint(float_y);
 
-            if(y < 0 || y >= bins_y)
+            if(y >= bins_y)
                 return;
 
             matrixI[i_spectral].addValue(x, y, st.I());

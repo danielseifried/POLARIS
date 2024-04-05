@@ -1649,7 +1649,7 @@ class CRaytracingPolar : public CRaytracingBasic
             npix_total += npix_ph[i_r];
         }
 
-        npix_total++;
+        npix_total++; // last pixel is central grid cell 
 
         if(npix_total > MAX_RT_RAYS)
         {
@@ -1777,9 +1777,11 @@ class CRaytracingPolar : public CRaytracingBasic
         switch(processing_method)
         {
             case 0:
+		cout << "HINT: Using 'nearest' method to post process from polar to cartesian detector" << endl;
                 return postProcessingUsingNearest();
                 break;
             case 1:
+		cout << "HINT: Using 'interpolation' method to post process from polar to cartesian detector" << endl;
                 return postProcessingUsingInterpolation();
                 break;
             default:
