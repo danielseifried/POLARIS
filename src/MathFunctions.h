@@ -2398,7 +2398,7 @@ class CMathFunctions
         // Dekker, T. J. (1969), "Finding a zero by means of successive linear interpolation", in Dejon, B.; Henrici, P. (eds.),
         //     Constructive Aspects of the Fundamental Theorem of Algebra, London: Wiley-Interscience
 
-        // Procedure returns root of function in the given interval [a, b], within tolerance 6 * EPS_DOUBLE * |x| + 2t,
+        // Procedure returns root of function in the given interval [a, b], within tolerance 6 * macheps * |x| + 2t,
         // where macheps is the relative machine precision and t is a positive tolerance.
         // This procedure assumes that f(a) and f(b) have different signs.
 
