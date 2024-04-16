@@ -11,7 +11,6 @@ Examples:
 
 import os
 import shutil
-import struct
 import numpy as np
 from argparse import RawTextHelpFormatter, ArgumentParser
 
@@ -80,12 +79,6 @@ grid_args.add_argument('--extra', dest='extra_parameter', type=str, default=None
                        help='additional parameter to vary model characteristics\n'
                             '    (multiple values possible, no unit strings!).')
 
-conv_args = parser.add_argument_group('grid binary ascii conversion')
-conv_args.add_argument('--convert', dest='convert', type=str, choices=['ascii2binary', 'binary2ascii'], default=None,
-                        help='convert existing ascii grid file to binary grid file or vice versa\n'
-                             '    (only for spherical and cylindrical grid type).')
-
-
 parser_options = parser.parse_args()
 
 
@@ -136,15 +129,18 @@ class GridRoutines:
             from polaris_tools_modules.grid import Cylindrical
             grid = Cylindrical(self.model, self.path, self.parse_args)
         else:
-            raise ValueError(f'Grid type {self.model.parameter["grid_type"]} not known!')
+            raise ValueError(
+                f'Grid type {self.model.parameter["grid_type"]} not known!')
         #: Root node
         root = grid.init_root()
         #: Temporary tree file
-        os.makedirs(os.path.dirname(self.path['model'] + 'tmp_' + self.parse_args.grid_filename), exist_ok=True)
+        os.makedirs(os.path.dirname(
+            self.path['model'] + 'tmp_' + self.parse_args.grid_filename), exist_ok=True)
 
         with open(self.path['model'] + 'tmp_' + self.parse_args.grid_filename, 'wb') as tmp_file:
             # Write header of the grid file
-            grid.write_header(grid_file=tmp_file, grid_type=self.model.parameter['grid_type'], num_dens=self.parse_args.num_dens, root=root)
+            grid.write_header(
+                grid_file=tmp_file, grid_type=self.model.parameter['grid_type'], num_dens=self.parse_args.num_dens, root=root)
             # Create the grid
             grid.create_grid(tmp_file, root)
 
@@ -152,19 +148,24 @@ class GridRoutines:
             print('--- Normalizing model mass!                                ')
             if isinstance(self.model.parameter['gas_mass'], float):
                 #: Temporary tree file
-                os.makedirs(os.path.dirname(self.path['model'] + 'tmp_' + self.parse_args.grid_filename), exist_ok=True)
-                with open(self.path['model'] + 'tmp_' + self.parse_args.grid_filename, 'rb') as tmp_file,\
-                    open(self.path['model'] + self.parse_args.grid_filename, 'wb') as grid_file:
+                os.makedirs(os.path.dirname(
+                    self.path['model'] + 'tmp_' + self.parse_args.grid_filename), exist_ok=True)
+                with open(self.path['model'] + 'tmp_' + self.parse_args.grid_filename, 'rb') as tmp_file, \
+                        open(self.path['model'] + self.parse_args.grid_filename, 'wb') as grid_file:
                     #: Final grid file
-                    os.makedirs(os.path.dirname(self.path['model'] + self.parse_args.grid_filename), exist_ok=True)
+                    os.makedirs(os.path.dirname(
+                        self.path['model'] + self.parse_args.grid_filename), exist_ok=True)
                     # Normalize the density of the grid and save it in the final file
-                    grid.normalize_density(tmp_file=tmp_file, grid_file=grid_file)
+                    grid.normalize_density(
+                        tmp_file=tmp_file, grid_file=grid_file)
 
                 # Remove the temporary grid file
                 if "/" in self.parse_args.grid_filename:
-                    shutil.rmtree(self.path['model'] + 'tmp_' + self.parse_args.grid_filename.split('/')[0])
+                    shutil.rmtree(
+                        self.path['model'] + 'tmp_' + self.parse_args.grid_filename.split('/')[0])
                 else:
-                    os.remove(self.path['model'] + 'tmp_' + self.parse_args.grid_filename)
+                    os.remove(self.path['model'] + 'tmp_' +
+                              self.parse_args.grid_filename)
 
             elif np.shape(self.model.parameter['gas_mass']) == np.shape(grid.total_gas_mass):
                 # Update the relation between the regions in the grid (gas)
@@ -193,19 +194,21 @@ class GridRoutines:
                 #: Root node
                 root = grid.init_root()
                 #: Final grid file
-                os.makedirs(os.path.dirname(self.path['model'] + self.parse_args.grid_filename), exist_ok=True)
+                os.makedirs(os.path.dirname(
+                    self.path['model'] + self.parse_args.grid_filename), exist_ok=True)
                 with open(self.path['model'] + self.parse_args.grid_filename, 'wb') as grid_file:
                     # Write header of the grid file
-                    grid.write_header(grid_file=grid_file, grid_type=self.model.parameter['grid_type'], root=root)
+                    grid.write_header(
+                        grid_file=grid_file, grid_type=self.model.parameter['grid_type'], root=root)
                     # Create the grid
                     grid.create_grid(grid_file, root)
                 # Remove the temporary grid file
                 if "/" in self.parse_args.grid_filename:
                     shutil.rmtree(self.path['model'] +
-                            'tmp_' + self.parse_args.grid_filename.split('/')[0])
+                                  'tmp_' + self.parse_args.grid_filename.split('/')[0])
                 else:
                     os.remove(self.path['model'] +
-                            'tmp_' + self.parse_args.grid_filename)
+                              'tmp_' + self.parse_args.grid_filename)
 
             else:
                 raise ValueError(
@@ -228,163 +231,6 @@ class GridRoutines:
                     print(
                         f'--- Total dust mass of density distribution {i + 1} '
                         f'and region {j + 1}: {grid.total_dust_mass[i][j] / self.math.const["M_sun"]:.02e} M_sun')
-
-    def convert_polaris_grid(self):
-        """convert existing ascii grid file to binary grid file or vice versa.
-        """
-        if self.parse_args.convert == 'binary2ascii':
-            with open(self.path['model'] + self.parse_args.grid_filename, 'rb') as binary_file,\
-                open(self.path['model'] + self.parse_args.grid_filename + '.txt', 'w') as ascii_file:
-                self.read_binary_write_ascii(binary_file, ascii_file)
-        else:
-            with open(self.path['model'] + self.parse_args.grid_filename, 'r') as ascii_file,\
-                open(self.path['model'] + self.parse_args.grid_filename + '.dat', 'wb') as binary_file:
-                self.read_ascii_write_binary(ascii_file, binary_file)
-
-    def read_ascii_write_binary(self, ascii_file, binary_file):
-        """convert existing ascii grid file to binary grid file.
-
-        Args:
-            ascii_file: Input ascii file.
-            binary_file: Output binary file.
-        """
-        line = np.array(ascii_file.readline().strip().split(' '), dtype=int)
-        grid_id = line[0]
-        if grid_id != 30 and grid_id != 40:
-            raise ValueError('Wrong grid ID. Only spherical (30) or cylindrical (40) are supported so far.')
-        binary_file.write(struct.pack('H', grid_id))
-        
-        data_length = line[1]
-        binary_file.write(struct.pack('H', data_length))
-
-        quantities = line[2:]
-        for quant in quantities:
-            binary_file.write(struct.pack('H', quant))
-        
-        boundaries = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-        for boundary in boundaries:
-            binary_file.write(struct.pack('d', boundary))
-
-        n_r, n_ph, n_th_z = np.array(ascii_file.readline().strip().split(' '), dtype=int)
-        binary_file.write(struct.pack('H', n_r))
-        binary_file.write(struct.pack('H', n_ph))
-        binary_file.write(struct.pack('H', n_th_z))
-
-        sf_r, sf_ph, sf_th_z = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-        binary_file.write(struct.pack('d', sf_r))
-        binary_file.write(struct.pack('d', sf_ph))
-        binary_file.write(struct.pack('d', sf_th_z))
-
-        if sf_r == 0:
-            r_borders = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-            if len(r_borders) != n_r - 1:
-                raise ValueError('Wrong number of radial cell boundaries!')
-            for i_r in r_borders:
-                binary_file.write(struct.pack('d', i_r))
-        if sf_ph == 0:
-            ph_borders = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-            if len(ph_borders) != n_ph - 1:
-                raise ValueError('Wrong number of phi cell boundaries!')
-            for i_ph in ph_borders:
-                binary_file.write(struct.pack('d', i_ph))
-        if sf_th_z == 0:
-            th_z_borders = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-            if len(th_z_borders) != n_th_z - 1:
-                raise ValueError('Wrong number of theta / z cell boundaries!')
-            for i_th_z in th_z_borders:
-                binary_file.write(struct.pack('d', i_th_z))
-
-        if grid_id == 40:
-            if sf_ph == 0:
-                ph_num_i = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-                if len(ph_num_i) != n_r:
-                    raise ValueError('Wrong number of values that define the number of phi cells in each radial ring!')
-                for i_r in ph_num_i:
-                    binary_file.write(struct.pack('d', i_r))
-            elif sf_th_z == -1:
-                z_width_i = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-                if len(z_width_i) != n_r:
-                    raise ValueError('Wrong number of values that define the vertical width of each cylindrical cell in each radial ring!')
-                for i_r in z_width_i:
-                    binary_file.write(struct.pack('d', i_r))
-
-        cell_numbers = n_r * n_ph * n_th_z + 1 if grid_id == 30 else (n_r * n_ph + 1) * n_th_z
-        for i_cell in range(cell_numbers):
-            data = np.array(ascii_file.readline().strip().split(' '), dtype=float)
-            if len(data) != data_length:
-                raise ValueError('Wrong number of physical quantities!')
-            for i_data in data:
-                binary_file.write(struct.pack('d', i_data))
-
-    def read_binary_write_ascii(self, binary_file, ascii_file):
-        """convert existing binary grid file to ascii grid file.
-
-        Args:
-            binary_file: Input binary file.
-            ascii_file: Output ascii file.
-        """
-        grid_id = struct.unpack('H', binary_file.read(2))[0]
-        if grid_id != 30 and grid_id != 40:
-            raise ValueError('Wrong grid ID. Only spherical (30) or cylindrical (40) are supported so far.')
-
-        ascii_file.write(str(grid_id) + ' ')
-        data_length = struct.unpack('H', binary_file.read(2))[0]
-        ascii_file.write(str(data_length) + ' ')
-        
-        for i_data in range(data_length):
-            ascii_file.write(str(struct.unpack('H', binary_file.read(2))[0]) + ' ')
-        ascii_file.write('\n')
-        
-        ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-        if grid_id == 40:
-            ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-        ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + '\n')
-        
-        # Get number of radial cells
-        n_r = struct.unpack('H', binary_file.read(2))[0]
-        ascii_file.write(str(n_r) + ' ')
-        # Get number of phi cells
-        n_ph = struct.unpack('H', binary_file.read(2))[0]
-        ascii_file.write(str(n_ph) + ' ')
-        # Get number of theta or z cells
-        n_th_z = struct.unpack('H', binary_file.read(2))[0]
-        ascii_file.write(str(n_th_z) + '\n')
-        # Get step width factors (zero for custom)
-        sf_r = struct.unpack('d', binary_file.read(8))[0]
-        ascii_file.write(str(sf_r) + ' ')
-        sf_ph = struct.unpack('d', binary_file.read(8))[0]
-        ascii_file.write(str(sf_ph) + ' ')
-        sf_th_z = struct.unpack('d', binary_file.read(8))[0]
-        ascii_file.write(str(sf_th_z) + '\n')
-        # Write the custom cell distribution if chosen
-        if sf_r == 0:
-            for i_r in range(n_r - 1):
-                ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-            ascii_file.write('\n')
-        if sf_ph == 0:
-            for i_ph in range(n_ph - 1):
-                ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-            ascii_file.write('\n')
-        if sf_th_z == 0:
-            for i_th_z in range(n_th_z - 1):
-                ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-            ascii_file.write('\n')
-
-        if grid_id == 40:
-            if sf_ph == -1:
-                for i_r in range(n_r):
-                    ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-                ascii_file.write('\n')
-            if sf_th_z == -1:
-                for i_r in range(n_r):
-                    ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-                ascii_file.write('\n')
-
-        cell_numbers = n_r * n_ph * n_th_z + 1 if grid_id == 30 else (n_r * n_ph + 1) * n_th_z
-        for i_cell in range(cell_numbers):
-            for i_data in range(data_length):
-                ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
-            ascii_file.write("\n")
 
     def set_path_from_str(self, model_name):
         """Sets all paths used by a given toolkit depending on input strings.
@@ -414,14 +260,8 @@ class GridRoutines:
 if __name__ == '__main__':
     print('------------------------- PolarisTools -------------------------')
     print('--- Initialization ...')
-    #: Instance of PlotRoutines which can manage POLARIS plot creation
     grid_routines = GridRoutines(parser_options)
     print('--- Initialization finished!                                    ')
-    if parser_options.convert:
-        print('--- Converting grid ...')
-        grid_routines.convert_polaris_grid()
-        print('--- Converting of grid finished!                               ')
-    else:    
-        print('--- Create a grid ...')
-        grid_routines.create_polaris_grid()
-        print('--- Creation of grid finished!                               ')
+    print('--- Create a grid ...')
+    grid_routines.create_polaris_grid()
+    print('--- Creation of grid finished!                               ')

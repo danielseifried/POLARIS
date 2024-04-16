@@ -204,14 +204,13 @@ python3 tools/setup.py install --user &>/dev/null
 ### Convert a grid file
 
 Users can also write and edit their own grid file.
-For this purpose, the command `polaris-gen` has an ascii to binary converter (and vice versa) for converting grid files.
+For this purpose, the command `polaris-convert` has an ascii to binary converter (and vice versa) for converting grid files.
 To convert an existing ascii grid file to a binary grid file, use
 ```bash
-polaris-gen model_name grid_filename.txt --convert ascii2binary
+polaris-convert input_file output_file ascii2binary
 ```
 To convert an existing binary grid file to an ascii grid file, use
 ```bash
-polaris-gen model_name grid_filename.dat --convert binary2ascii
+polaris-convert input_file output_file binary2ascii
 ```
-The input grid file has to be located in `projects/model_name/` and the new output grid file will be stored at `projects/model_name/`.
 For the general structure and available options in the grid file, please read the [manual](manual.pdf) (Sect. 2.3).

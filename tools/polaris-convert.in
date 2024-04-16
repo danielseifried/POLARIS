@@ -1,0 +1,236 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""polaris-convert is part of the PolarisTools package to convert grids used by
+POLARIS simulations from predefined models.
+
+Examples:
+    For usage information please execute:
+        $ ./polaris-convert --help
+"""
+
+import struct
+import numpy as np
+from argparse import RawTextHelpFormatter, ArgumentParser
+
+
+parser = ArgumentParser(
+    description='PolarisTools_convert, an user interface to create POLARIS grids:',
+    formatter_class=RawTextHelpFormatter)
+
+req_args = parser.add_argument_group('required arguments')
+req_args.add_argument('input_file', metavar='input_file', type=str,
+                      help='Path to the input file.')
+req_args.add_argument('output_file', metavar='output_file', type=str,
+                      help='Path to the output file.')
+req_args.add_argument('converter', metavar='converter', type=str,
+                      help='ascii2binary or binary2ascii\n'
+                      '    Convert existing ascii grid file to binary grid file or vice versa\n'
+                      '    (only for spherical and cylindrical grid type).')
+
+parser_options = parser.parse_args()
+
+
+class GridConverter:
+    def __init__(self, parse_args):
+        """Initialise all necessary modules which are required by grid.py
+
+        Args:
+            parse_args: Provides all parameters chosen
+                by user when executing PolarisTools.
+        """
+        self.parse_args = parse_args
+
+        # Get math module
+        from polaris_tools_modules.math import Math
+        self.math = Math()
+
+    def convert_polaris_grid(self):
+        """convert existing ascii grid file to binary grid file or vice versa.
+        """
+        if self.parse_args.converter == 'binary2ascii':
+            with open(self.parse_args.input_file, 'rb') as binary_file, \
+                    open(self.parse_args.output_file, 'w') as ascii_file:
+                self.read_binary_write_ascii(binary_file, ascii_file)
+        elif self.parse_args.converter == 'ascii2binary':
+            with open(self.parse_args.input_file, 'r') as ascii_file, \
+                    open(self.parse_args.output_file, 'wb') as binary_file:
+                self.read_ascii_write_binary(ascii_file, binary_file)
+        else:
+            raise ValueError('Invalid converter.')
+
+    def read_ascii_write_binary(self, ascii_file, binary_file):
+        """convert existing ascii grid file to binary grid file.
+
+        Args:
+            ascii_file: Input ascii file.
+            binary_file: Output binary file.
+        """
+        line = np.array(ascii_file.readline().strip().split(' '), dtype=int)
+        grid_id = line[0]
+        if grid_id != 30 and grid_id != 40:
+            raise ValueError(
+                'Wrong grid ID. Only spherical (30) or cylindrical (40) are supported so far.')
+        binary_file.write(struct.pack('H', grid_id))
+
+        data_length = line[1]
+        binary_file.write(struct.pack('H', data_length))
+
+        quantities = line[2:]
+        for quant in quantities:
+            binary_file.write(struct.pack('H', quant))
+
+        boundaries = np.array(
+            ascii_file.readline().strip().split(' '), dtype=float)
+        for boundary in boundaries:
+            binary_file.write(struct.pack('d', boundary))
+
+        n_r, n_ph, n_th_z = np.array(
+            ascii_file.readline().strip().split(' '), dtype=int)
+        binary_file.write(struct.pack('H', n_r))
+        binary_file.write(struct.pack('H', n_ph))
+        binary_file.write(struct.pack('H', n_th_z))
+
+        sf_r, sf_ph, sf_th_z = np.array(
+            ascii_file.readline().strip().split(' '), dtype=float)
+        binary_file.write(struct.pack('d', sf_r))
+        binary_file.write(struct.pack('d', sf_ph))
+        binary_file.write(struct.pack('d', sf_th_z))
+
+        if sf_r == 0:
+            r_borders = np.array(
+                ascii_file.readline().strip().split(' '), dtype=float)
+            if len(r_borders) != n_r - 1:
+                raise ValueError('Wrong number of radial cell boundaries!')
+            for i_r in r_borders:
+                binary_file.write(struct.pack('d', i_r))
+        if sf_ph == 0:
+            ph_borders = np.array(
+                ascii_file.readline().strip().split(' '), dtype=float)
+            if len(ph_borders) != n_ph - 1:
+                raise ValueError('Wrong number of phi cell boundaries!')
+            for i_ph in ph_borders:
+                binary_file.write(struct.pack('d', i_ph))
+        if sf_th_z == 0:
+            th_z_borders = np.array(
+                ascii_file.readline().strip().split(' '), dtype=float)
+            if len(th_z_borders) != n_th_z - 1:
+                raise ValueError('Wrong number of theta / z cell boundaries!')
+            for i_th_z in th_z_borders:
+                binary_file.write(struct.pack('d', i_th_z))
+
+        if grid_id == 40:
+            if sf_ph == 0:
+                ph_num_i = np.array(
+                    ascii_file.readline().strip().split(' '), dtype=float)
+                if len(ph_num_i) != n_r:
+                    raise ValueError(
+                        'Wrong number of values that define the number of phi cells in each radial ring!')
+                for i_r in ph_num_i:
+                    binary_file.write(struct.pack('d', i_r))
+            elif sf_th_z == -1:
+                z_width_i = np.array(
+                    ascii_file.readline().strip().split(' '), dtype=float)
+                if len(z_width_i) != n_r:
+                    raise ValueError(
+                        'Wrong number of values that define the vertical width of each cylindrical cell in each radial ring!')
+                for i_r in z_width_i:
+                    binary_file.write(struct.pack('d', i_r))
+
+        cell_numbers = n_r * n_ph * n_th_z + \
+            1 if grid_id == 30 else (n_r * n_ph + 1) * n_th_z
+        for i_cell in range(cell_numbers):
+            data = np.array(
+                ascii_file.readline().strip().split(' '), dtype=float)
+            if len(data) != data_length:
+                raise ValueError('Wrong number of physical quantities!')
+            for i_data in data:
+                binary_file.write(struct.pack('d', i_data))
+
+    def read_binary_write_ascii(self, binary_file, ascii_file):
+        """convert existing binary grid file to ascii grid file.
+
+        Args:
+            binary_file: Input binary file.
+            ascii_file: Output ascii file.
+        """
+        grid_id = struct.unpack('H', binary_file.read(2))[0]
+        if grid_id != 30 and grid_id != 40:
+            raise ValueError(
+                'Wrong grid ID. Only spherical (30) or cylindrical (40) are supported so far.')
+
+        ascii_file.write(str(grid_id) + ' ')
+        data_length = struct.unpack('H', binary_file.read(2))[0]
+        ascii_file.write(str(data_length) + ' ')
+
+        for i_data in range(data_length):
+            ascii_file.write(
+                str(struct.unpack('H', binary_file.read(2))[0]) + ' ')
+        ascii_file.write('\n')
+
+        ascii_file.write(str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+        if grid_id == 40:
+            ascii_file.write(
+                str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+        ascii_file.write(
+            str(struct.unpack('d', binary_file.read(8))[0]) + '\n')
+
+        # Get number of radial cells
+        n_r = struct.unpack('H', binary_file.read(2))[0]
+        ascii_file.write(str(n_r) + ' ')
+        # Get number of phi cells
+        n_ph = struct.unpack('H', binary_file.read(2))[0]
+        ascii_file.write(str(n_ph) + ' ')
+        # Get number of theta or z cells
+        n_th_z = struct.unpack('H', binary_file.read(2))[0]
+        ascii_file.write(str(n_th_z) + '\n')
+        # Get step width factors (zero for custom)
+        sf_r = struct.unpack('d', binary_file.read(8))[0]
+        ascii_file.write(str(sf_r) + ' ')
+        sf_ph = struct.unpack('d', binary_file.read(8))[0]
+        ascii_file.write(str(sf_ph) + ' ')
+        sf_th_z = struct.unpack('d', binary_file.read(8))[0]
+        ascii_file.write(str(sf_th_z) + '\n')
+        # Write the custom cell distribution if chosen
+        if sf_r == 0:
+            for i_r in range(n_r - 1):
+                ascii_file.write(
+                    str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+            ascii_file.write('\n')
+        if sf_ph == 0:
+            for i_ph in range(n_ph - 1):
+                ascii_file.write(
+                    str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+            ascii_file.write('\n')
+        if sf_th_z == 0:
+            for i_th_z in range(n_th_z - 1):
+                ascii_file.write(
+                    str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+            ascii_file.write('\n')
+
+        if grid_id == 40:
+            if sf_ph == -1:
+                for i_r in range(n_r):
+                    ascii_file.write(
+                        str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+                ascii_file.write('\n')
+            if sf_th_z == -1:
+                for i_r in range(n_r):
+                    ascii_file.write(
+                        str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+                ascii_file.write('\n')
+
+        cell_numbers = n_r * n_ph * n_th_z + \
+            1 if grid_id == 30 else (n_r * n_ph + 1) * n_th_z
+        for i_cell in range(cell_numbers):
+            for i_data in range(data_length):
+                ascii_file.write(
+                    str(struct.unpack('d', binary_file.read(8))[0]) + ' ')
+            ascii_file.write("\n")
+
+
+if __name__ == '__main__':
+    print('--- Converting grid ...')
+    grid_converter = GridConverter(parser_options)
+    grid_converter.convert_polaris_grid()
+    print('--- Converting of grid finished!                               ')

@@ -11,14 +11,15 @@ import os
 if not os.path.exists('scripts'):
     os.makedirs('scripts')
 
-scripts = ['polaris-gen.in']
+scripts = ['polaris-gen.in', 'polaris-convert.in']
 for script in scripts:
     # Read in the file
     with open(script, 'r') as file:
         filedata = file.read()
 
     # Replace the target string
-    polaris_path = os.path.abspath(os.getcwd().replace('tools', '')) + os.path.sep
+    polaris_path = os.path.abspath(
+        os.getcwd().replace('tools', '')) + os.path.sep
     filedata = filedata.replace('@POLARIS_PATH@', polaris_path)
 
     # Write the file out again
@@ -75,5 +76,5 @@ setup(
         'GitHub': 'https://github.com/polaris-MCRT/POLARIS',
     },
 
-    scripts=['scripts/polaris-gen'],
+    scripts=['scripts/polaris-gen', 'scripts/polaris-convert'],
 )
