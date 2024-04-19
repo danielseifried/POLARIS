@@ -80,7 +80,8 @@ If line radiative transfer and/or Zeeman simulations are used, please cite [Brau
     ├── ci                                       # CI test script (only for testing purposes)
     ├── ext                                      # Catch2 test framework for unit-tests (only for testing purposes)
     ├── input                                    # Input data used by POLARIS
-    │   ├── dust                                 # Dust database files in the default POLARIS format
+    │   ├── dust_cs                              # Dust cross sections files in the default POLARIS format
+    │   ├── dust_nk                              # Dust refractive index files in the default POLARIS format
     │   ├── gas                                  # Gas database files in the LAMDA format (including Zeeman files)
     │   └── interstellar_radiation_field.dat     # Spectral energy distribution of the ISRF
     ├── lib                                      # CCfits and cfitsio libraries

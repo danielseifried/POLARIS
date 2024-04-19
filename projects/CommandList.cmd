@@ -8,7 +8,7 @@
     # Dust
 
     # considered dust grain compositions (ALL) "path_to_file" "size_keyword" mass_fraction mass_density radius_min radius_max exponent
-    <dust_component>	"/PATH/TO/POLARIS/input/dust/silicate_d03.nk" "plaw" 1.0 3500.0 5e-09 2.5e-07 -3.5
+    <dust_component>	"/PATH/TO/POLARIS/input/dust_nk/silicate_d03.nk" "plaw" 1.0 3500.0 5e-09 2.5e-07 -3.5
 
     # considered alignment mechanism of non-spherical dust grains (DUST_EMISSION)
     <align> ALIG_PA or ALIG_RAT or ALIG_IDG or ALIG_GOLD or ALIG_INTERNAL or ALIG_NONPA

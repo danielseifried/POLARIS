@@ -3,9 +3,9 @@
 
 	# set the considered dust grain compositions
 	# "path_to_file" "size_keyword" mass_fraction mass_density radius_min radius_max exponent
-	<dust_component>	"input/dust/silicate_d03.nk" "plaw" 0.625 3500.0 5e-09 2.5e-07 -3.5
-	<dust_component>	"input/dust/graphite_perpend_d03.nk" "plaw" 0.25 2250 5e-09 2.5e-07 -3.5
-	<dust_component>	"input/dust/graphite_parallel_d03.nk" "plaw" 0.125 2250 5e-09 2.5e-07 -3.5
+	<dust_component>	"input/dust_nk/silicate_d03.nk" "plaw" 0.625 3500.0 5e-09 2.5e-07 -3.5
+	<dust_component>	"input/dust_nk/graphite_per_0.1_d03.nk" "plaw" 0.25 2250 5e-09 2.5e-07 -3.5
+	<dust_component>	"input/dust_nk/graphite_par_0.1_d03.nk" "plaw" 0.125 2250 5e-09 2.5e-07 -3.5
 
 	# phase function for dust scattering
 	<phase_function>	PH_MIE
