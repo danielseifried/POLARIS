@@ -93,6 +93,7 @@ If line radiative transfer and/or Zeeman simulations are used, please cite [Brau
     ├── tools                                    # PolarisTools directory
     │   ├── polaris_tools_custom                 # User-definable modules for PolarisTools
     │   ├── polaris_tools_modules                # Modules for PolarisTools
+    │   ├── polaris-convert.in                   # Source file for the polaris-convert tool
     │   ├── polaris-gen.in                       # Source file for the polaris-gen tool
     │   └── setup.py                             # Setup script for PolarisTools
     ├── AUTHORS.md
