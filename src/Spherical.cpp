@@ -1613,6 +1613,13 @@ bool CGridSpherical::goToNextCellBorder(photon_package * pp)
     }
 
     pp->setPosition(p + d * path_length);
+
+    if(p == pp->getPosition())
+    {
+        cout << "\nERROR: Could not transfer photon to the next cell border!   " << endl;
+        return false;
+    }
+
     pp->setTmpPathLength(path_length);
     pp->setDirectionID(dirID);
     return true;

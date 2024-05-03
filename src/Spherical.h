@@ -457,14 +457,14 @@ class CGridSpherical : public CGridBasic
                                  uint & N_polar_r,
                                  uint *& N_polar_ph)
     {
-	return CGridBasic::getPolarRTGridParameterWorker(max_len,
-							 pixel_width,
-							 max_subpixel_lvl,
-							 _listR,
-							 N_polar_r,
-							 N_polar_ph,
-							 N_r,
-							 listR);
+    return CGridBasic::getPolarRTGridParameterWorker(max_len,
+                             pixel_width,
+                             max_subpixel_lvl,
+                             _listR,
+                             N_polar_r,
+                             N_polar_ph,
+                             N_r,
+                             listR);
     }
 
   private:

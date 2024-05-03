@@ -1723,6 +1723,13 @@ bool CGridOcTree::goToNextCellBorder(photon_package * pp)
     }
 
     pp->setPosition(pos + dir * path_length);
+
+    if(pos == pp->getPosition())
+    {
+        cout << "\nERROR: Could not transfer photon to the next cell border!   " << endl;
+        return false;
+    }
+
     pp->setTmpPathLength(path_length);
 
     return true;

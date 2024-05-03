@@ -2675,63 +2675,68 @@ bool CGridBasic::writeMidplaneFits(string data_path, parameters & param, uint bi
 }
 
 bool CGridBasic::getPolarRTGridParameterWorker(double max_len,
-					       double pixel_width,
-					       uint max_subpixel_lvl,
-					       dlist & _listR,
-					       uint & N_polar_r,
-					       uint *& N_polar_ph,
-					       const uint &N_r,
-					       const double *listR
+                           double pixel_width,
+                           uint max_subpixel_lvl,
+                           dlist & _listR,
+                           uint & N_polar_r,
+                           uint *& N_polar_ph,
+                           const uint &N_r,
+                           const double *listR
     )
 {
     uint subpixel_multiplier = pow(2, max_subpixel_lvl);
-	
+    
     // Add polar detector pixels in the inner region to obtain resolution specified by max_subpixel_lvl
     // inner grid cell diameter is 2.*listR[0]
-    uint N_r_inner = uint(ceil(subpixel_multiplier * 2.0*listR[0]/pixel_width)); 
-	
+    uint N_r_inner = uint(ceil(subpixel_multiplier * 2.0 * listR[0] / pixel_width)); 
+    
     for(uint i_r = 0; i_r <= N_r_inner; i_r++)
-	_listR.push_back(listR[0] * (i_r / double(N_r_inner)));
+        _listR.push_back(listR[0] * (i_r / double(N_r_inner)));
 
     for(uint i_r = 1; i_r <= N_r; i_r++)
     {
-	double r1 = _listR[_listR.size() - 1];
-	double r2 = listR[i_r];
-	// r2-r1 is width of current grid cell's ring
-	uint N_r_sub = uint(ceil(subpixel_multiplier * (r2 - r1) / pixel_width));
-	    
-	for(uint i_r_sub = 1; i_r_sub <= N_r_sub; i_r_sub++)
-	    _listR.push_back(r1 + (r2 - r1) * i_r_sub / double(N_r_sub));
+        double r1 = _listR[_listR.size() - 1];
+        double r2 = listR[i_r];
 
-	// break if sidelength is smaller than full grid
-	if(_listR.back() > max_len)
-	{
-	    _listR.pop_back();
-	    _listR.push_back(max_len);
-	    break;
-	}
+        // if sidelength is smaller than full grid, only consider visible grid
+        if(r2 > max_len)
+            r2 = max_len;
+
+        // r2 - r1 is width of current grid cell's ring
+        uint N_r_sub = uint(ceil(subpixel_multiplier * (r2 - r1) / pixel_width));
+
+        for(uint i_r_sub = 1; i_r_sub <= N_r_sub; i_r_sub++)
+            _listR.push_back(r1 + (r2 - r1) * i_r_sub / double(N_r_sub));
+
+        // break if sidelength is smaller than full grid
+        if(_listR.back() >= max_len)
+        {
+            _listR.pop_back();
+            _listR.push_back(max_len);
+            break;
+        }
     }
 
     if(_listR.back() < max_len)
     {
-	// Create additional outer rings with outermost grid cell radial distance
-	// and store them in buffer to do subpixeling afterwards
-	uint N_r_outer = uint(ceil((max_len - listR[N_r]) / (listR[N_r] - listR[N_r - 1])));
-	std::vector<double> outerR_buffer;
-	    
-	for(uint i_r = 1; i_r <= N_r_outer; i_r++)
-	    outerR_buffer.push_back(listR[N_r] + (max_len - listR[N_r]) * i_r / double(N_r_outer));
+        // Create additional outer rings with outermost grid cell radial distance
+        // and store them in buffer to do subpixeling afterwards
+        uint N_r_outer = uint(ceil((max_len - listR[N_r]) / (listR[N_r] - listR[N_r - 1])));
+        std::vector<double> outerR_buffer;
+            
+        for(uint i_r = 1; i_r <= N_r_outer; i_r++)
+            outerR_buffer.push_back(listR[N_r] + (max_len - listR[N_r]) * i_r / double(N_r_outer));
 
-	// loop over equally spaced rings outside the grid and do subpixeling
-	for (uint i_r = 0; i_r < N_r_outer; i_r++){
-		
-	    double r1 = _listR[_listR.size() - 1];
-	    double r2 = outerR_buffer[i_r];
-	    uint N_r_sub = uint(ceil(subpixel_multiplier * (r2 - r1) / pixel_width));  
+        // loop over equally spaced rings outside the grid and do subpixeling
+        for (uint i_r = 0; i_r < N_r_outer; i_r++)
+        {
+            double r1 = _listR[_listR.size() - 1];
+            double r2 = outerR_buffer[i_r];
+            uint N_r_sub = uint(ceil(subpixel_multiplier * (r2 - r1) / pixel_width));  
 
-	    for(uint i_r_sub = 1; i_r_sub <= N_r_sub; i_r_sub++)   
-		_listR.push_back(r1 + (r2 - r1) * i_r_sub / double(N_r_sub));
-	}
+            for(uint i_r_sub = 1; i_r_sub <= N_r_sub; i_r_sub++)   
+                _listR.push_back(r1 + (r2 - r1) * i_r_sub / double(N_r_sub));
+        }
     }
 
     // Set total size of the radial cells
@@ -2741,7 +2746,7 @@ bool CGridBasic::getPolarRTGridParameterWorker(double max_len,
     N_polar_ph = new uint[N_polar_r];
     for(uint i_r = 0; i_r < N_polar_r; i_r++)
     {
-	N_polar_ph[i_r] = uint(ceil(PIx2 * _listR[i_r + 1] / (_listR[i_r + 1] - _listR[i_r])));
+        N_polar_ph[i_r] = uint(ceil(PIx2 * _listR[i_r + 1] / (_listR[i_r + 1] - _listR[i_r])));
     }
 
     return true;

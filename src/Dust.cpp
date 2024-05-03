@@ -1176,8 +1176,8 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
                 dcomplex refractive_index = dcomplex(refractive_index_real.getValue(wavelength_list[w], LOGLINEAR),
                                                      refractive_index_imag.getValue(wavelength_list[w], LOGLINEAR));
 #else
-                dcomplex refractive_index = dcomplex(refractive_index_real.getValue(wavelength_list[w], SPLINE),
-                                                     refractive_index_imag.getValue(wavelength_list[w], SPLINE));
+                dcomplex refractive_index = dcomplex(refractive_index_real.getValue(wavelength_list[w], LOGLINEAR),
+                                                     refractive_index_imag.getValue(wavelength_list[w], LOGLINEAR));
 #endif
 
                 // Calculate Mie-scattering
@@ -4333,21 +4333,22 @@ double CDustComponent::calcGoldReductionFactor(const Vector3D & v, const Vector3
     double g = gold_g_factor;
     Vector3D v_proj = (v * B) / B.sq_length() * B;
     double len_vz = v_proj.sq_length();
-    double len_vxyz = v.length();
+    double len_vxyz = v.sq_length();
     double R, cossq_beta;
 
-    len_vxyz *= len_vxyz;
+    if(len_vxyz == 3 * len_vz)
+        return 0.0;
 
     if(len_vxyz == len_vz)
-        return -0.499999999999;
+        return 0.0;
 
-    if(len_vxyz == 3 * len_vz)
-        return 0;
+    if(gold_g_factor == 0)
+        return 0.0;
 
     s = -0.5 * (len_vxyz - 3 * len_vz) / (len_vxyz - len_vz);
 
-    if(s <= -0.5)
-        s = -0.4999999999;
+    // if(s <= -0.5)
+    //     s = -0.4999999999;
 
     if(s < 0)
     {
@@ -4378,8 +4379,8 @@ double CDustComponent::calcGoldReductionFactor(const Vector3D & v, const Vector3
 
     R = 1.5 * cossq_beta - 0.5;
 
-    if(R <= -0.5)
-        R = -0.499999999999;
+    // if(R <= -0.5)
+    //     R = -0.499999999999;
 
     return R;
 }

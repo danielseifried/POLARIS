@@ -1875,28 +1875,46 @@ class CMathFunctions
 
     static inline void LinearList(double start, double stop, double * list, uint N)
     {
-        double dx = (stop - start) / (N - 1);
+        list[0] = start;
+        
+        if(N > 1){
+            double dx = (stop - start) / (N - 1);
 
+            for(uint i_x = 1; i_x < N - 1; i_x++)
+                list[i_x] = start + i_x * dx;
+
+            list[N - 1] = stop;
+        }
+    }
+
+    static inline void LinearList(double start, double stop, dlist & list)
+    {
+        uint N = list.size();
         list[0] = start;
 
-        for(uint i_x = 1; i_x < N - 1; i_x++)
-            list[i_x] = start + i_x * dx;
+        if(N > 1){
+            double dx = (stop - start) / (N - 1);
 
-        list[N - 1] = stop;
+            for(uint i_x = 1; i_x < N - 1; i_x++)
+                list[i_x] = start + i_x * dx;
+
+            list[N - 1] = stop;
+        }
     }
 
     static inline dlist LinearList(double start, double stop, uint N)
     {
         dlist list(N);
-
-        double dx = (stop - start) / (N - 1);
-
         list[0] = start;
+        
+        if(N > 1){
+            double dx = (stop - start) / (N - 1);
 
-        for(uint i_x = 1; i_x < N - 1; i_x++)
-            list[i_x] = start + i_x * dx;
+            for(uint i_x = 1; i_x < N - 1; i_x++)
+                list[i_x] = start + i_x * dx;
 
-        list[N - 1] = stop;
+            list[N - 1] = stop;
+        }
 
         return list;
     }

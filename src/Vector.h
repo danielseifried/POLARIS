@@ -313,7 +313,7 @@ class Vector3D
         return tmp;
     }
 
-    Vector3D operator/(double val)
+    Vector3D operator/(double val) const
     {
         Vector3D tmp(x / val, y / val, z / val);
         return tmp;
