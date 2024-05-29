@@ -3427,7 +3427,7 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
             return false;
         }
 
-        if(plane != PROJ_XY || plane != PROJ_XZ || plane != PROJ_YZ)
+        if(plane != PROJ_XY && plane != PROJ_XZ && plane != PROJ_YZ)
         {
             cout << "\nERROR: Wrong plane for 3D midplane files in line " << line_counter << "!" << endl;
             return false;
