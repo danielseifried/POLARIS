@@ -1185,7 +1185,7 @@ bool CPipeline::writeSources(parameters & param, CGridBasic * grid)
     }
 
     // path_plot = "E:\\gnutests\\";
-    string plot_out = path_plot + "sources.py";
+    string plot_out = path_plot + "sources.plt";
     ofstream outStream(plot_out.c_str());
 
     if(outStream.fail())
@@ -1221,8 +1221,9 @@ bool CPipeline::assignDustMixture(parameters & param, CDustMixture * dust, CGrid
         return false;
 
     // Write plot files to show dust properties
-    if(!dust->writeComponent(path_data, path_plot))
-        return false;
+    if(param.getWriteDustFiles())
+        if(!dust->writeComponent(path_data, path_plot))
+            return false;
 
     dust->setGridRequirements(grid, param);
 

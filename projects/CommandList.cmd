@@ -86,7 +86,7 @@
     <write_inp_midplanes> 256
     <write_out_midplanes> 256
 
-    # enables the creation of 3D midplane files, requires <write_xyz_midplanes> command (ALL)
+    # enables the creation of 3D midplane files (PLANE = 1: xy, PLANE = 2: xz, PLANE = 3: yz) (ALL)
     <write_3d_midplanes> PLANE or PLANE NR_SLICES or PLANE NR_SLICES Z_MIN, Z_MAX
 
     # enables the inclusion of the radiation field into the midplane '.fits' files (ALL)
@@ -98,14 +98,17 @@
     # zoom onto the midplane cut images (ALL)
     <midplane_zoom> 1
 
+    # enables/disables the creation of Gnuplot files to visualize the dust properties (ALL)
+    <write_dust_files> 1 (yes) or 0 (no)
+
     # enables/disables the creation of Gnuplot files to visualize the grid, how many scalar points (ALL)
-    <nr_gnu_points> 4000
+    <nr_plot_points> 4000
 
     # enables/disables the creation of Gnuplot files to visualize the grid, how many vectors (ALL)
-    <nr_gnu_vectors> 4000
+    <nr_plot_vectors> 4000
 
     # enables/disables the creation of Gnuplot files to visualize the grid, how many lines points (ALL)
-    <max_lines> 300
+    <max_plot_lines> 300
 
     # enables/disables the creation of AMIRA files, input and output grid (ALL)
     <amira_inp_points> 100

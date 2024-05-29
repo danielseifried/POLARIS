@@ -309,17 +309,17 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
     stringstream point_header, vec_header, basic_grid, tetra_lines;
 
-    string grid_filename = path + "grid_geometry.py";
-    string dens_gas_filename = path + "grid_gas_density.py";
-    string dens_dust_filename = path + "grid_dust_density.py";
-    string temp_gas_filename = path + "grid_gas_temp.py";
-    string temp_dust_filename = path + "grid_dust_temp.py";
-    string rat_filename = path + "grid_RAT.py";
+    string grid_filename = path + "grid_geometry.plt";
+    string dens_gas_filename = path + "grid_gas_density.plt";
+    string dens_dust_filename = path + "grid_dust_density.plt";
+    string temp_gas_filename = path + "grid_gas_temp.plt";
+    string temp_dust_filename = path + "grid_dust_temp.plt";
+    string rat_filename = path + "grid_RAT.plt";
     string delta_filename = path + "grid_data.dat";
-    string larm_filename = path + "grid_mag.py";
-    string mach_filename = path + "grid_vel.py";
-    string mag_filename = path + "grid_mag.py";
-    string vel_filename = path + "grid_vel.py";
+    string larm_filename = path + "grid_mag.plt";
+    string mach_filename = path + "grid_vel.plt";
+    string mag_filename = path + "grid_mag.plt";
+    string vel_filename = path + "grid_vel.plt";
 
     ofstream point_fields[9];
     ofstream vec_fields[2];

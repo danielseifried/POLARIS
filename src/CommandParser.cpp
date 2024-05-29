@@ -837,35 +837,6 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
         return true;
     }
 
-    if(cmd.compare("<plot_list>") == 0)
-    {
-        dlist ids = parseValues(data);
-
-        if(ids.empty())
-        {
-            cout << "\nWARNING: The list of plot IDs is empty! " << endl;
-            cout << "         Only integers and no text is allowed!    " << endl;
-            // return false;
-        }
-
-        for(uint i = 0; i < ids.size(); i++)
-        {
-            uint id = ids[i];
-
-            if(id >= minGRID && id <= maxGRID)
-                param->addToPlotList(id);
-            else
-            {
-                cout << "\nWARNING: Unknown grid ID in line " << line_counter << "!    " << endl;
-                cout << "         A plot ID of " << id
-                     << " is not a valid POLARIS grid ID (see manual, Table 3.3)!     " << endl;
-                // return false;
-            }
-        }
-
-        return true;
-    }
-
     if(cmd.compare("<phase_function>") == 0 || cmd.compare("<phase_function id = >") == 0)
     {
         uint dust_component_choice = 0;
@@ -3456,7 +3427,7 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
             return false;
         }
 
-        if(plane > 3 || plane < 0)
+        if(plane != PROJ_XY || plane != PROJ_XZ || plane != PROJ_YZ)
         {
             cout << "\nERROR: Wrong plane for 3D midplane files in line " << line_counter << "!" << endl;
             return false;
@@ -3515,6 +3486,16 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
             param->setWriteGZero(true);
         else
             param->setWriteGZero(false);
+
+        return true;
+    }
+
+    if(cmd.compare("<write_dust_files>") == 0)
+    {
+        if(atob(atoi(data.c_str())))
+            param->setWriteDustFiles(true);
+        else
+            param->setWriteDustFiles(false);
 
         return true;
     }

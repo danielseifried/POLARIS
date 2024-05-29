@@ -97,6 +97,7 @@ class parameters
         plot_out_points = false;
         write_radiation_field = 0;
         write_g_zero = false;
+        write_dust_files = false;
         nr_ofInpMidDataPoints = 0;
         nr_ofOutMidDataPoints = 0;
 
@@ -588,6 +589,11 @@ class parameters
     bool getWriteGZero() const
     {
         return write_g_zero;
+    }
+
+    bool getWriteDustFiles() const
+    {
+        return write_dust_files;
     }
 
     double getISRFGZero() const
@@ -1122,6 +1128,11 @@ class parameters
     void setWriteGZero(double val)
     {
         write_g_zero = val;
+    }
+
+    void setWriteDustFiles(double val)
+    {
+        write_dust_files = val;
     }
 
     void updateDetectorPixel(uint pixel_x, uint pixel_y)
@@ -2274,6 +2285,7 @@ class parameters
     bool plot_out_points;
     uint write_radiation_field;
     bool write_g_zero;
+    bool write_dust_files;
 
     dlist midplane_3d_param;
     dlist star_mass;

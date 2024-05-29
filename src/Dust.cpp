@@ -5571,7 +5571,7 @@ bool CDustMixture::createDustMixtures(parameters & param, string path_data, stri
                 }
 
             // Write dust component files, if multiple components will be mixed together
-            if(nr_of_components > 1)
+            if(param.getWriteDustFiles() && nr_of_components > 1)
                 single_component[i_comp].writeComponent(path_data, path_plot);
         }
 
