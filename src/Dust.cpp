@@ -1931,7 +1931,183 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
     return true;
 }
 
-bool CDustComponent::writeComponent(string path_data, string path_plot)
+bool CDustComponent::writeComponentData(string path_data)
+{
+    // Do not write dust data if no dust component was chosen
+    if(nr_of_wavelength == 0)
+        return true;
+
+    // Init character variables to store filenames
+    char str_comp_ID_tmp[1024];
+    char str_comp_ID_end[1024];
+    char str_mix_ID_tmp[1024];
+    char str_mix_ID_end[1024];
+    char str_frac_tmp[1024];
+    char str_frac_end[1024];
+
+    // Init strings for various filenames/titles
+    string str_title, plot_title;
+
+    // Set the characters with the current indizes
+#ifdef WINDOWS
+    strcpy_s(str_comp_ID_tmp, "%03d");
+    sprintf_s(str_comp_ID_end, str_comp_ID_tmp, i_component + 1);
+
+    strcpy_s(str_mix_ID_tmp, "%03d");
+    sprintf_s(str_mix_ID_end, str_mix_ID_tmp, i_mixture + 1);
+
+    strcpy_s(str_frac_tmp, "%.05f");
+    sprintf_s(str_frac_end, str_frac_tmp, fraction);
+#else
+    strcpy(str_comp_ID_tmp, "%03d");
+    sprintf(str_comp_ID_end, str_comp_ID_tmp, i_component + 1);
+
+    strcpy(str_mix_ID_tmp, "%03d");
+    sprintf(str_mix_ID_end, str_mix_ID_tmp, i_mixture + 1);
+
+    strcpy(str_frac_tmp, "%.05f");
+    sprintf(str_frac_end, str_frac_tmp, fraction);
+#endif
+
+    if(is_mixture)
+    {
+#if BENCHMARK == PINTE
+        string path_mueller = path_data + "dust_mixture_" + str_mix_ID_end + "_mueller.dat";
+
+        ofstream mueller_matrix_file(path_mueller.c_str());
+
+        // Error message if the write does not work
+        if(mueller_matrix_file.fail())
+        {
+            cout << "\nERROR: Cannot write to:\n" << path_cross << endl;
+            return false;
+        }
+
+        for(uint sth = 0; sth < nr_of_scat_theta[0][0]; sth++)
+        {
+            mueller_matrix_file << scat_theta[0][0][sth] << TAB;
+            mueller_matrix_file << sca_mat[0][0][0][0][sth](0, 0) << TAB;
+            mueller_matrix_file << sca_mat[0][0][0][0][sth](0, 1) << TAB;
+            mueller_matrix_file << sca_mat[0][0][0][0][sth](2, 2) << TAB;
+            mueller_matrix_file << sca_mat[0][0][0][0][sth](2, 3) << endl;
+        }
+        mueller_matrix_file.close();
+#endif
+
+        // For the dust mixture, set the different strings
+        str_title = "#Dust mixture\n " + stringID;
+        plot_title = "#Dust mixture ";
+        plot_title += str_mix_ID_end;
+        plot_title += "\n";
+        path_data = path_data + "dust_mixture_" + str_mix_ID_end + ".dat";
+
+        // Format the strings
+        uint pos = 0;
+        while(str_title.find("\n ") != string::npos)
+        {
+            pos = uint(str_title.find("\n "));
+            str_title.replace(pos, 2, "\n#");
+        }
+
+        pos = 0;
+        while(str_title.find("- ") != string::npos)
+        {
+            pos = uint(str_title.find("- "));
+            str_title.replace(pos, 2, "#-");
+        }
+
+        pos = 0;
+        while(plot_title.find("\n") != string::npos)
+        {
+            pos = uint(plot_title.find("\n"));
+            plot_title.replace(pos, 1, "; ");
+        }
+
+        pos = 0;
+        while(plot_title.find("#") != string::npos)
+        {
+            pos = uint(plot_title.find("#"));
+            plot_title.replace(pos, 1, " ");
+        }
+    }
+    else
+    {
+        // For the dust components, set the different strings
+        str_title = "Dust mixture ";
+        str_title += str_mix_ID_end;
+        str_title += ", component nr.: ";
+        str_title += str_comp_ID_end;
+        str_title += " mat.: " + stringID;
+        str_title += " frac.: ";
+        str_title += str_frac_end;
+        plot_title = str_title;
+        path_data = path_data + "dust_mixture_" + str_mix_ID_end + "_comp_" + str_comp_ID_end + ".dat";
+    }
+
+    // Init text file writer for dust grain parameters
+    ofstream data_writer(path_data.c_str());
+
+    // Error message if the write does not work
+    if(data_writer.fail())
+    {
+        cout << "\nERROR: Cannot write to:\n" << path_data << endl;
+        return false;
+    }
+
+    // Add plot commands to file
+    data_writer << "#material" << endl;
+    data_writer << str_title << endl;
+    data_writer << "#weight" << endl;
+    data_writer << getWeight() << endl;
+    data_writer << "#aspect ratio" << endl;
+    data_writer << aspect_ratio << endl;
+    data_writer << "#sublimation temp [K]" << endl;
+    data_writer << sub_temp << endl;
+    if(!is_mixture)
+    {
+        data_writer << "#size distribution keyword" << endl;
+        data_writer << size_keyword << endl;
+        data_writer << "#size distribution parameters [1-7]" << endl;
+        for(uint i = 0; i < NR_OF_SIZE_DIST_PARAM; i++)
+            data_writer << size_parameter[i] << endl;
+    }
+    data_writer << "#can align" << endl;
+    data_writer << is_align << endl;
+    data_writer << "#density [kg/m^3]" << endl;
+    data_writer << getMaterialDensity() << endl;
+    data_writer << "#gold g factor" << endl;
+    data_writer << gold_g_factor << endl;
+    data_writer << "#f_highJ" << endl;
+    data_writer << f_highJ << endl;
+    data_writer << "#f_correlation" << endl;
+    data_writer << f_cor << endl;
+    data_writer << "#min. grain size [m]\tmax. grain size [m]" << endl;
+    data_writer << a_min_global << "\t" << a_max_global << endl;
+    data_writer << "#min. radius [m]\tmax. radius [m]" << endl;
+    data_writer << getSizeMin() << "\t" << getSizeMax() << endl;
+
+    // Add data header to file
+    data_writer << "#wavelength\tavgCext1\tavgCext2\tavgCabs1\tavgCabs2\tavgCsca1\tavgCsca2\tCcirc\tavgHGg\t"
+                   "avgQext1\tavgQext2\tavgQabs1\tavgQabs2\tavgQsca1\tavgQsca2\tavgKext1\tavgKext2\tavgKabs1"
+                   "\tavgKabs2\tavgKsca1\tavgKsca2"
+                << endl;
+
+    // Add cross-sections to file
+    for(uint i = wavelength_offset; i < nr_of_wavelength; i++)
+        data_writer << wavelength_list[i] << "\t" << getCext1(i) << "\t" << getCext2(i) << "\t" << getCabs1(i)
+                    << "\t" << getCabs2(i) << "\t" << getCsca1(i) << "\t" << getCsca2(i) << "\t"
+                    << getCcirc(i) << "\t" << getHGg(i) << "\t" << getQext1(i) << "\t" << getQext2(i) << "\t"
+                    << getQabs1(i) << "\t" << getQabs2(i) << "\t" << getQsca1(i) << "\t" << getQsca2(i)
+                    << "\t" << getKappaExt1(i) << "\t" << getKappaExt2(i) << "\t" << getKappaAbs1(i) << "\t"
+                    << getKappaAbs2(i) << "\t" << getKappaSca1(i) << "\t" << getKappaSca2(i) << endl;
+
+    // Close text file writer
+    data_writer.close();
+
+    return true;
+}
+
+bool CDustComponent::writeComponentPlot(string path_plot)
 {
     // Do not write dust data if no dust component was chosen
     if(nr_of_wavelength == 0)
@@ -2009,7 +2185,6 @@ bool CDustComponent::writeComponent(string path_data, string path_plot)
         path_eff = path_plot + "dust_mixture_" + str_mix_ID_end + "_eff.plt";
         path_kappa = path_plot + "dust_mixture_" + str_mix_ID_end + "_kappa.plt";
         path_diff = path_plot + "dust_mixture_" + str_mix_ID_end + "_diff.plt";
-        path_data = path_data + "dust_mixture_" + str_mix_ID_end + ".dat";
         path_g = path_plot + "dust_mixture_" + str_mix_ID_end + "_g.plt";
         path_scat = path_plot + "dust_mixture_" + str_mix_ID_end + "_scat.plt";
         path_size_dist = path_plot + "dust_mixture_" + str_mix_ID_end + "_size_dist.plt";
@@ -2061,7 +2236,6 @@ bool CDustComponent::writeComponent(string path_data, string path_plot)
         path_g = path_plot + "dust_mixture_" + str_mix_ID_end + "_comp_" + str_comp_ID_end + "_g.plt";
         path_scat = path_plot + "dust_mixture_" + str_mix_ID_end + "_comp_" + str_comp_ID_end + "_scat.plt";
         path_size_dist = path_plot + "dust_mixture_" + str_mix_ID_end + "_comp_" + str_comp_ID_end + "_size_dist.plt";
-        path_data = path_data + "dust_mixture_" + str_mix_ID_end + "_comp_" + str_comp_ID_end + ".dat";
     }
 
     // Init text file writer for cross-sections
@@ -2471,68 +2645,6 @@ bool CDustComponent::writeComponent(string path_data, string path_plot)
 
     // Close text file writer
     diff_writer.close();
-
-    // ------------------------------------------------------
-
-    // Init text file writer for dust grain parameters
-    ofstream data_writer(path_data.c_str());
-
-    // Error message if the write does not work
-    if(data_writer.fail())
-    {
-        cout << "\nERROR: Cannot write to:\n" << path_data << endl;
-        return false;
-    }
-
-    // Add plot commands to file
-    data_writer << "#material" << endl;
-    data_writer << str_title << endl;
-    data_writer << "#weight" << endl;
-    data_writer << getWeight() << endl;
-    data_writer << "#aspect ratio" << endl;
-    data_writer << aspect_ratio << endl;
-    data_writer << "#sublimation temp [K]" << endl;
-    data_writer << sub_temp << endl;
-    if(!is_mixture)
-    {
-        data_writer << "#size distribution keyword" << endl;
-        data_writer << size_keyword << endl;
-        data_writer << "#size distribution parameters [1-7]" << endl;
-        for(uint i = 0; i < NR_OF_SIZE_DIST_PARAM; i++)
-            data_writer << size_parameter[i] << endl;
-    }
-    data_writer << "#can align" << endl;
-    data_writer << is_align << endl;
-    data_writer << "#density [kg/m^3]" << endl;
-    data_writer << getMaterialDensity() << endl;
-    data_writer << "#gold g factor" << endl;
-    data_writer << gold_g_factor << endl;
-    data_writer << "#f_highJ" << endl;
-    data_writer << f_highJ << endl;
-    data_writer << "#f_correlation" << endl;
-    data_writer << f_cor << endl;
-    data_writer << "#min. grain size [m]\tmax. grain size [m]" << endl;
-    data_writer << a_min_global << "\t" << a_max_global << endl;
-    data_writer << "#min. radius [m]\tmax. radius [m]" << endl;
-    data_writer << getSizeMin() << "\t" << getSizeMax() << endl;
-
-    // Add data header to file
-    data_writer << "#wavelength\tavgCext1\tavgCext2\tavgCabs1\tavgCabs2\tavgCsca1\tavgCsca2\tCcirc\tavgHGg\t"
-                   "avgQext1\tavgQext2\tavgQabs1\tavgQabs2\tavgQsca1\tavgQsca2\tavgKext1\tavgKext2\tavgKabs1"
-                   "\tavgKabs2\tavgKsca1\tavgKsca2"
-                << endl;
-
-    // Add cross-sections to file
-    for(uint i = wavelength_offset; i < nr_of_wavelength; i++)
-        data_writer << wavelength_list[i] << "\t" << getCext1(i) << "\t" << getCext2(i) << "\t" << getCabs1(i)
-                    << "\t" << getCabs2(i) << "\t" << getCsca1(i) << "\t" << getCsca2(i) << "\t"
-                    << getCcirc(i) << "\t" << getHGg(i) << "\t" << getQext1(i) << "\t" << getQext2(i) << "\t"
-                    << getQabs1(i) << "\t" << getQabs2(i) << "\t" << getQsca1(i) << "\t" << getQsca2(i)
-                    << "\t" << getKappaExt1(i) << "\t" << getKappaExt2(i) << "\t" << getKappaAbs1(i) << "\t"
-                    << getKappaAbs2(i) << "\t" << getKappaSca1(i) << "\t" << getKappaSca2(i) << endl;
-
-    // Close text file writer
-    data_writer.close();
 
     // ------------------------------------------------------
 
@@ -5571,8 +5683,12 @@ bool CDustMixture::createDustMixtures(parameters & param, string path_data, stri
                 }
 
             // Write dust component files, if multiple components will be mixed together
-            if(param.getWriteDustFiles() && nr_of_components > 1)
-                single_component[i_comp].writeComponent(path_data, path_plot);
+            if(nr_of_components > 1)
+            {
+                if(param.getWriteDustFiles())
+                    single_component[i_comp].writeComponentPlot(path_plot);
+                single_component[i_comp].writeComponentData(path_data);
+            }
         }
 
         // Set the ID and number of the mixtures

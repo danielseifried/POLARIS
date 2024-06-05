@@ -397,24 +397,24 @@ class CGridSpherical : public CGridBasic
 
     Vector3D rotateToCenter(const photon_package & pp, Vector3D dir, bool inv, bool phi_only) const
     {
-        const cell_sp * cell_pos = (const cell_sp *)pp.getPositionCell();
-        Vector3D pos = pp.getPosition().getSphericalCoord();
+        // const cell_sp * cell_pos = (const cell_sp *)pp.getPositionCell();
+        // Vector3D pos = pp.getPosition().getSphericalCoord();
 
-        double phi_center = cell_pos->getRID() == MAX_UINT
-                                ? 0
-                                : 0.5 * (listPh[cell_pos->getPhID()] + listPh[cell_pos->getPhID() + 1]);
-        dir.rot(Vector3D(0, 0, 1), inv ? pos.Phi() - phi_center : phi_center - pos.Phi());
+        // double phi_center = cell_pos->getRID() == MAX_UINT
+        //                         ? 0
+        //                         : 0.5 * (listPh[cell_pos->getPhID()] + listPh[cell_pos->getPhID() + 1]);
+        // dir.rot(Vector3D(0, 0, 1), inv ? pos.Phi() - phi_center : phi_center - pos.Phi());
 
-        if(!phi_only)
-        {
-            double theta_center = cell_pos->getRID() == MAX_UINT
-                                      ? PI2
-                                      : 0.5 * (listTh[cell_pos->getThID()] + listTh[cell_pos->getThID() + 1]);
+        // if(!phi_only)
+        // {
+        //     double theta_center = cell_pos->getRID() == MAX_UINT
+        //                               ? PI2
+        //                               : 0.5 * (listTh[cell_pos->getThID()] + listTh[cell_pos->getThID() + 1]);
 
-            Vector3D n = Vector3D(dir.Y(), -dir.X(), 0);
-            n.normalize();
-            dir.rot(n, inv ? pos.Theta() - theta_center : theta_center - pos.Theta());
-        }
+        //     Vector3D n = Vector3D(dir.Y(), -dir.X(), 0);
+        //     n.normalize();
+        //     dir.rot(n, inv ? pos.Theta() - theta_center : theta_center - pos.Theta());
+        // }
 
         return dir;
     }

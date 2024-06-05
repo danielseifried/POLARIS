@@ -436,6 +436,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     ullong nr_of_photons = 0;
     uint nr_used_wavelengths = 1;
     ullong kill_counter = 0;
+    ullong no_interaction_counter = 0;
     uint mrw_counter = 0;
     uint max_source = uint(sources_mc.size());
 
@@ -712,6 +713,12 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
                     // Save photon position to adjust it if necessary
                     old_pos = pp.getPosition();
                 }
+
+                if(interactions == 0)
+                {
+                    #pragma omp atomic update
+                    no_interaction_counter++;
+                }
             } // end of photon loop
         } // end of wavelength loop
         } //end of parallel block
@@ -727,6 +734,10 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     // Show amount of killed photons
     if(kill_counter > 0)
         cout << "- Photons killed                    : " << kill_counter << endl;
+
+    // Show amount of photons without interaction
+    if(no_interaction_counter > 0)
+        cout << "- Photons without interaction       : " << no_interaction_counter << endl;
 
     switch(command)
     {
@@ -1316,6 +1327,7 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
     float last_percentage;
     uint mrw_counter = 0;
     ullong kill_counter = 0;
+    ullong no_interaction_counter = 0;
     uint max_source = uint(sources_mc.size());
 
     // Perform Monte-Carlo radiative transfer for each chosen source
@@ -1668,6 +1680,12 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
                         }
                     }
                 }
+
+                if(interactions == 0)
+                {
+                    #pragma omp atomic update
+                    no_interaction_counter++;
+                }
             }//end of photon loop
             }//end of parallel block
 
@@ -1763,6 +1781,11 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
     // Show amount of killed photons
     if(kill_counter > 0)
         cout << "- Photons killed                   : " << kill_counter << endl;
+
+    // Show amount of photons without interaction
+    if(no_interaction_counter > 0)
+        cout << "- Photons without interaction      : " << no_interaction_counter << endl;
+
     cout << "- Calculation of MC polarization maps (photons: " << float(nr_of_photons) << "): done" << endl;
 
     return true;

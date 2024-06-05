@@ -2498,7 +2498,8 @@ class CDustComponent
     bool readScatteringMatrices(string path, uint nr_of_wavelength_dustcat, dlist wavelength_list_dustcat);
     bool readCalorimetryFile(parameters & param, uint dust_component_choice);
 
-    bool writeComponent(string path_data, string path_plot);
+    bool writeComponentData(string path_data);
+    bool writeComponentPlot(string path_plot);
     bool calcSizeDistribution(dlist values, double * mass);
     bool add(double ** size_fraction, CDustComponent * comp, uint ** nr_of_scat_theta_tmp, double *** scat_theta_tmp);
 
@@ -2680,11 +2681,20 @@ class CDustMixture
         return mixed_component[i_mixture].getAvgMass();
     }
 
-    bool writeComponent(string path_data, string path_plot)
+    bool writeComponentData(string path_data)
     {
         if(mixed_component != 0)
             for(uint i_mixture = 0; i_mixture < getNrOfMixtures(); i_mixture++)
-                if(!mixed_component[i_mixture].writeComponent(path_data, path_plot))
+                if(!mixed_component[i_mixture].writeComponentData(path_data))
+                    return false;
+        return true;
+    }
+
+    bool writeComponentPlot(string path_plot)
+    {
+        if(mixed_component != 0)
+            for(uint i_mixture = 0; i_mixture < getNrOfMixtures(); i_mixture++)
+                if(!mixed_component[i_mixture].writeComponentPlot(path_plot))
                     return false;
         return true;
     }

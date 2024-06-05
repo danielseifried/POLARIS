@@ -1222,8 +1222,10 @@ bool CPipeline::assignDustMixture(parameters & param, CDustMixture * dust, CGrid
 
     // Write plot files to show dust properties
     if(param.getWriteDustFiles())
-        if(!dust->writeComponent(path_data, path_plot))
+        if(!dust->writeComponentPlot(path_plot))
             return false;
+    if(!dust->writeComponentData(path_data))
+        return false;
 
     dust->setGridRequirements(grid, param);
 
