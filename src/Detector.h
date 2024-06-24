@@ -71,6 +71,7 @@ class CDetector
 
         cos_acceptance_angle = 0;
         alignment = ALIG_RND;
+        processing_method = NEAREST;
 
         w1_I = 0;
         w1_Q = 0;
@@ -761,6 +762,11 @@ class CDetector
         cos_acceptance_angle = cos(acceptance_angle);
     }
 
+    void setProcessingMethod(uint val)
+    {
+        processing_method = val;
+    }
+
     void addToRaytracingSedDetector(const photon_package & pp)
     {
         StokesVector st = pp.getStokesVector();
@@ -1095,7 +1101,7 @@ class CDetector
                         array_T[i] = matrixT[i_spectral + i_extra * nr_spectral_bins](i_x, i_y);
                         array_S[i] = matrixS[i_spectral + i_extra * nr_spectral_bins](i_x, i_y);
                         double N_ph = N_photon[i_spectral + i_extra * nr_spectral_bins](i_x, i_y);
-                        if((results_type == RESULTS_RAY || results_type == RESULTS_FULL) && N_ph > 0)
+                        if((results_type == RESULTS_RAY || results_type == RESULTS_FULL) && processing_method == NEAREST && N_ph > 0)
                         {
                             array_T[i] /= N_ph;
                             array_S[i] /= N_ph;
@@ -4755,6 +4761,7 @@ class CDetector
     uint i_trans;
     uint nr_extra;
     uint alignment;
+    uint processing_method;
     Matrix2D *matrixI, *matrixQ, *matrixU, *matrixV, *matrixT, *matrixS;
     Matrix2D *w1_I, *w2_I, *w3_I, *w4_I;
     Matrix2D *w1_Q, *w2_Q, *w3_Q, *w4_Q;

@@ -305,6 +305,10 @@ using namespace std;
 #define RESULTS_MC 1
 #define RESULTS_FULL 2
 
+// Polar to Cartesian mapping method
+#define NEAREST 0
+#define INTERP 1
+
 // Type of calorimetry data
 #define CALO_HEAT_CAP 0
 #define CALO_ENTHALPY 1

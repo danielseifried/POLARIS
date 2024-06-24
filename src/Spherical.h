@@ -297,11 +297,6 @@ class CGridSpherical : public CGridBasic
         pp->setPosition(pos);
     }
 
-    double maxLength()
-    {
-        return Rmax;
-    }
-
     bool next(photon_package * pp)
     {
         if(!positionPhotonInGrid(pp))
@@ -420,11 +415,6 @@ class CGridSpherical : public CGridBasic
     }
 
     bool positionPhotonInGrid(photon_package * pp);
-
-    double getMaxLength()
-    {
-        return Rmax;
-    }
 
     bool createArtificialGrid(string path);
 

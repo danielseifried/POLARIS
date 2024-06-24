@@ -2506,7 +2506,7 @@ class CDustComponent
     uint getInteractingDust(CGridBasic * grid, photon_package * pp, CRandomGenerator * rand_gen, uint cross_section = CROSS_ABS) const;
 
     void calcPACrossSections(uint a, uint w, cross_sections & cs, double theta) const;
-    void calcNONPACrossSections(uint a, uint w, cross_sections & cs, double theta) const;
+    void calcNONPACrossSections(uint a, uint w, cross_sections & cs, double theta, double Rent) const;
     void calcExtCrossSections(CGridBasic * grid,
                               const photon_package & pp,
                               uint i_density,

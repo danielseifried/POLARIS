@@ -1767,20 +1767,21 @@ class CRaytracingPolar : public CRaytracingBasic
         uint processing_method;
         if(map_pixel_x * map_pixel_y > npix_total)
         {
-            processing_method = 1; // interpolation
+            processing_method = INTERP; // interpolation
         }
         else
         {
-            processing_method = 0; // nearest
+            processing_method = NEAREST; // nearest
         }
+        detector->setProcessingMethod(processing_method);
 
         switch(processing_method)
         {
-            case 0:
+            case NEAREST:
                 cout << "HINT: Using 'nearest' method to post process from polar to cartesian detector" << endl;
                 return postProcessingUsingNearest();
                 break;
-            case 1:
+            case INTERP:
                 cout << "HINT: Using 'interpolation' method to post process from polar to cartesian detector" << endl;
                 return postProcessingUsingInterpolation();
                 break;
@@ -1840,7 +1841,8 @@ class CRaytracingPolar : public CRaytracingBasic
                 // Set wavelength of photon package
                 pp.setSpectralID(i_spectral);
 
-                pp.setStokesVector(tmpStokes[i_spectral][rID][phID] * getRingElementArea(rID));
+                pp.setStokesVector(tmpStokes[i_spectral][rID][phID], i_spectral);
+                pp.getStokesVector(i_spectral)->multS(getRingElementArea(rID));
 
                 // Transport pixel value to detector
                 detector->addToRaytracingDetector(pp);
@@ -1913,7 +1915,8 @@ class CRaytracingPolar : public CRaytracingBasic
                     pp.setSpectralID(i_spectral);
 
                     // Get Stokes Vector
-                    pp.setStokesVector(tmpStokes[i_spectral][npix_r][0] * getMinArea(), i_spectral);
+                    pp.setStokesVector(tmpStokes[i_spectral][npix_r][0], i_spectral);
+                    pp.getStokesVector(i_spectral)->multS(getMinArea());
 
                     // Transport pixel value to detector
                     detector->addToRaytracingDetector(pp);
@@ -2008,7 +2011,8 @@ class CRaytracingPolar : public CRaytracingBasic
                 // Add pixel value to photon_package
                 StokesVector res_stokes =
                     StokesVector(stokes_I, stokes_Q, stokes_U, stokes_V, stokes_T, stokes_Sp);
-                pp.setStokesVector(res_stokes * getMinArea());
+                pp.setStokesVector(res_stokes, i_spectral);
+                pp.getStokesVector(i_spectral)->multS(getMinArea());
                 // Transport pixel value to detector
                 detector->addToRaytracingDetector(pp);
             }

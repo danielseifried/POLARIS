@@ -1125,12 +1125,12 @@ class parameters
         write_radiation_field = val;
     }
 
-    void setWriteGZero(double val)
+    void setWriteGZero(bool val)
     {
         write_g_zero = val;
     }
 
-    void setWriteDustFiles(double val)
+    void setWriteDustFiles(bool val)
     {
         write_dust_files = val;
     }

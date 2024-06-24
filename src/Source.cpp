@@ -1226,14 +1226,22 @@ void CSourceISRF::createNextRay(photon_package * pp, CRandomGenerator * rand_gen
     // the emission has to obey Lambert's cosine law
     // Thus, the square of cos(theta) of the direction of the photon
     // is given by a random number -> theta is only in (0,pi/2)
-    double theta_direction = acos( sqrt( rand_gen->getRND() ) );
+    // bias direction: theta -> 0, use pdf ~ cos^n(theta), n >= 1
+    // int_{0}^{pi/2} cos^n(x) sin(x) dx = 1 / (n+1)
+    // (n+1) int cos^n(x) sin(x) dx = -cos^{n+1}(x)
+    // rnd = 1 - cos^{n+1}(theta) -> theta = arccos( (rnd)^{1/(n+1)} )
+    // scale n with radius, 50 is arbitrary
+    double bias_exp = 50.0 * radius;
+    double theta_direction = acos( pow(rand_gen->getRND(), 1.0 / (bias_exp + 1.0)) );
     double phi_direction = PIx2 * rand_gen->getRND();
 
     // the direction was calculated in the coord system of the photon
     // now we have to update the coord system acoordingly
     pp->updateCoordSystem(phi_direction, theta_direction);
 
-    pp->setStokesVector(tmp_stokes_vector);
+    // weight photon energy accordingly
+    double exp_weight = pow(cos(theta_direction), 1.0 - bias_exp);
+    pp->setStokesVector(tmp_stokes_vector * exp_weight);
 }
 
 void CSourceISRF::createDirectRay(photon_package * pp, CRandomGenerator * rand_gen, Vector3D dir_obs)
@@ -1541,7 +1549,7 @@ void CSourceGas::createNextRayToCell(photon_package * pp, CRandomGenerator * ran
     else
     {
         // Move photon along the path outwards the grid
-        pp->addPosition(pp->getDirection() * grid->maxLength());
+        pp->addPosition(pp->getDirection() * grid->getMaxLength());
 
         // Invert direction
         pp->multDirection(-1);

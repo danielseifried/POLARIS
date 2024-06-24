@@ -601,8 +601,6 @@ class CGridBasic
         return data_len;
     }
 
-    virtual double maxLength() = 0;
-
     ulong getMaxDataCells()
     {
         return max_cells;

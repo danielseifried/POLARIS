@@ -238,7 +238,10 @@ class CPipeline
         else if(param.getAligNONPA())
         {
             cout << "- Non-perfect alignment" << endl;
-            cout << "    Rayleigh reduction fact. (R) : " << param.getRayleighReductionFactor() << endl;
+            if(param.getRayleighReductionFactor() == -1)
+                cout << "    Rayleigh reduction fact. (R) : Based on absolute B-field in grid cells" << endl;
+            else
+                cout << "    Rayleigh reduction fact. (R) : " << param.getRayleighReductionFactor() << endl;
         }
         else
         {

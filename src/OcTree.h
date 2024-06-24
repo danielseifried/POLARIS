@@ -214,11 +214,6 @@ class CGridOcTree : public CGridBasic
         return center;
     }
 
-    double maxLength()
-    {
-        return cell_oc_root->getLength();
-    }
-
     bool createCellList()
     {
         if(max_cells == 0)
@@ -316,11 +311,6 @@ class CGridOcTree : public CGridBasic
     const cell_oc * getCurrentCell() const
     {
         return cell_oc_pos;
-    }
-
-    double getMaxLength()
-    {
-        return cell_oc_root->getLength();
     }
 
     void printParameters();

@@ -3772,7 +3772,7 @@ void CDustComponent::calcPACrossSections(uint a, uint w, cross_sections & cs, do
     cs *= PI * a_eff_squared[a];
 }
 
-void CDustComponent::calcNONPACrossSections(uint a, uint w, cross_sections & cs, double theta) const
+void CDustComponent::calcNONPACrossSections(uint a, uint w, cross_sections & cs, double theta, double Rent) const
 {
     double sinsq_th = sin(theta);
     sinsq_th *= sinsq_th;
@@ -3781,31 +3781,31 @@ void CDustComponent::calcNONPACrossSections(uint a, uint w, cross_sections & cs,
     double c_p_ext = getCext2(a, w);
     double c_av_ext = getCextMean(a, w);
 
-    double cx_ext = c_av_ext + R_rayleigh / 3.0 * (c_s_ext - c_p_ext) * (1 - 3.0 * sinsq_th);
-    double cy_ext = c_av_ext + R_rayleigh / 3.0 * (c_s_ext - c_p_ext);
+    double cx_ext = c_av_ext + Rent / 3.0 * (c_s_ext - c_p_ext) * (1 - 3.0 * sinsq_th);
+    double cy_ext = c_av_ext + Rent / 3.0 * (c_s_ext - c_p_ext);
 
     cs.Cext = 0.5 * (cx_ext + cy_ext);
-    cs.Cpol = 0.5 * R_rayleigh * (c_s_ext - c_p_ext) * sinsq_th;
+    cs.Cpol = 0.5 * Rent * (c_s_ext - c_p_ext) * sinsq_th;
 
     double c_s_abs = getCabs1(a, w);
     double c_p_abs = getCabs2(a, w);
     double c_av_abs = getCabsMean(a, w);
 
-    double cx_abs = c_av_abs + R_rayleigh / 3.0 * (c_s_abs - c_p_abs) * (1 - 3.0 * sinsq_th);
-    double cy_abs = c_av_abs + R_rayleigh / 3.0 * (c_s_abs - c_p_abs);
+    double cx_abs = c_av_abs + Rent / 3.0 * (c_s_abs - c_p_abs) * (1 - 3.0 * sinsq_th);
+    double cy_abs = c_av_abs + Rent / 3.0 * (c_s_abs - c_p_abs);
 
     cs.Cabs = 0.5 * (cx_abs + cy_abs);
-    cs.Cpabs = 0.5 * R_rayleigh * (c_s_abs - c_p_abs) * sinsq_th;
+    cs.Cpabs = 0.5 * Rent * (c_s_abs - c_p_abs) * sinsq_th;
 
     double c_s_sca = getCsca1(a, w);
     double c_p_sca = getCsca2(a, w);
     double c_av_sca = getCscaMean(a, w);
 
-    double cx_sca = c_av_sca + R_rayleigh / 3.0 * (c_s_sca - c_p_sca) * (1 - 3.0 * sinsq_th);
-    double cy_sca = c_av_sca + R_rayleigh / 3.0 * (c_s_sca - c_p_sca);
+    double cx_sca = c_av_sca + Rent / 3.0 * (c_s_sca - c_p_sca) * (1 - 3.0 * sinsq_th);
+    double cy_sca = c_av_sca + Rent / 3.0 * (c_s_sca - c_p_sca);
 
     cs.Csca = 0.5 * (cx_sca + cy_sca);
-    cs.Ccirc = 0.5 * getCcirc(a, w) * R_rayleigh * sinsq_th;
+    cs.Ccirc = 0.5 * getCcirc(a, w) * Rent * sinsq_th;
 }
 
 void CDustComponent::calcCrossSections(CGridBasic * grid,
@@ -3837,7 +3837,20 @@ void CDustComponent::calcCrossSections(CGridBasic * grid,
     // Not perfect alignment
     if((alignment & ALIG_NONPA) == ALIG_NONPA)
     {
-        calcNONPACrossSections(a, w, cs, mag_field_theta);
+        if(R_rayleigh == -1)
+        {
+            // if R_rayleigh == -1, use alignment efficiency from grid
+            double R_tmp = grid->getMagField(pp).length();
+            if(R_tmp > 1.0)
+                R_tmp = 1.0;
+            if(R_tmp < 0.0)
+                R_tmp = 0.0;
+            calcNONPACrossSections(a, w, cs, mag_field_theta, R_tmp);
+        }
+        else
+        {
+            calcNONPACrossSections(a, w, cs, mag_field_theta, R_rayleigh);
+        }
         return;
     }
 

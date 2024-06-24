@@ -220,11 +220,6 @@ class CGridVoronoi : public CGridBasic
         return cell->getCenter();
     }
 
-    double maxLength()
-    {
-        return max_len;
-    }
-
     bool next(photon_package * pp)
     {
         if(!positionPhotonInGrid(pp))
@@ -262,11 +257,6 @@ class CGridVoronoi : public CGridBasic
     // for debugging only
     bool positionPhotonInGridTest(photon_package * pp);
     bool createArtificialGrid(string path);
-
-    double getMaxLength()
-    {
-        return max_len;
-    }
 
     bool saveBinaryGridFile(string filename)
     {

@@ -285,11 +285,6 @@ class CGridCylindrical : public CGridBasic
         return center;
     }
 
-    double maxLength()
-    {
-        return max(Rmax, Zmax);
-    }
-
     bool next(photon_package * pp)
     {
         if(!positionPhotonInGrid(pp))
@@ -408,11 +403,6 @@ class CGridCylindrical : public CGridBasic
     }
 
     bool positionPhotonInGrid(photon_package * pp);
-
-    double getMaxLength()
-    {
-        return max(Rmax, Zmax);
-    }
 
     bool createArtificialGrid(string path);
 
