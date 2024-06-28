@@ -1764,30 +1764,20 @@ class CRaytracingPolar : public CRaytracingBasic
         // -> if the resulting cartesian detector has more pixels than there are polar pixels,
         //    then use the interpolation method
 
-        uint processing_method;
         if(map_pixel_x * map_pixel_y > npix_total)
         {
-            processing_method = INTERP; // interpolation
+            detector->setProcessingMethod(INTERP);
+            cout << "HINT: Using 'interpolation' method to post process from polar to cartesian detector" << endl;
+            return postProcessingUsingInterpolation();
         }
         else
         {
-            processing_method = NEAREST; // nearest
+            detector->setProcessingMethod(NEAREST);
+            cout << "HINT: Using 'nearest' method to post process from polar to cartesian detector" << endl;
+            return postProcessingUsingNearest();
         }
-        detector->setProcessingMethod(processing_method);
 
-        switch(processing_method)
-        {
-            case NEAREST:
-                cout << "HINT: Using 'nearest' method to post process from polar to cartesian detector" << endl;
-                return postProcessingUsingNearest();
-                break;
-            case INTERP:
-                cout << "HINT: Using 'interpolation' method to post process from polar to cartesian detector" << endl;
-                return postProcessingUsingInterpolation();
-                break;
-            default:
-                return false;
-        }
+        return false;
     }
 
     bool postProcessingUsingNearest()
