@@ -306,8 +306,8 @@ using namespace std;
 #define RESULTS_FULL 2
 
 // Polar to Cartesian mapping method
-#define NEAREST 0
-#define INTERP 1
+#define NEAREST 1
+#define INTERP 2
 
 // Type of calorimetry data
 #define CALO_HEAT_CAP 0
