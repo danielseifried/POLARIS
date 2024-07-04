@@ -2788,7 +2788,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
         scat_writer << "set multiplot layout 2,1 rowsfirst" << endl;
 
         if(nr_of_wavelength > 1)
-            scat_writer << "set xrange[" << 0 << ":" << nr_of_scat_theta_tmp << "]" << endl;
+            scat_writer << "set xrange[" << 0 << ":" << 180 << "]" << endl;
         scat_writer << "set yrange[" << S11min << ":" << S11max << "]" << endl;
         scat_writer << "set format x \"%.1f\"" << endl;
         scat_writer << "set format y \"%.1te%02T\"" << endl;
@@ -2810,12 +2810,12 @@ bool CDustComponent::writeComponentPlot(string path_plot)
             uint wID = w - wavelength_offset;
 
             for(uint sth = 0; sth < nr_of_scat_theta_tmp; sth++)
-                scat_writer << sth << "\t" << S11[wID][sth] << endl;
+                scat_writer << 180 * sth / (nr_of_scat_theta_tmp - 1) << "\t" << S11[wID][sth] << endl;
             scat_writer << "e" << endl;
         }
 
         if(nr_of_wavelength > 1)
-            scat_writer << "set xrange[" << 0 << ":" << nr_of_scat_theta_tmp << "]" << endl;
+            scat_writer << "set xrange[" << 0 << ":" << 180 << "]" << endl;
         scat_writer << "set yrange[" << S12min << ":" << S12max << "]" << endl;
         scat_writer << "set format x \"%.1f\"" << endl;
         scat_writer << "set format y \"%.1te%02T\"" << endl;
@@ -2837,7 +2837,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
             uint wID = w - wavelength_offset;
 
             for(uint sth = 0; sth < nr_of_scat_theta_tmp; sth++)
-                scat_writer << sth << "\t" << S12[wID][sth] << endl;
+                scat_writer << 180 * sth / (nr_of_scat_theta_tmp - 1) << "\t" << S12[wID][sth] << endl;
             scat_writer << "e" << endl;
         }
 
