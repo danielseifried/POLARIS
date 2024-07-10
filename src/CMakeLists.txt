@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.13.4)
 PROJECT (POLARIS
-    VERSION 4.12.03
+    VERSION 4.12.04
     DESCRIPTION "POLARIS: POLArized RadIation Simulator, Copyright (C) 2018 Stefan Reissl"
     HOMEPAGE_URL "https://portia.astrophysik.uni-kiel.de/polaris/"
     LANGUAGES CXX
