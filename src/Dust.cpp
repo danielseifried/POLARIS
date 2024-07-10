@@ -410,17 +410,19 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 for(uint w = 0; w < nr_of_wavelength_dustcat; w++)
                     wavelength_list_dustcat[w] = values[w];
 
-                if(wavelength_list[0] < wavelength_list_dustcat[0] * 0.1 ||
-                   wavelength_list[nr_of_wavelength - 1] * 0.1 >
-                       wavelength_list_dustcat[nr_of_wavelength_dustcat - 1])
+                if(wavelength_list[0] < wavelength_list_dustcat[0] ||
+                    wavelength_list[nr_of_wavelength - 1] > wavelength_list_dustcat[nr_of_wavelength_dustcat - 1])
                 {
-                    cout << "\nHINT: The wavelength range is out of the limits of the "
-                            "catalog. "
-                         << "This may cause problems!" << endl;
-                    cout << "      wavelength range          : " << wavelength_list[0] << " [m] to "
-                         << wavelength_list[nr_of_wavelength - 1] << " [m]" << endl;
-                    cout << "      wavelength range (catalog): " << wavelength_list_dustcat[0] << " [m] to "
-                         << wavelength_list_dustcat[nr_of_wavelength_dustcat - 1] << " [m]" << endl;
+                    cout << "\nWARNING: The wavelength range is out of the limits of the catalog. This may cause problems!\n"
+                        << "         wavelength range          : " << wavelength_list[0] << " [m] to "
+                        << wavelength_list[nr_of_wavelength - 1] << " [m]\n"
+                        << "         wavelength range (catalog): " << wavelength_list_dustcat[0] << " [m] to "
+                        << wavelength_list_dustcat[nr_of_wavelength_dustcat - 1] << " [m]" << endl;
+                    if(!IGNORE_WAVELENGTH_RANGE)
+                    {
+                        cout << "         To continue, set 'IGNORE_WAVELENGTH_RANGE' to 'true' in src/Typedefs.h and recompile!" << endl;
+                        return false;
+                    }
                 }
 
                 break;
@@ -988,8 +990,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
                 // Calculate the GOLD alignment g factor
                 gold_g_factor = 0.5 * (aspect_ratio * aspect_ratio - 1);
 
-                // Init splines for wavelength interpolation of the dust optical
-                // properties
+                // Init splines for wavelength interpolation of the dust optical properties
                 refractive_index_real.resize(nr_of_wavelength_dustcat);
                 refractive_index_imag.resize(nr_of_wavelength_dustcat);
 
@@ -1034,6 +1035,21 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
                     return false;
                 }
                 break;
+        }
+    }
+
+    if(wavelength_list[0] < refractive_index_real.getX(0) ||
+        wavelength_list[nr_of_wavelength - 1] > refractive_index_real.getX(nr_of_wavelength_dustcat - 1))
+    {
+        cout << "\nWARNING: The wavelength range is out of the limits of the catalog. This may cause problems!\n"
+            << "         wavelength range          : " << wavelength_list[0] << " [m] to "
+            << wavelength_list[nr_of_wavelength - 1] << " [m]\n"
+            << "         wavelength range (catalog): " << refractive_index_real.getX(0) << " [m] to "
+            << refractive_index_real.getX(nr_of_wavelength_dustcat - 1) << " [m]" << endl;
+        if(!IGNORE_WAVELENGTH_RANGE)
+        {
+            cout << "         To continue, set 'IGNORE_WAVELENGTH_RANGE' to 'true' in src/Typedefs.h and recompile!" << endl;
+            return false;
         }
     }
 
@@ -1390,8 +1406,8 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
 
     if(max_rel_diff > 0.5) // arbitrary limit
     {
-        cout << "\nWARNING: number of scattering angles might be too low (max rel diff = " << max_rel_diff << ")" << endl;
-        cout << "if required, increase 'NANG' or decrease 'MAX_MIE_SCA_REL_DIFF' (for x < 100) in src/Typedefs.h " << endl;
+        cout << "\nWARNING: Number of scattering angles might be too low (max rel diff = " << max_rel_diff << ").\n"
+             << "         If required, increase 'NANG' or decrease 'MAX_MIE_SCA_REL_DIFF' (for x < 100) in src/Typedefs.h and recompile!" << endl;
     }
 
     return true;
@@ -6120,9 +6136,8 @@ bool CDustMixture::preCalcDustProperties(parameters & param, uint i_mixture)
     if(param.isMonteCarloSimulation())
         if(!mixed_component[i_mixture].calcWavelengthDiff())
         {
-            cout << "\nERROR: The wavelength grid only has one wavelength which is not "
-                    "enough for temp calculation!\n"
-                 << "       Change WL_STEPS to more than one in the Typedefs.h file!" << endl;
+            cout << "\nERROR: The wavelength grid only has one wavelength which is not enough for temp calculation!\n"
+                 << "       Change WL_STEPS to more than one in the src/Typedefs.h and recompile!" << endl;
             return false;
         }
 

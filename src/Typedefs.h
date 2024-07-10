@@ -13,7 +13,7 @@ using namespace std;
 
 // Header and Version of POLARIS
 #define PROG_ID "POLARIS: POLArized RadIation Simulator"
-#define VERS_ID "           Version 4.12.03            "
+#define VERS_ID "           Version 4.12.04            "
 #define COPY_ID "   Copyright (C) 2018 Stefan Reissl   "
 
 // Flags to activate WINDOWS support, some DEBUG messages, BENCHMARK settings
@@ -317,6 +317,9 @@ using namespace std;
 #define HEALPIX_FIXED 0
 #define HEALPIX_YAXIS 1
 #define HEALPIX_CENTER 2
+
+// continue if wavelength range is out of the limits of the catalog
+#define IGNORE_WAVELENGTH_RANGE false
 
 // Mie-scattering calculation
 // Nr of grain sizes, Nr of size bins will be MIE_NR_DUST_SIZE - 1
