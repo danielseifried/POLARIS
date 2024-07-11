@@ -622,20 +622,24 @@ inline ostream & operator<<(ostream & out, const Vector3D & rhs)
 
 double getAngleTheta(Vector3D lhs, Vector3D rhs)
 {
-    if(rhs * lhs == 0.0)
+    double lhs_len = lhs.length();
+    double rhs_len = rhs.length();
+
+    if(lhs_len == 0.0 || rhs_len == 0.0)
+        return 0.0;
+
+    double arg = lhs * rhs / (lhs_len * rhs_len);
+
+    if(arg == 0.0)
         return PI2;
 
-    double arg = (lhs.X() * rhs.X() + lhs.Y() * rhs.Y() + lhs.Z() * rhs.Z()) / (lhs.length() * rhs.length());
-
     if(arg < -1.0)
-        arg = -1.0;
+        return PI;
 
     if(arg > 1.0)
-        arg = 1.0;
+        return 0.0;
 
-    return abs(acos(arg));
-    // return abs(0.5*PI-acos((lhs.X()*rhs.X()+lhs.Y()*rhs.Y()+lhs.Z()*rhs.Z())
-    //	/(lhs.length()*rhs.length()) ));
+    return acos(arg);
 }
 
 Vector3D projection(const Vector3D & v, const Vector3D & w)
