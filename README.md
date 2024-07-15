@@ -1,5 +1,7 @@
 # POLARIS: POLArized RadIation Simulator
 
+![POLARIS](img/logo_POLARIS.jpg "POLARIS")
+
 [![arXiv](https://img.shields.io/badge/arXiv-1604.05305-b31b1b)](https://arxiv.org/abs/1604.05305)
 [![ascl](https://img.shields.io/badge/ascl-1807.001-262255)](https://ascl.net/1807.001)
 [![bibcode](https://img.shields.io/badge/bibcode-2016A%26A...593A..87R-1c459b)](https://ui.adsabs.harvard.edu/abs/2016A&A...593A..87R)
@@ -79,6 +81,7 @@ If line radiative transfer and/or Zeeman simulations are used, please cite [Brau
     ├── bin                                      # Directory to store POLARIS executable
     ├── ci                                       # CI test script (only for testing purposes)
     ├── ext                                      # Catch2 test framework for unit-tests (only for testing purposes)
+    ├── img                                      # Images and logos
     ├── input                                    # Input data used by POLARIS
     │   ├── dust_cs                              # Dust cross sections files in the default POLARIS format
     │   ├── dust_nk                              # Dust refractive index files in the default POLARIS format
