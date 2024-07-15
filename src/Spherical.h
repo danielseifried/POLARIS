@@ -392,24 +392,29 @@ class CGridSpherical : public CGridBasic
 
     Vector3D rotateToCenter(const photon_package & pp, Vector3D dir, bool inv, bool phi_only) const
     {
-        // const cell_sp * cell_pos = (const cell_sp *)pp.getPositionCell();
-        // Vector3D pos = pp.getPosition().getSphericalCoord();
+        // This routine rotates a vector with direction "dir" from the current position of the photon package
+        // into the center of the current cell or vice versa (inv = true).
+        // Useful if the complete model space is symmetrical with respect to a coordinate,
+        // e.g. one phi cell, star at (0,0,0), magnetic field along z-axis.
 
-        // double phi_center = cell_pos->getRID() == MAX_UINT
-        //                         ? 0
-        //                         : 0.5 * (listPh[cell_pos->getPhID()] + listPh[cell_pos->getPhID() + 1]);
-        // dir.rot(Vector3D(0, 0, 1), inv ? pos.Phi() - phi_center : phi_center - pos.Phi());
+        const cell_sp * cell_pos = (const cell_sp *)pp.getPositionCell();
+        Vector3D pos = pp.getPosition().getSphericalCoord();
 
-        // if(!phi_only)
-        // {
-        //     double theta_center = cell_pos->getRID() == MAX_UINT
-        //                               ? PI2
-        //                               : 0.5 * (listTh[cell_pos->getThID()] + listTh[cell_pos->getThID() + 1]);
+        double phi_center = cell_pos->getRID() == MAX_UINT
+                                ? 0
+                                : 0.5 * (listPh[cell_pos->getPhID()] + listPh[cell_pos->getPhID() + 1]);
+        dir.rot(Vector3D(0, 0, 1), inv ? pos.Phi() - phi_center : phi_center - pos.Phi());
 
-        //     Vector3D n = Vector3D(dir.Y(), -dir.X(), 0);
-        //     n.normalize();
-        //     dir.rot(n, inv ? pos.Theta() - theta_center : theta_center - pos.Theta());
-        // }
+        if(!phi_only)
+        {
+            double theta_center = cell_pos->getRID() == MAX_UINT
+                                      ? PI2
+                                      : 0.5 * (listTh[cell_pos->getThID()] + listTh[cell_pos->getThID() + 1]);
+
+            Vector3D n = Vector3D(dir.Y(), -dir.X(), 0);
+            n.normalize();
+            dir.rot(n, inv ? pos.Theta() - theta_center : theta_center - pos.Theta());
+        }
 
         return dir;
     }

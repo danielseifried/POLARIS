@@ -390,14 +390,19 @@ class CGridCylindrical : public CGridBasic
 
     Vector3D rotateToCenter(const photon_package & pp, Vector3D dir, bool inv, bool phi_only) const
     {
-        // const cell_cyl * cell_pos = (const cell_cyl *)pp.getPositionCell();
-        // double phi = pp.getPosition().getPhiCoord();
+        // This routine rotates a vector with direction "dir" from the current position of the photon package
+        // into the center of the current cell or vice versa (inv = true).
+        // Useful if the complete model space is symmetrical with respect to a coordinate,
+        // e.g. one phi cell, star at (0,0,0), magnetic field along z-axis.
 
-        // double phi_center = cell_pos->getRID() == MAX_UINT
-        //                         ? 0
-        //                         : 0.5 * (listPh[cell_pos->getRID()][cell_pos->getPhID()] +
-        //                                  listPh[cell_pos->getRID()][cell_pos->getPhID() + 1]);
-        // dir.rot(Vector3D(0, 0, 1), inv ? phi - phi_center : phi_center - phi);
+        const cell_cyl * cell_pos = (const cell_cyl *)pp.getPositionCell();
+        double phi = pp.getPosition().getPhiCoord();
+
+        double phi_center = cell_pos->getRID() == MAX_UINT
+                                ? 0
+                                : 0.5 * (listPh[cell_pos->getRID()][cell_pos->getPhID()] +
+                                         listPh[cell_pos->getRID()][cell_pos->getPhID() + 1]);
+        dir.rot(Vector3D(0, 0, 1), inv ? phi - phi_center : phi_center - phi);
 
         return dir;
     }

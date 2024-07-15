@@ -965,7 +965,6 @@ class CGridBasic
         }
 
         // Rotate vector from cell center to position
-        // ?! Why should the radiation field be rotated ?!
         *e_dir = rotateToCenter(pp, tmp_dir, true);
 
         // Normalize the radiation field vector
@@ -1045,7 +1044,6 @@ class CGridBasic
                                                  wavelength));
 
         // Rotate vector to cell center
-        // ?! Why should the radiation field be rotated ?!
         *e_dir = rotateToCenter(pp, tmp_dir, true);
 
         // Normalize the radiation field vector
@@ -2412,7 +2410,6 @@ class CGridBasic
         const cell_basic & cell = *pp.getPositionCell();
         Vector3D tmp_dir(cell.getData(data_pos_vx), cell.getData(data_pos_vy), cell.getData(data_pos_vz));
         // Rotate vector from cell center to position
-        // ?! Why should the velocity field be rotated ?!
         return rotateToCenter(pp, tmp_dir, true, true);
     }
 
@@ -2461,7 +2458,6 @@ class CGridBasic
         const cell_basic & cell = *pp.getPositionCell();
         Vector3D tmp_dir(cell.getData(data_pos_mx), cell.getData(data_pos_my), cell.getData(data_pos_mz));
         // Rotate vector from cell center to position
-        // ?! Why should the magnetic field be rotated ?!
         return rotateToCenter(pp, tmp_dir, true, true);
     }
 
