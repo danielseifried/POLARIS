@@ -435,6 +435,8 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     // Init variables
     ullong nr_of_photons = 0;
     uint nr_used_wavelengths = 1;
+    ullong per_counter = 0;
+    float last_percentage = 0;
     ullong kill_counter = 0;
     ullong no_interaction_counter = 0;
     uint mrw_counter = 0;
@@ -443,10 +445,6 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     // A loop for each source
     for(uint s = 0; s < max_source; s++)
     {
-        // Init variables
-        ullong per_counter = 0;
-        float last_percentage = 0;
-
         // Init source from sources list
         CSourceBasic * tm_source = sources_mc[s];
 
@@ -497,7 +495,6 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
         #endif
 
         // Init progress visualization
-        per_counter = 0;
         cout << CLR_LINE;
         switch(command)
         {
@@ -545,7 +542,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
                 per_counter++;
 
                 // Calculate percentage of total progress per source
-                float percentage = 100 * float(per_counter) / float(nr_of_photons * nr_used_wavelengths);
+                float percentage = 100 * float(per_counter) / float(nr_of_photons * nr_used_wavelengths * max_source);
 
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
@@ -1322,9 +1319,9 @@ void CRadiativeTransfer::rayThroughCellForLvlPop(photon_package * pp,
 bool CRadiativeTransfer::calcPolMapsViaMC()
 {
     // Init variables
-    ullong nr_of_photons;
-    ullong per_counter, nr_of_wavelength;
-    float last_percentage;
+    ullong nr_of_photons, nr_of_wavelength;
+    ullong per_counter = 0;
+    float last_percentage = 0;
     uint mrw_counter = 0;
     ullong kill_counter = 0;
     ullong no_interaction_counter = 0;
@@ -1388,10 +1385,6 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
             cout << "-> MC pol. map(s) (source ID: " << s + 1 << ", wavelength: " << dust->getWavelength(wID)
                  << " [m], photons: " << float(nr_of_photons) << ") 0 [%]   \r" << flush;
 
-            // Init counter and percentage to show progress
-            per_counter = 0;
-            last_percentage = 0;
-
             CRandomGenerator rand_gen = CRandomGenerator();
             // just an arbitrary, random number for the RNG seed
             // this is NOT the seed for KISS
@@ -1417,7 +1410,7 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
                 per_counter++;
 
                 // Calculate percentage of total progress per source
-                float percentage = 100.0 * float(per_counter) / float(nr_of_photons);
+                float percentage = 100.0 * float(per_counter) / float(nr_of_photons * nr_of_wavelength * max_source);
 
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) >= PERCENTAGE_STEP)
