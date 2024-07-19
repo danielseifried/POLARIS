@@ -1381,9 +1381,12 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
                 }
             #endif
 
-            // Init progress visualization
-            cout << "-> MC pol. map(s) (source ID: " << s + 1 << ", wavelength: " << dust->getWavelength(wID)
-                 << " [m], photons: " << float(nr_of_photons) << ") 0 [%]   \r" << flush;
+            if(per_counter == 0)
+            {
+                // Init progress visualization
+                cout << "-> MC pol. map(s) (source ID: " << s + 1 << ", wavelength: " << dust->getWavelength(wID)
+                    << " [m], photons: " << float(nr_of_photons) << ") 0 [%]   \r" << flush;
+            }
 
             CRandomGenerator rand_gen = CRandomGenerator();
             // just an arbitrary, random number for the RNG seed
