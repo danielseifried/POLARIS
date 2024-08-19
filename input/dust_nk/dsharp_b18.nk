@@ -3,12 +3,12 @@ DSHARP composition (Birnstiel et al. 2018, ApJL, 869, L45)
 # see https://github.com/birnstiel/dsharp_opac
 
 # Bruggeman-Mix of 4 species
-# | material                            | volume fractions | mass fractions |
-# |-------------------------------------|------------------|----------------|
-# | Water Ice (Warren & Brandt 2008)    | 0.3642           | 0.2            |
-# | Astronomical Silicates (Draine 2003)| 0.167            | 0.329          |
-# | Troilite (Henning)                  | 0.02578          | 0.07434        |
-# | Organics (Henning)                  | 0.443            | 0.3966         |
+# | material                             | volume fractions | mass fractions |
+# |--------------------------------------|------------------|----------------|
+# | Water Ice (Warren & Brandt 2008)     | 0.36419          | 0.20000        |
+# | Astronomical Silicates (Draine 2003) | 0.16703          | 0.32902        |
+# | Troilite (Henning & Stognienko 1996) | 0.02578          | 0.07434        |
+# | Organics (Henning & Stognienko 1996) | 0.44300          | 0.39665        |
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
 600 1 1 1675 1200 0 0
