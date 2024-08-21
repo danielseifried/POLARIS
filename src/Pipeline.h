@@ -273,7 +273,8 @@ class CPipeline
         {
             cout << "Defined radiation source(s):" << endl;
 
-            if(param.getNrOfPointSources() > 0 && (!param.isRaytracingSimulation() || param.getScatteringToRay()))
+            if(param.getNrOfPointSources() > 0 &&
+                (param.isMonteCarloSimulation() || param.getCommand() == CMD_DUST_EMISSION || param.getScatteringToRay()))
             {
                 dlist sources_list = param.getPointSources();
                 for(uint s = 0; s < sources_list.size(); s += NR_OF_POINT_SOURCES)
