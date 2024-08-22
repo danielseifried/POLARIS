@@ -435,8 +435,8 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     // Init variables
     ullong nr_of_photons = 0;
     uint nr_used_wavelengths = 1;
-    ullong per_counter = 0;
-    float last_percentage = 0;
+    ullong per_counter;
+    float last_percentage;
     ullong kill_counter = 0;
     ullong no_interaction_counter = 0;
     uint mrw_counter = 0;
@@ -447,6 +447,9 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
     {
         // Init source from sources list
         CSourceBasic * tm_source = sources_mc[s];
+
+        per_counter = 0;
+        last_percentage = 0;
 
         // Init luminosity and probability for a given wavelength to be chosen
         if(!tm_source->initSource(s, max_source, use_energy_density))
@@ -542,7 +545,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
                 per_counter++;
 
                 // Calculate percentage of total progress per source
-                float percentage = 100 * float(per_counter) / float(nr_of_photons * nr_used_wavelengths * max_source);
+                float percentage = 100 * float(per_counter) / float(nr_of_photons * nr_used_wavelengths);
 
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
@@ -1319,9 +1322,8 @@ void CRadiativeTransfer::rayThroughCellForLvlPop(photon_package * pp,
 bool CRadiativeTransfer::calcPolMapsViaMC()
 {
     // Init variables
-    ullong nr_of_photons, nr_of_wavelength;
-    ullong per_counter = 0;
-    float last_percentage = 0;
+    ullong nr_of_photons, nr_of_wavelength, per_counter;
+    float last_percentage;
     uint mrw_counter = 0;
     ullong kill_counter = 0;
     ullong no_interaction_counter = 0;
@@ -1381,12 +1383,13 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
                 }
             #endif
 
-            if(per_counter == 0)
-            {
-                // Init progress visualization
-                cout << "-> MC pol. map(s) (source ID: " << s + 1 << ", wavelength: " << dust->getWavelength(wID)
-                    << " [m], photons: " << float(nr_of_photons) << ") 0 [%]   \r" << flush;
-            }
+            // Init progress visualization
+            cout << "-> MC pol. map(s) (source ID: " << s + 1 << ", wavelength: " << dust->getWavelength(wID)
+                << " [m], photons: " << float(nr_of_photons) << ") 0 [%]   \r" << flush;
+
+            // Init counter and percentage to show progress
+            per_counter = 0;
+            last_percentage = 0;
 
             CRandomGenerator rand_gen = CRandomGenerator();
             // just an arbitrary, random number for the RNG seed
@@ -1413,7 +1416,7 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
                 per_counter++;
 
                 // Calculate percentage of total progress per source
-                float percentage = 100.0 * float(per_counter) / float(nr_of_photons * nr_of_wavelength * max_source);
+                float percentage = 100.0 * float(per_counter) / float(nr_of_photons);
 
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) >= PERCENTAGE_STEP)
@@ -2927,7 +2930,7 @@ void CRadiativeTransfer::calcStellarEmission(uint i_det, CRandomGenerator * rand
         // Get position of source
         Vector3D source_pos = sources_mc[s]->getPosition();
 
-        cout << "Processing source: " << s << " of " << sources_mc.size()
+        cout << "Processing source: " << s + 1 << " of " << sources_mc.size()
              << "                              \r";
 
         // Update Stokes vectors with emission from background source
