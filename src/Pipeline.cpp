@@ -849,10 +849,14 @@ void CPipeline::createSourceLists(parameters & param, CDustMixture * dust, CGrid
         if(param.getISRFSource())
         {
             if(!dust->getScatteringToRay())
+            {
+                cout << "\nWARNING: Scattered radiation is disabled. ISRF source will be ignored." << endl;
                 nr_ofSources--;
+            }
             else if(param.getCommand() != CMD_DUST_EMISSION)
-                cout << "\nWARNING: ISRF source cannot be considered in line or synchrotron emission!"
-                     << endl;
+            {
+                cout << "\nWARNING: ISRF source cannot be considered in line or synchrotron emission!" << endl;
+            }
             else
             {
                 CSourceBasic * tmp_source = new CSourceISRF();
@@ -876,14 +880,16 @@ void CPipeline::createSourceLists(parameters & param, CDustMixture * dust, CGrid
 
         if(param.getNrOfPointSources() > 0)
         {
-            if(!dust->getScatteringToRay())
-                nr_ofSources -= param.getNrOfPointSources();
-            else if(param.getCommand() != CMD_DUST_EMISSION)
-                cout << "\nWARNING: Point sources cannot be considered in line or "
-                        "synchrotron emission!"
-                     << endl;
+            if(param.getCommand() != CMD_DUST_EMISSION)
+            {
+                cout << "\nWARNING: Stellar sources cannot be considered in line or synchrotron emission!" << endl;
+            }
             else
             {
+                if(!dust->getScatteringToRay())
+                {
+                    cout << "\nWARNING: Scattered radiation is disabled. Only direct stellar emission is added." << endl;
+                }
                 for(uint s = 0; s < param.getPointSources().size(); s += NR_OF_POINT_SOURCES)
                 {
                     cout << "-> Creating star source list             \r" << flush;
@@ -911,14 +917,16 @@ void CPipeline::createSourceLists(parameters & param, CDustMixture * dust, CGrid
 
         if(param.getNrOfLaserSources() > 0)
         {
-            if(!dust->getScatteringToRay())
-                nr_ofSources -= param.getNrOfLaserSources();
-            else if(param.getCommand() != CMD_DUST_EMISSION)
-                cout << "\nWARNING: Laser sources cannot be considered in line or "
-                        "synchrotron emission!"
-                     << endl;
+            if(param.getCommand() != CMD_DUST_EMISSION)
+            {
+                cout << "\nWARNING: Laser sources cannot be considered in line or synchrotron emission!" << endl;
+            }
             else
             {
+                if(!dust->getScatteringToRay())
+                {
+                    cout << "\nWARNING: Scattered radiation is disabled. Only direct laser emission is added." << endl;
+                }
                 for(uint s = 0; s < param.getLaserSources().size(); s += NR_OF_LASER_SOURCES)
                 {
                     cout << "-> Creating laser source list             \r" << flush;
@@ -932,11 +940,13 @@ void CPipeline::createSourceLists(parameters & param, CDustMixture * dust, CGrid
         if(param.getDustSource())
         {
             if(!dust->getScatteringToRay() && grid->isRadiationFieldAvailable())
+            {
                 nr_ofSources--;
+            }
             else if(param.getCommand() != CMD_DUST_EMISSION)
-                cout << "\nWARNING: Dust source cannot be considered in line or "
-                        "synchrotron emission!"
-                     << endl;
+            {
+                cout << "\nWARNING: Dust source cannot be considered in line or synchrotron emission!" << endl;
+            }
             else
             {
                 CSourceBasic * tmp_source = new CSourceDust();
