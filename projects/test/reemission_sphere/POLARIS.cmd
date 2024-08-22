@@ -5,8 +5,6 @@
 
 	<mass_fraction>		0.01
 
-	<write_dust_files> 1
-
 	<nr_threads>		-1
 
 </common>

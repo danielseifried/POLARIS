@@ -36,7 +36,7 @@ def read_data(sed_fits_file):
     _stokes = ['I', 'Q', 'U', 'V']
     sed_data = {}
     for i_s, i_stokes in enumerate(_stokes):
-        sed_data[i_stokes] = fits_data[i_s,:,:] * u.Jy
+        sed_data[i_stokes] = fits_data[i_s,0,:] * u.Jy
 
     return sed_data
 
