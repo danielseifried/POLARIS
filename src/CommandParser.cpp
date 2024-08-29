@@ -3195,7 +3195,11 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
     if(cmd.compare("<rt_scattering>") == 0)
     {
         if(atob(atoi(data.c_str())))
+        {
             param->setScatteringToRay(true);
+            cout << "\nWARNING: Including scattering in the ray-tracing simulation is not working properly!" << endl;
+            cout << "Use CMD_DUST_SCATTERING with <source_dust nr_photons = \"...\"> instead." << endl;
+        }
         else
             param->setScatteringToRay(false);
 
