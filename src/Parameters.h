@@ -244,7 +244,8 @@ class parameters
 
     bool isMonteCarloSimulation() const
     {
-        if(getCommand() == CMD_TEMP || getCommand() == CMD_TEMP_RAT || getCommand() == CMD_RAT)
+        if(getCommand() == CMD_TEMP || getCommand() == CMD_TEMP_RAT ||
+            getCommand() == CMD_RAT || getCommand() == CMD_DUST_SCATTERING)
             return true;
         return false;
     }

@@ -432,9 +432,9 @@ uint CGridBasic::validateDataPositions(parameters & param)
         return MAX_UINT;
     }
 
-    if(nr_mixtures > 0 && (param.isMonteCarloSimulation() || param.getCommand() == CMD_DUST_EMISSION ||
-                           param.getCommand() == CMD_LINE_EMISSION || param.getCommand() == CMD_FORCE ||
-                           param.getCommand() == CMD_PROBING))
+    if(nr_mixtures > 0 && (param.isTemperatureSimulation() || param.isRatSimulation() ||
+                           param.getCommand() == CMD_DUST_EMISSION || param.getCommand() == CMD_LINE_EMISSION ||
+                           param.getCommand() == CMD_FORCE || param.getCommand() == CMD_PROBING))
     {
         // Get Number of temperature fields for temperature calculation
         if(size_dd_list > 0)

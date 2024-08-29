@@ -5760,14 +5760,13 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
          << endl;
     cout << SEP_LINE;
 
-    // Show the full wavelength grid for temo and RAT calculation
-    if(param.isMonteCarloSimulation())
+    // Show the full wavelength grid for TEMP and RAT calculation
+    if(param.isTemperatureSimulation() || param.isRatSimulation())
         cout << "- Number of wavelengths   : " << WL_STEPS << "  (" << WL_MIN << " [m] - " << WL_MAX
              << " [m])" << endl;
 
     // Monte-Carlo scattering is only used for temp, rat and scatter maps
-    // if(param.isMonteCarloSimulation() || param.getCommand() == CMD_DUST_SCATTERING ||
-    //    scattering_to_raytracing)
+    // if(param.isMonteCarloSimulation() || scattering_to_raytracing)
     //     cout << "- Phase function          : " << getPhaseFunctionStr() << endl;
 
     // Enforced first scattering method is only used for Monte-Carlo scattering maps
@@ -5943,7 +5942,7 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
     }
 
     // Show information about saving the radiation field
-    if(param.isMonteCarloSimulation())
+    if(param.isTemperatureSimulation() || param.isRatSimulation())
     {
         cout << "- Save radiation field    : ";
         if(param.getSaveRadiationField())
@@ -6133,7 +6132,7 @@ bool CDustMixture::preCalcDustProperties(parameters & param, uint i_mixture)
     mixed_component[i_mixture].setSublimate(param.isSublimate());
 
     // Calculate wavelength differences for temperature (reemission)
-    if(param.isMonteCarloSimulation())
+    if(param.isTemperatureSimulation() || param.isRatSimulation())
         if(!mixed_component[i_mixture].calcWavelengthDiff())
         {
             cout << "\nERROR: The wavelength grid only has one wavelength which is not enough for temp calculation!\n"
@@ -6157,12 +6156,12 @@ bool CDustMixture::preCalcDustProperties(parameters & param, uint i_mixture)
         mixed_component[i_mixture].preCalcTemperatureLists(TEMP_MIN, TEMP_MAX, TEMP_STEP);
 
     // Pre-calculate reemission probability of the dust mixture at different temperatures
-    if(param.isMonteCarloSimulation())
+    if(param.isTemperatureSimulation() || param.isRatSimulation())
         mixed_component[i_mixture].preCalcWaveProb();
 
     // Pre-calculate temperature to total emission relation (either for temperature or
     // stochastic heating calculation)
-    if(param.isMonteCarloSimulation() ||
+    if((param.isTemperatureSimulation() || param.isRatSimulation()) ||
        (param.getCommand() == CMD_DUST_EMISSION &&
         param.getStochasticHeatingMaxSize() > mixed_component[i_mixture].getSizeMin()))
         mixed_component[i_mixture].preCalcAbsorptionRates();
@@ -6178,7 +6177,7 @@ bool CDustMixture::preCalcDustProperties(parameters & param, uint i_mixture)
     }
 
     // Use random alignment for Monte-Carlo simulations
-    if(param.isMonteCarloSimulation() || param.getCommand() == CMD_DUST_SCATTERING)
+    if(param.isMonteCarloSimulation())
         mixed_component[i_mixture].setAlignmentMechanism(ALIG_RND);
     else
         mixed_component[i_mixture].setAlignmentMechanism(param.getAlignmentMechanism());
