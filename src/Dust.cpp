@@ -3395,9 +3395,8 @@ bool CDustComponent::calcSizeDistribution(dlist values, double * mass)
         }
         for(uint a = 0; a < nr_of_dust_species; a++)
         {
-            double aux = log(a_eff[a]);
-            double argu = -0.5 * pow((aux - log(size_parameter[0])) / size_parameter[1], 2);
-            grain_size_distribution[a] = exp(argu);
+            double argu = -0.5 * pow(log(a_eff[a] / size_parameter[0]) / size_parameter[1], 2);
+            grain_size_distribution[a] = exp(argu) / a_eff[a];
         }
     }
     else if(size_keyword.find("zda") != std::string::npos)
