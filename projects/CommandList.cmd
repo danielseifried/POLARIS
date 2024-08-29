@@ -40,7 +40,7 @@
     # enables/disables the use of the dust temperature of the input grid as an offset (TEMP, TEMP_RAT)
     <dust_offset> 1 (yes) or 0 (no)
 
-    # enables/disables the saving of the radiation field, required by <stochastic_heating>
+    # enables/disables the saving of the radiation field, required by <stochastic_heating> (TEMP, RAT, TEMP_RAT)
     <radiation_field> 1 (yes) or 0 (no)
 
     # disables the usage of the radiation field to include scattering in the ray-tracing (DUST_EMISSION)
@@ -70,7 +70,7 @@
     # enables/disables the creation of velocity channel maps (LINE_EMISSION)
     <vel_maps> 1 (yes) or 0 (no)
 
-    # enables/disables the interpretation of the velocity of the grid as multiple of the speed of sound
+    # enables/disables the interpretation of the velocity of the grid as multiple of the speed of sound (ALL)
     <vel_is_speed_of_sound> 1 (yes) or 0 (no)
 
     # mass of the central star and enable the use of Keplerian rotation as the velocity field (LINE_EMISSION)
