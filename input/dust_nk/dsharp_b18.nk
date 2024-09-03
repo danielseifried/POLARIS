@@ -2,7 +2,7 @@
 DSHARP composition (Birnstiel et al. 2018, ApJL, 869, L45)
 # see https://github.com/birnstiel/dsharp_opac
 
-# Bruggeman-Mix of 4 species
+# Bruggeman-Mix of 4 species (porosity = 0.0)
 # | material                             | volume fractions | mass fractions |
 # |--------------------------------------|------------------|----------------|
 # | Water Ice (Warren & Brandt 2008)     | 0.36419          | 0.20000        |
