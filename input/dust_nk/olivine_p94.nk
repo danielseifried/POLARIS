@@ -4,7 +4,7 @@
 olivine (Pollack et al. 1994, ApJ, 421, 615)
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
-74 1 1 3490 1200 0 0
+74 1 1 3490 1168 0 0
 
 #wavelength #real refractive index #imaginary refractive index
 1.00000e-07 1.63497e+00 9.62105e-01

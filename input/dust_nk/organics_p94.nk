@@ -7,13 +7,13 @@
 #Germany
 #History:   2019-02-05
 
-#Download from http://www2.mpia-hd.mpg.de/home/henning/Dust_opacities/Opacities/RI/old_ri.html
+#Download from https://www2.mpia-hd.mpg.de/home/henning/Dust_opacities/Opacities/RI/old_ri.html
 
 #string ID
 organics (Pollack et al. 1994, ApJ, 421, 615)
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
-74 1 1 1400 450 0 0
+74 1 1 1500 500 0 0
 
 #wavelength #real refractive index #imaginary refractive index
 1.00000e-07 1.45762e+00 8.61250e-01

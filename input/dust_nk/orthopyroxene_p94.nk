@@ -4,7 +4,7 @@
 orthopyroxene (Pollack et al. 1994, ApJ, 421, 615)
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
-74 1 1 3400 1200 0 0
+74 1 1 3400 1129 0 0
 
 #wavelength #real refractive index #imaginary refractive index
 1.00000e-07 9.53346e-01 1.30122e+00

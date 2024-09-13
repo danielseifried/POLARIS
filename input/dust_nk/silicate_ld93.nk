@@ -13,7 +13,7 @@
 astronomical silicate (Laor & Draine 1993, ApJ, 402, 441)
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
-1201 1 1 3300 1200 0 0
+1201 1 1 3300 1168 0 0
 
 #wavelength #real refractive index #imaginary refractive index
 1.0000000e-09 9.9956470e-01 9.7380000e-05

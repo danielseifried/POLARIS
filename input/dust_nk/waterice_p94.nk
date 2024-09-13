@@ -1,10 +1,10 @@
-#Download from http://www2.mpia-hd.mpg.de/home/henning/Dust_opacities/Opacities/RI/old_ri.html
+#Download from https://www2.mpia-hd.mpg.de/home/henning/Dust_opacities/Opacities/RI/old_ri.html
 
 #string ID
 water ice (Pollack et al. 1994, ApJ, 421, 615)
 
 #nr. of wavelength #inc. angles #aspect ratio #density [kg/m^3] #sub.temp #delta #align
-74 1 1 920 150 0 0
+74 1 1 920 141 0 0
 
 #wavelength #real refractive index #imaginary refractive index
 1.00000e-07 1.39783e+00 7.86913e-02
