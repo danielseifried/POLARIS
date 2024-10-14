@@ -13,9 +13,9 @@
 
     <cmd>    CMD_DUST_EMISSION
 
-    <detector_dust nr_pixel = "255*255">    1e-6    1e-3    7    1    0.0    0.0    4.32e+18
+    <detector_dust_polar nr_pixel = "255*255">    1e-6    1e-3    7    1    0.0    0.0    4.32e+18
 
-    <max_subpixel_lvl>    2
+    <max_subpixel_lvl>    1
 
     <path_grid>    "projects/test/raytracing_scattering/grid_3D_sphere_const_T_m1e-5.dat"
     <path_out>    "projects/test/raytracing_scattering/dust/"
@@ -26,11 +26,11 @@
 
     <cmd>    CMD_DUST_EMISSION
 
-    <detector_dust nr_pixel = "255*255">    1e-6    1e-3    7    1    0.0    0.0    4.32e+18
+    <detector_dust_polar nr_pixel = "255*255">    1e-6    1e-3    7    1    0.0    0.0    4.32e+18
 
     <source_star nr_photons = "1e6">    0    0    0    2    4500
 
-    <max_subpixel_lvl>    2
+    <max_subpixel_lvl>    1
 
     <rt_scattering> 1
 

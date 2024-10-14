@@ -4803,7 +4803,21 @@ StokesVector CDustComponent::getRadFieldScatteredFraction(CGridBasic * grid,
     double mag_field_theta = !is_align || alignment == ALIG_RND ? 0 : grid->getThetaMag(pp);
 
     // Get theta of scattering
-    double scattering_theta = acos(en_dir * pp.getDirection());
+    double cos_scattering_theta = en_dir * pp.getDirection();
+    double scattering_theta;
+
+    if(cos_scattering_theta < -1.0)
+    {
+        scattering_theta = PI;
+    }
+    else if(cos_scattering_theta > 1.0)
+    {
+        scattering_theta = 0.0;
+    }
+    else
+    {
+        scattering_theta = acos(cos_scattering_theta);
+    }
 
     // Get integration over the dust size distribution
     double * rel_weight = getRelWeight(a_min, a_max, size_param);
