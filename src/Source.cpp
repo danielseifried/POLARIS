@@ -1328,40 +1328,49 @@ bool CSourceDust::initSource(uint id, uint max, bool use_energy_density)
         total_energy[w] = 0;
         cell_prob[w].setValue(0, total_energy[w]);
 
-// Causes problems. Find better solution!
-//#pragma omp parallel for schedule(dynamic)
-        for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
-        {
-            // Increase counter used to show progress
-            per_counter++;
-
-            // Calculate percentage of total progress
-            float percentage = 100.0 * float(per_counter) / float(max_counter);
-
-            // Show only new percentage number if it changed
-            if((percentage - last_percentage) > PERCENTAGE_STEP)
+        #if (DUST_EMI_PROB)
+            // Causes problems. Find better solution!
+            //#pragma omp parallel for schedule(dynamic)
+            for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
             {
-//#pragma omp critical
+                // Increase counter used to show progress
+                per_counter++;
+
+                // Calculate percentage of total progress
+                float percentage = 100.0 * float(per_counter) / float(max_counter);
+
+                // Show only new percentage number if it changed
+                if((percentage - last_percentage) > PERCENTAGE_STEP)
                 {
-                    cout << "-> Calculating prob. distribution for dust source: " << percentage << " [%]    \r"
-                         << flush;
-                    last_percentage = percentage;
+                    //#pragma omp critical
+                    {
+                        cout << "-> Calculating prob. distribution for dust source: " << percentage << " [%]    \r"
+                            << flush;
+                        last_percentage = percentage;
+                    }
                 }
+
+                // Put photon package into current cell
+                pp.setPositionCell(grid->getCellFromIndex(i_cell));
+
+                // Get total energy of thermal emission
+                total_energy[w] += dust->getTotalCellEmission(grid, pp);
+
+                // Add energy to probability distribution
+                cell_prob[w].setValue(i_cell + 1, total_energy[w]);
             }
 
-            // Put photon package into current cell
-            pp.setPositionCell(grid->getCellFromIndex(i_cell));
-
-            // Get total energy of thermal emission
-            total_energy[w] += dust->getTotalCellEmission(grid, pp);
-
-            // Add energy to probability distribution
-            cell_prob[w].setValue(i_cell + 1, total_energy[w]);
-        }
-
-        // Normalize probability distribution
-        cell_prob[w].normalize(total_energy[w]);
+            // Normalize probability distribution
+            cell_prob[w].normalize(total_energy[w]);
+        #endif
     }
+
+    #if (!DUST_EMI_PROB)
+        // reduce the total number of photons, so that each cell launches the same amount of photons,
+        // i.e. (n_photon % n_cell) should be zero
+        nr_of_photons -= nr_of_photons % grid->getMaxDataCells();
+        nr_of_photons_per_cell = ullong(nr_of_photons / double(nr_of_cells));
+    #endif
 
     // Show information
     cout << CLR_LINE;
@@ -1396,12 +1405,12 @@ bool CSourceDust::initSource(uint w)
     cout << "-> Initiating dust grain emission          \r" << flush;
 
     #if (DUST_EMI_PROB)
-// Causes problems. Find better solution!
-//#pragma omp parallel for schedule(dynamic)
+        // Causes problems. Find better solution!
+        //#pragma omp parallel for schedule(dynamic)
         for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
         {
             // Increase counter used to show progress
-//#pragma omp atomic update
+            //#pragma omp atomic update
             per_counter++;
 
             // Calculate percentage of total progress
@@ -1410,7 +1419,7 @@ bool CSourceDust::initSource(uint w)
             // Show only new percentage number if it changed
             if((percentage - last_percentage) > PERCENTAGE_STEP)
             {
-//#pragma omp critical
+                //#pragma omp critical
                 {
                     cout << "-> Calculate prob. distribution for dust source: " << percentage << " [%]    \r"
                         << flush;
