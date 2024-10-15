@@ -20,10 +20,10 @@ fi
 ${POLARIS_BINARY} ${PROJECTS_PATH}/test/stellar_sed/POLARIS.cmd
 ${POLARIS_BINARY} ${PROJECTS_PATH}/test/reemission_sphere/POLARIS.cmd
 ${POLARIS_BINARY} ${PROJECTS_PATH}/test/stellar_scattering_sphere/POLARIS.cmd
-# ${POLARIS_BINARY} ${PROJECTS_PATH}/test/raytracing_scattering/POLARIS.cmd
+${POLARIS_BINARY} ${PROJECTS_PATH}/test/raytracing_scattering/POLARIS.cmd
 
 # validate output
 python3 ${PROJECTS_PATH}/test/stellar_sed/compare.py
 python3 ${PROJECTS_PATH}/test/reemission_sphere/compare.py
 python3 ${PROJECTS_PATH}/test/stellar_scattering_sphere/compare.py
-# python3 ${PROJECTS_PATH}/test/raytracing_scattering/compare.py
+python3 ${PROJECTS_PATH}/test/raytracing_scattering/compare.py

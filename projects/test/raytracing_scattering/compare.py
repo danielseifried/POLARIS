@@ -43,17 +43,17 @@ def compare():
     dust_mc_sed_data = read_data('projects/test/raytracing_scattering/dust_mc/data/polaris_detector_nr0001_sed.fits.gz')
 
     max_rel_diff = np.max(np.abs( (dust_sed_data['I'] + dust_mc_sed_data['I']) / dust_rt_sed_data['I'] - 1.0 ))
-    if max_rel_diff > 1e-2:
+    if max_rel_diff > 1e-3:
         raise Exception(f'Test failed: Stokes I does not match (max. relative difference = {max_rel_diff})')
 
     mc_polarization = np.sqrt(dust_mc_sed_data['Q']**2 + dust_mc_sed_data['U']**2 + dust_mc_sed_data['V']**2) / (dust_mc_sed_data['I'] + dust_sed_data['I'])
     rt_polarization = np.sqrt(dust_rt_sed_data['Q']**2 + dust_rt_sed_data['U']**2 + dust_rt_sed_data['V']**2) / dust_rt_sed_data['I']
     max_abs_diff = np.max(np.abs( mc_polarization - rt_polarization ))
-    if max_abs_diff > 1e-2:
+    if max_abs_diff > 1e-3:
         raise Exception(f'Test failed: Polarization does not match (max. absolute difference = {max_abs_diff})')
 
     max_polarization = np.max(mc_polarization)
-    if max_polarization > 1e-2:
+    if max_polarization > 1e-3:
         raise Exception(f'Test failed: Polarization is too large (max. value = {max_polarization})')
 
     return True
