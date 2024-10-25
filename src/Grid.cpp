@@ -2688,8 +2688,8 @@ bool CGridBasic::getPolarRTGridParameterWorker(double max_len,
     
     // Add polar detector pixels in the inner region to obtain resolution specified by max_subpixel_lvl
     // inner grid cell diameter is 2.*listR[0]
-    uint N_r_inner = uint(ceil(subpixel_multiplier * 2.0 * listR[0] / pixel_width)); 
-    
+    uint N_r_inner = uint(ceil(subpixel_multiplier * N_r * listR[0] / listR[N_r]));
+
     for(uint i_r = 0; i_r <= N_r_inner; i_r++)
         _listR.push_back(listR[0] * (i_r / double(N_r_inner)));
 
