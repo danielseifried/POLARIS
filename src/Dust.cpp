@@ -4538,10 +4538,6 @@ void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
                                                         uint i_density,
                                                         dlist & wl_list)
 {
-    // size of wl_list must equal WL_STEPS
-    if(wl_list.size() != WL_STEPS)
-        cout << "\nERROR: Size of the wavelength array does not match (stochastic heating)";
-
     // Get local min and max grain sizes
     double a_min = getSizeMin(grid, *cell);
     double a_max = getSizeMax(grid, *cell);
@@ -4552,6 +4548,13 @@ void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
         for(uint a = 0; a < nr_of_dust_species; a++)
             if(a_eff[a] <= getStochasticHeatingMaxSize() && sizeIndexUsed(a, a_min, a_max))
                 grid->setDustTempProbability(cell, i_density, a, 0, 1.0);
+        return;
+    }
+
+    // size of wl_list must equal WL_STEPS
+    if(wl_list.size() != WL_STEPS)
+    {
+        cout << "\nERROR: Size of the wavelength array does not match (stochastic heating)" << endl;
         return;
     }
 
