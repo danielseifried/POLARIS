@@ -5,7 +5,10 @@ stages:
 script_gcc_make:
     stage: build
     before_script:
-        - pip3 install astropy numpy
+        - python3 -V
+        - python3 -m venv ./venv && source ./venv/bin/activate
+        - which python3
+        - pip install astropy numpy
     allow_failure: true
     script:
         - ./compile.sh -f -c gcc -g make
@@ -17,6 +20,7 @@ script_gcc_make:
             - ./bin
             - ./lib/cfitsio
             - ./lib/CCfits
+            - ./venv
         expire_in: 1 week
 
 # script_gcc_ninja:
