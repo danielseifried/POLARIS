@@ -2089,6 +2089,21 @@ class CDustComponent
         nr_of_wavelength = val;
     }
 
+    uint getNrOfWavelength() const
+    {
+        return nr_of_wavelength;
+    }
+
+    uint getWavelengthID(double wavelength)
+    {
+        dlist::iterator it = find(wavelength_list.begin(), wavelength_list.end(), wavelength);
+        if(it != wavelength_list.end())
+            return distance(wavelength_list.begin(), it);
+
+        cout << "\nWARNING: Wavelength not found!" << endl;
+        return 0;
+    }
+
     uint getNrOfIncidentAngles() const
     {
         return nr_of_incident_angles;
@@ -2479,7 +2494,7 @@ class CDustComponent
     void calcStochasticHeatingPropabilities(CGridBasic * grid,
                                             cell_basic * cell,
                                             uint i_density,
-                                            dlist & wavelength_list_full) const;
+                                            dlist & wl_list);
 
     void calcAlignedRadii(CGridBasic * grid, cell_basic * cell, uint i_density);
 
@@ -2786,7 +2801,7 @@ class CDustMixture
 
     void calcStochasticHeatingPropabilities(CGridBasic * grid,
                                             cell_basic * cell,
-                                            dlist & wavelength_list_full) const
+                                            dlist & wl_list) const
     {
         if(mixed_component != 0)
         {
@@ -2794,13 +2809,13 @@ class CDustMixture
             {
                 uint i_mixture = getMixtureID(grid, *cell);
                 mixed_component[i_mixture].calcStochasticHeatingPropabilities(
-                    grid, cell, 0, wavelength_list_full);
+                    grid, cell, 0, wl_list);
             }
             else
             {
                 for(uint i_mixture = 0; i_mixture < getNrOfMixtures(); i_mixture++)
                     mixed_component[i_mixture].calcStochasticHeatingPropabilities(
-                        grid, cell, i_mixture, wavelength_list_full);
+                        grid, cell, i_mixture, wl_list);
             }
         }
     }
@@ -3125,7 +3140,7 @@ class CDustMixture
         if(it != wavelength_list.end())
             return distance(wavelength_list.begin(), it);
 
-        cout << "\nHINT: Wavelength not found!" << endl;
+        cout << "\nWARNING: Wavelength not found!" << endl;
         return 0;
     }
 

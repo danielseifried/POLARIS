@@ -3059,6 +3059,10 @@ void CDustComponent::preCalcAbsorptionRates()
     // Get number of temperatures from tab_temp spline
     uint const nr_of_temperatures = tab_temp.size();
 
+    // Resize wavelength list for stochastic heating propabilities
+    dlist wl_list(WL_STEPS);
+    CMathFunctions::LogList(WL_MIN, WL_MAX, wl_list, 10);
+
     // Create tabulated absorption/emission rates spline
     tab_em = new spline[nr_of_dust_species];
     if(calorimetry_loaded)
@@ -3076,7 +3080,7 @@ void CDustComponent::preCalcAbsorptionRates()
             tab_em_inv[a].resize(nr_of_temperatures);
 
         // Init a temporary array for QB values
-        double * tmpQB = new double[nr_of_wavelength];
+        double * tmpQB = new double[WL_STEPS];
 
         // Set each entry of tab_em with integrated value of the Planck function times
         // the absorption cross-section
@@ -3088,10 +3092,14 @@ void CDustComponent::preCalcAbsorptionRates()
             // Calculate absorption cross-section times Planck function for each
             // wavelength
             for(uint w = 0; w < WL_STEPS; w++)
-                tmpQB[w] = getCabsMean(a, w) * CMathFunctions::planck(wavelength_list[w], tmp_temp);
+            {
+                uint wID = getWavelengthID(wl_list[w]);
+                // the wavelength axis of Cabs may be greater than WL_STEPS if detectors are defined
+                tmpQB[w] = getCabsMean(a, wID) * CMathFunctions::planck(wl_list[w], tmp_temp);
+            }
 
             // Calculate QB integrated over all wavelengths
-            double tt = CMathFunctions::integ(wavelength_list, tmpQB, 0, WL_STEPS - 1);
+            double tt = CMathFunctions::integ(wl_list, tmpQB, 0, WL_STEPS - 1);
 
             // Set tab_em spline with the integrated value
             tab_em[a].setValue(t, tt, tmp_temp);
@@ -3231,7 +3239,7 @@ void CDustComponent::preCalcWaveProb()
         double ** pl_mean;
         pl_mean = new double *[nr_of_dust_species];
         for(uint a = 0; a < nr_of_dust_species; a++)
-            pl_mean[a] = new double[WL_STEPS];
+            pl_mean[a] = new double[nr_of_wavelength];
 
         // Get temperature from tab_temp spline
         double temp = tab_temp.getValue(uint(t));
@@ -3239,11 +3247,11 @@ void CDustComponent::preCalcWaveProb()
         for(uint a = 0; a < nr_of_dust_species; a++)
         {
             // Resize avg_planck_frac to number of wavelengths
-            avg_planck_frac[t * nr_of_dust_species + a].resize(WL_STEPS);
+            avg_planck_frac[t * nr_of_dust_species + a].resize(nr_of_wavelength);
         }
 
         // Calculate dPlanck/dT times mean absorption cross-section for each wavelength
-        for(uint w = 0; w < WL_STEPS; w++)
+        for(uint w = 0; w < nr_of_wavelength; w++)
         {
             // Calculate dPlanck/dT
             double t_pl = CMathFunctions::dplanck_dT(wavelength_list[w], temp);
@@ -4179,10 +4187,10 @@ void CDustComponent::calcTemperature(CGridBasic * grid,
             {
                 // Init and resize spline for absorbed energy per wavelength
                 spline abs_rate_per_wl;
-                abs_rate_per_wl.resize(WL_STEPS);
+                abs_rate_per_wl.resize(nr_of_wavelength);
 
                 // Get radiation field and calculate absorbed energy for each wavelength
-                for(uint w = 0; w < WL_STEPS; w++)
+                for(uint w = 0; w < nr_of_wavelength; w++)
                 {
                     double abs_rate_wl_tmp = grid->getRadiationField(*cell, w) * getCabsMean(a, w);
                     abs_rate_per_wl.setValue(w, wavelength_list[w], abs_rate_wl_tmp);
@@ -4528,8 +4536,12 @@ double CDustComponent::calcGoldReductionFactor(const Vector3D & v, const Vector3
 void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
                                                         cell_basic * cell,
                                                         uint i_density,
-                                                        dlist & wavelength_list_full) const
+                                                        dlist & wl_list)
 {
+    // size of wl_list must equal WL_STEPS
+    if(wl_list.size() != WL_STEPS)
+        cout << "\nERROR: Size of the wavelength array does not match (stochastic heating)";
+
     // Get local min and max grain sizes
     double a_min = getSizeMin(grid, *cell);
     double a_max = getSizeMax(grid, *cell);
@@ -4554,8 +4566,11 @@ void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
 
             // Get radiation field and calculate absorbed energy for each wavelength
             for(uint w = 0; w < WL_STEPS; w++)
-                abs_rate_per_wl.setValue(
-                    w, wavelength_list_full[w], grid->getRadiationField(*cell, w) * getCabsMean(a, w));
+            {
+                uint wID = getWavelengthID(wl_list[w]);
+                // the wavelength axis of Cabs may be greater than WL_STEPS if detectors are defined
+                abs_rate_per_wl.setValue(w, wl_list[w], grid->getRadiationField(*cell, w) * getCabsMean(a, wID));
+            }
 
             // Activate spline of absorbed energy for each wavelength
             abs_rate_per_wl.createSpline();
@@ -4575,7 +4590,7 @@ void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
 
 double CDustComponent::getCalorimetryA(uint a, uint f, uint i, const spline & abs_rate_per_wl) const
 {
-    // Calculation of A from Eq. (23) in Camps et al. (2015)
+    // Calculation of A from Eq. (23) in Camps et al. 2015, A&A 580, A87
 
     // Init varibales
     double res = 0;
@@ -4600,14 +4615,17 @@ double CDustComponent::getCalorimetryA(uint a, uint f, uint i, const spline & ab
         // Calculate difference between enthalpy of two temperatures
         double enthalpy_diff = getEnthalpy(a, i) - getEnthalpy(a, f);
 
-        // Get calorimetric temperature to index i
-        double T_i = getCalorimetricTemperature(i);
+        if(enthalpy_diff > 0)
+        {
+            // Get calorimetric temperature to index i
+            double T_i = getCalorimetricTemperature(i);
 
-        // Calculate A
-        res = tab_em_inv[a].getValue(T_i) * PIx4 / enthalpy_diff;
+            // Calculate A
+            res = tab_em_inv[a].getValue(T_i) * PIx4 / enthalpy_diff;
+        }
     }
     else
-        cout << "\nHINT: Error at the getCalorimetryA fuction (stochastic heating)";
+        cout << "\nERROR: Error at the getCalorimetryA fuction (stochastic heating)";
 
     // Returning A needs to be at least zero
     return max(double(0), res);
@@ -4616,7 +4634,7 @@ double CDustComponent::getCalorimetryA(uint a, uint f, uint i, const spline & ab
 long double * CDustComponent::getStochasticProbability(uint a, const spline & abs_rate_per_wl) const
 {
     // Calculate the propability of a dust grain to have a certain temperature
-    // See Sect. 4.3. in Camps et al. (2015)
+    // See Sect. 4.3. in Camps et al. 2015, A&A 580, A87
 
     // Init variables
     Matrix2D B_mat;
@@ -4638,7 +4656,8 @@ long double * CDustComponent::getStochasticProbability(uint a, const spline & ab
     long double * X_vec = new long double[nr_of_calorimetry_temperatures];
 
     // Set first value to 1
-    X_vec[0] = numeric_limits<long double>::min();
+    // X_vec[0] = numeric_limits<long double>::min();
+    X_vec[0] = 1.0;
     for(uint i = 1; i < nr_of_calorimetry_temperatures; i++)
     {
         // Set the other values to zero
@@ -4651,8 +4670,6 @@ long double * CDustComponent::getStochasticProbability(uint a, const spline & ab
             for(uint j = 0; j < i; j++)
                 X_vec[i] += (long double)B_mat(i, j) * X_vec[j] / caloA;
         }
-        else
-            X_vec[i] = 0;
     }
 
     // Init sum for normalization
@@ -4662,7 +4679,7 @@ long double * CDustComponent::getStochasticProbability(uint a, const spline & ab
     for(uint t = 0; t < nr_of_calorimetry_temperatures; t++)
         X_sum += X_vec[t];
 
-    // Perform normalization or  reset propability
+    // Perform normalization or reset propability
     for(uint t = 0; t < nr_of_calorimetry_temperatures; t++)
         if(isinf(X_sum) || isnan(X_sum))
         {
