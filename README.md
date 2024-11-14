@@ -42,27 +42,34 @@ To install POLARIS, run the installation script:
 ```bash
 ./compile.sh -f
 ```
-For the first installation, the option `-f` is required to install the [CCfits](https://heasarc.gsfc.nasa.gov/fitsio/CCfits/) and [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/) libraries.
-Alternatively, these libraries can be installed with a package manager (root permissions are required):
-```bash
-sudo apt update
-sudo apt install libccfits-dev libcfitsio-dev
-```
-If these packages are installed on the system, simply install POLARIS via
-```bash
-./compile.sh
-```
-For more information, type:
-```bash
-./compile.sh -h
-```
+
 POLARIS can now be executed from any newly opened terminal/console.
 To use it in already open terminals/consoles, execute the following command to update the environmental paths:
 ```bash
 source ~/.bashrc
 ```
 
-**HINT**: Please refer to the [manual](manual.pdf) for installation on **macOS**. An installer to use POLARIS with Windows is not available yet.
+> [!IMPORTANT]
+> For the first installation, the option `-f` is required to install the [CCfits](https://heasarc.gsfc.nasa.gov/fitsio/CCfits/) and [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/) libraries.
+
+Alternatively, these libraries can be installed with a package manager (root permissions are required):
+```bash
+sudo apt update
+sudo apt install libccfits-dev libcfitsio-dev
+```
+If these packages are already installed on the system, simply install POLARIS via
+```bash
+./compile.sh
+```
+
+> [!NOTE]
+> Please refer to the [manual](manual.pdf) for installation on **macOS**. An installer to use POLARIS with Windows is not available yet.
+
+> [!TIP]
+> For more information, type:
+> ```bash
+> ./compile.sh -h
+> ```
 
 
 ## Use POLARIS

@@ -8,7 +8,9 @@ Download zip package from the [homepage](https://portia.astrophysik.uni-kiel.de/
 ```bash
 git clone https://github.com/polaris-MCRT/POLARIS.git
 ```
-**HINT**: It is recommended to clone the git repository into the home directory.
+> [!TIP]
+> It is recommended to clone the git repository into the home directory.
+
 If downloaded from the homepage, extract the zip file into the home directory via:
 ```bash
 unzip -q POLARIS-master-basic.zip -d ~/
@@ -37,7 +39,16 @@ Run the installation script:
 ```bash
 ./compile.sh -f
 ```
-For the first installation, the option `-f` is required to install the [CCfits](https://heasarc.gsfc.nasa.gov/fitsio/CCfits/) and [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/) libraries.
+
+POLARIS can now be executed from any newly opened terminal/console.
+However, to use it in already open terminals/consoles, execute the following command to update the environmental paths:
+```bash
+source ~/.bashrc
+```
+
+> [!IMPORTANT]
+> For the first installation, the option `-f` is required to install the [CCfits](https://heasarc.gsfc.nasa.gov/fitsio/CCfits/) and [cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/) libraries.
+
 Alternatively, these libraries can be installed with a package manager (root permissions are required):
 ```bash
 sudo apt update
@@ -47,17 +58,15 @@ If these packages are installed on the system, simply install POLARIS via
 ```bash
 ./compile.sh
 ```
-For more information, type:
-```bash
-./compile.sh -h
-```
-POLARIS can now be executed from any newly opened terminal/console.
-However, to use it in already open terminals/consoles, execute the following command to update the environmental paths:
-```bash
-source ~/.bashrc
-```
 
-**HINT**: Please refer to the [manual](manual.pdf) (Sect. 1.2) for installation on **macOS**. An installer to use POLARIS with Windows is not available yet.
+> [!NOTE]
+> Please refer to the [manual](manual.pdf) for installation on **macOS**. An installer to use POLARIS with Windows is not available yet.
+
+> [!TIP]
+> For more information, type:
+> ```bash
+> ./compile.sh -h
+> ```
 
 
 ## Start a simulation
@@ -83,17 +92,22 @@ These files can be opened with, for example, [SAOImageDS9](https://sites.google.
 Simulations are performed similarly for thermal emission (`dust`) and stellar scattered radiation (`dust_mc`).
 Please refer to the [command list](projects/CommandList.cmd) in the `projects` folder or the [manual](manual.pdf) (Table 2.4 - 2.10) for available options of the command file.
 
-**HINT**: For thermal emission simulations, a temperature simulation (`temp`) has to be performed first.
+> [!NOTE]
+> For thermal emission simulations, a temperature simulation (`temp`) has to be performed first.
 
-**HINT**: To include self-scattering, `<source_dust nr_photons = "Nph">` (`Nph` is the number of photon packages) and `<path_grid>` with the path to the grid file of the temperature simulation (e.g. "projects/disk/example/temp/grid_temp.dat") have to be provided in the command file (`dust_mc`).
+> [!NOTE]
+> To include self-scattering, `<source_dust nr_photons = "Nph">` (`Nph` is the number of photon packages) and `<path_grid>` with the path to the grid file of the temperature simulation (e.g. "projects/disk/example/temp/grid_temp.dat") have to be provided in the command file (`dust_mc`).
 
-**HINT**: `dust` simulations only include directly emitted radiation of the dust.
-`dust_mc` simulations include directly emitted and scattered stellar radiation, scattered radiation thermally emitted by dust, but **not** directly emitted radiation of the dust.
-Thus, the user has to combine the results of `dust` and `dust_mc` simulations to obtain a complete spectrum.
+> [!NOTE]
+> `dust` simulations only include directly emitted radiation of the dust and the source if defined.
+> `dust_mc` simulations include directly emitted and scattered stellar radiation, scattered radiation thermally emitted by dust, but **not** directly emitted radiation of the dust.
+> Thus, the user has to combine the results of `dust` and `dust_mc` simulations to obtain a complete spectrum.
 
-**HINT**: The previous results will be overwritten, if the same command file is used. Please change `<path_out>` in the command file to use a new directory for the new results.
+> [!IMPORTANT]
+> If users write their own command file, before starting the simulation, please check `<dust_component>`, `<path_grid>`, and `<path_out>` in the command file for the correct (absolute) paths.
 
-**HINT**: If users write their own command file, before starting the simulation, please check `<dust_component>`, `<path_grid>`, and `<path_out>` in the command file for the correct (absolute) paths.
+> [!WARNING]
+> The previous results will be overwritten, if the same command file is used. Please change `<path_out>` in the command file to use a new directory for the new results.
 
 
 ## Create a grid
@@ -139,10 +153,12 @@ To modify specific parameters of the model, for instance a total gas mass of $10
 ```bash
 polaris-gen model_name grid_filename.dat --gas_mass 1e-5M_sun --inner_radius 1AU
 ```
-For more information, type:
-```bash
-polaris-gen -h
-```
+
+> [!TIP]
+> For more information, type:
+> ```bash
+> polaris-gen -h
+> ```
 
 
 ### Extra parameter
@@ -171,14 +187,15 @@ $$
 
 Additional parameter values to modify the model can be defined in the function `update_parameter` in the file `tools/polaris_tools_modules/model.py`.
 
-**Hint**: For any changes in the files, the user has to recompile PolarisTools with:
-```bash
-./compile.sh -t
-```
-or if compiled without the script:
-```
-python3 tools/setup.py install --user &>/dev/null
-```
+> [!NOTE]
+> For any changes in the files, the user has to recompile PolarisTools with:
+> ```bash
+> ./compile.sh -t
+> ```
+> or if compiled without the script:
+> ```
+> python3 tools/setup.py install --user &>/dev/null
+> ```
 
 
 ### Custom model
@@ -191,14 +208,15 @@ polaris-gen model_name grid_filename.dat
 ```
 where `model_name` is the name of the model in the dictionary of `model.py`.
 
-**Hint**: For any changes in the files, the user has to recompile PolarisTools with:
-```bash
-./compile.sh -t
-```
-or if compiled without the script:
-```
-python3 tools/setup.py install --user &>/dev/null
-```
+> [!NOTE]
+> For any changes in the files, the user has to recompile PolarisTools with:
+> ```bash
+> ./compile.sh -t
+> ```
+> or if compiled without the script:
+> ```
+> python3 tools/setup.py install --user &>/dev/null
+> ```
 
 
 ### Convert a grid file
