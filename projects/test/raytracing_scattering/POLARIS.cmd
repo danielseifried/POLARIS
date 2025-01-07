@@ -56,3 +56,21 @@
     <enfsca>    1
 
 </task>
+
+# this simulation should not be used for gitlab CI/CD as it takes some time
+<task> 0
+
+    <cmd>    CMD_DUST_SCATTERING
+
+    <detector_dust_mc nr_pixel = "255*255">    1e-5    1e-3    5    0.00    0.00    4.32e+18
+
+    <source_star nr_photons = "1e10">    0    0    0    2    4500
+    <source_dust nr_photons = "2.1e10">
+
+    <path_grid>    "projects/test/raytracing_scattering/grid_3D_sphere_const_T_m1e-5.dat"
+    <path_out>    "projects/test/raytracing_scattering/dust_mc_nopeel/"
+
+    <peel_off>    0
+    <enfsca>    1
+
+</task>

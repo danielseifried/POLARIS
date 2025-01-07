@@ -1,7 +1,7 @@
 #include <omp.h>
+#include "CommandParser.hpp"
+#include "MathFunctions.hpp"
 
-#include "CommandParser.h"
-#include "MathFunctions.h"
 
 dlist CCommandParser::parseDataString(string data)
 {

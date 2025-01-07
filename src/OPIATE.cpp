@@ -23,7 +23,7 @@
 /* History:   29.11.2016                                                    */
 /****************************************************************************/
 
-#include "OPIATE.h"
+#include "OPIATE.hpp"
 
 /*void OPIATE::formatLine(string &line)
 {
@@ -608,4 +608,238 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
 
     database_counter++;
     return true;
+}
+
+double COpiateDataBase::getGaussA(double temp_gas, double v_turb)
+{
+    double v_th = sqrt(2.0 * con_kB * temp_gas / (list_weight[current_index] * 1e-3 / con_Na));
+    double gauss_a = 1.0 / sqrt(pow(v_th, 2) + pow(v_turb, 2));
+    return gauss_a;
+}
+
+void COpiateDataBase::calcLineBroadening(CGridBasic * grid)
+{
+    long max_cells = grid->getMaxDataCells();
+    
+    cout << CLR_LINE;
+    cout << "-> Calculating line broadening for each grid cell ...     \r" << flush;
+    
+#pragma omp parallel for schedule(dynamic)
+    for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
+    {
+        cell_basic * cell = grid->getCellFromIndex(i_cell);
+
+        // Get necessary quantities from the current cell
+        double temp_gas = grid->getGasTemperature(*cell);
+        double turbulent_velocity = grid->getTurbulentVelocity(cell);
+
+        // Set gauss_a for each transition only once
+        grid->setGaussA(cell, getGaussA(temp_gas, turbulent_velocity));
+    }
+    
+    cout << CLR_LINE;
+}
+
+double COpiateDataBase::getProjCellVelocityInterp(const Vector3D & tmp_pos,
+                                    const Vector3D & dir_map_xyz,
+                                    const VelFieldInterp & vel_field_interp)
+{
+    double cell_velocity = 0;
+
+    // Get the velocity in the photon direction of the current position
+    if(vel_field_interp.vel_field.size() > 0 && !vel_field_interp.zero_vel_field)
+    {
+        // Get velocity from grid cell with interpolation
+        Vector3D rel_pos = tmp_pos - vel_field_interp.start_pos;
+        cell_velocity = vel_field_interp.vel_field.getValue(rel_pos.length());
+    }
+    return cell_velocity;
+}
+
+uint COpiateDataBase::getIndex(uint op_id) const
+{
+    uint N = max_ids;
+    uint min = 0, max = N - 1;
+
+    if(op_id < list_IDs[0] || op_id > list_IDs[max])
+        return MAX_UINT;
+
+    while(max - min > 1)
+    {
+        uint i = min + (max - min) / 2;
+        if(list_IDs[i] >= op_id)
+            max = i;
+        else
+            min = i;
+    }
+
+    if(list_IDs[min] == op_id)
+        return min;
+
+    uint lower = min - 1;
+    uint upper = min + 1;
+
+    if(lower == MAX_UINT)
+        lower = 0;
+
+    if(upper >= max_ids)
+        upper = max_ids - 1;
+
+    if(list_IDs[lower] == op_id)
+        return lower;
+
+    if(list_IDs[upper] == op_id)
+        return upper;
+
+    return min;
+}
+
+void COpiateDataBase::getMatrices(CGridBasic * grid,
+                                const photon_package * pp,
+                                uint i_spec,
+                                uint i_trans,
+                                double velocity,
+                                const LineBroadening & line_broadening,
+                                const MagFieldInfo & mag_field_info,
+                                StokesVector * line_emissivity,
+                                Matrix2D * line_absorption_matrix) const
+{
+    double emission = 0.0;
+    double absorption = 0.0;
+    
+    uint op_id=grid->getOpiateID(pp);
+    uint index = getIndex(op_id);
+    
+    // Reset absorption matrix and emissivity
+    line_absorption_matrix->resize(4, 4);
+    *line_emissivity = 0;
+            
+    if(index!=MAX_UINT)
+    {
+        if(has_abs_data==true)
+            absorption = mat_absorption(index,current_index)*line_broadening.gauss_a;
+
+        if(has_emi_data==true)
+            emission = mat_emissivity(index,current_index)*line_broadening.gauss_a;
+    }
+
+    // Calculate the line matrix from rotation polarization matrix and line shape
+    // getGaussLineMatrix(grid, pp, velocity, line_absorption_matrix);
+    double line_amplitude = exp(-(pow(velocity, 2) * pow(line_broadening.gauss_a, 2))) / PIsq;
+    
+    // Only diagonal without polarization rotation matrix elements
+    for(uint i = 0; i < 4; i++)
+    {
+        line_absorption_matrix->setValue(i, i, line_amplitude);
+    }
+
+    // Calculate the Emissivity of the gas particles in the current cell
+    *line_emissivity = *line_absorption_matrix * StokesVector(emission, 0, 0, 0);
+
+    // Calculate the line matrix from rotation polarization matrix and line shape
+    *line_absorption_matrix *= absorption;
+}
+
+uint COpiateDataBase::getMaxSpecies()
+{
+    return max_species;
+}
+
+double COpiateDataBase::getFrequency(uint pos)
+{
+    return list_freq[pos];
+}
+
+bool COpiateDataBase::findIndexByName(string name)
+{
+    for(uint i = 0; i < list_names.size(); i++)
+    {
+        if(name.compare(list_names[i]) == 0)
+        {
+            current_index = i;
+            return true;
+        }
+    }
+
+    cout << CLR_LINE;
+    cout << "\nERROR: A species by the name of \"" << name
+            << "\" is not listed in the loaded OPIATE databases!              \n";
+    return false;
+}
+
+string COpiateDataBase::getCurrentName()
+{
+    return list_names[current_index];
+}
+
+bool COpiateDataBase::readEmissivityData(string filename)
+{
+    path_emi=filename;
+    return readFitsData(filename, mat_emissivity);
+}
+
+bool COpiateDataBase::readAbsorptionData(string filename)
+{
+    path_abs=filename;
+    return readFitsData(filename, mat_absorption);
+}
+
+double COpiateDataBase::getCurrentFrequency()
+{
+    return list_freq[current_index];
+}
+
+double COpiateDataBase::getMolecularWeight()
+{
+    return list_weight[current_index];
+}
+
+bool COpiateDataBase::initVelChannels(uint nr_of_channels, double max_vel)
+{
+    if(velocity_channel != 0)
+    {
+        delete[] velocity_channel;
+        velocity_channel = 0;
+    }
+
+    nr_of_velocity_channels = nr_of_channels;
+    max_velocity = max_vel;
+
+    velocity_channel = new double[nr_of_velocity_channels];
+
+    if(nr_of_velocity_channels > 1)
+    {
+        for(uint i = 0; i < nr_of_velocity_channels; i++)
+        {
+            velocity_channel[i] =
+                2 * (float)i / ((float)nr_of_velocity_channels - 1) * max_velocity - max_velocity;
+        };
+    }
+    else if(nr_of_velocity_channels == 1)
+    {
+        velocity_channel[0] = 0;
+    }
+    else
+    {
+        cout << CLR_LINE;
+        cout << "\nERROR: Number of velocity channels is not larger than zero!                 \n";
+        return false;
+    }
+
+    return true;
+}
+
+double COpiateDataBase::getVelocityChannel(uint vch)
+{
+    return velocity_channel[vch];
+}
+
+uint COpiateDataBase::getNrOfVelChannels()
+{
+    return nr_of_velocity_channels;
+}
+
+double COpiateDataBase::getMaxVelocity()
+{
+    return max_velocity;
 }
