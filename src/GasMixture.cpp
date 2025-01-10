@@ -17,10 +17,19 @@ bool CGasMixture::updateLevelPopulation(CGridBasic * grid, photon_package * pp, 
 }
 
 bool CGasMixture::updateZeemanLevelPopulation(CGridBasic * grid,
-                                 photon_package * pp,
-                                 uint i_species,
-                                 uint i_line,
-                                 double * sublvl_fraction)
+                                              cell_basic * cell,
+                                              uint i_species,
+                                              uint i_line,
+                                              double * sublvl_fraction)
+{
+    return true;
+}
+
+bool CGasMixture::updateZeemanLevelPopulation(CGridBasic * grid,
+                                              photon_package * pp,
+                                              uint i_species,
+                                              uint i_line,
+                                              double * sublvl_fraction)
 {
     return updateZeemanLevelPopulation(grid, pp->getPositionCell(), i_species, i_line, sublvl_fraction);
 }
