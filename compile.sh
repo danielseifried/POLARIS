@@ -198,6 +198,7 @@ function install_polaris()
                 -DCMAKE_PREFIX_PATH="${current_path}/lib" \
                 -DCMAKE_INSTALL_PREFIX="${current_path}" \
                 -DBUILD_SHARED_LIBS="ON" \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
                 -DCMAKE_C_COMPILER="$CC" \
                 -DCMAKE_CXX_COMPILER="$CXX" \
                 -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
@@ -211,6 +212,7 @@ function install_polaris()
                 -DCMAKE_PREFIX_PATH="${current_path}/lib" \
                 -DCMAKE_INSTALL_PREFIX="${current_path}" \
                 -DBUILD_SHARED_LIBS="ON" \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
                 -DCMAKE_C_COMPILER="$CC" \
                 -DCMAKE_CXX_COMPILER="$CXX" \
                 -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
