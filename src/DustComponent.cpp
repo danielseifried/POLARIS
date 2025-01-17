@@ -4673,6 +4673,13 @@ long double * CDustComponent::getStochasticProbability(uint a, const spline & ab
             for(uint j = 0; j < i; j++)
                 X_vec[i] += (long double)B_mat(i, j) * X_vec[j] / caloA;
         }
+
+        // rescale to prevent infinities if propability increases drastically
+        if(X_vec[i] > 1e10)
+        {
+            for(uint j = 0; j <= i; j++)
+                X_vec[j] /= X_vec[i];
+        }
     }
 
     // Init sum for normalization
