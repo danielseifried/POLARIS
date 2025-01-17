@@ -13,7 +13,7 @@ using namespace std;
 
 // Header and Version of POLARIS
 #define PROG_ID "POLARIS: POLArized RadIation Simulator"
-#define VERS_ID "           Version 4.13.00            "
+#define VERS_ID "           Version 4.13.01            "
 #define COPY_ID "   Copyright (C) 2018 Stefan Reissl   "
 
 // Flags to activate WINDOWS support, some DEBUG messages, BENCHMARK settings
