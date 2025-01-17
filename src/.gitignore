@@ -1,6 +1,7 @@
 *.o
 
 .directory
+.cache/
 .clang-format
 .deps
 .tags*
