@@ -33,7 +33,7 @@
 	<source_star nr_photons = "1e7">	0	0	0	0.9	4000
 	
 	# include dust as source to consider self-scattering (optionally)
-	# HINT: a temperature simulation has to be performed first
+	# INFO: a temperature simulation has to be performed first
 	# and the grid file containing the dust temperature has to be used (see below)
 	# <source_dust nr_photons = "1e8">
 

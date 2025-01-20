@@ -247,9 +247,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
             if(dr == 0)
             {
-                cout << ERROR_LINE << "Cannot write to:\n No step size in r-direction of "
-                        "spherical grid!"
-                     << endl;
+                cout << ERROR_LINE << "No step size in r-direction of spherical grid!" << endl;
                 return false;
             }
 
@@ -267,9 +265,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
                 if(dph == 0)
                 {
-                    cout << ERROR_LINE << "Cannot write to:\n No step size in phi-direction "
-                            "of spherical grid!"
-                         << endl;
+                    cout << ERROR_LINE << "No step size in phi-direction of spherical grid!" << endl;
                     return false;
                 }
 
@@ -287,15 +283,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
                 if(dth == 0)
                 {
-                    cout << ERROR_LINE << "Cannot write to:\n No step size in theta-direction "
-                            "of spherical grid!"
-                         << endl
-                         << "\nHINT: Update of POLARIS v4.02 includes variable phi "
-                            "spacing."
-                         << endl
-                         << "      Please look in the manual or use \"polaris-gen ... "
-                            "--update\""
-                         << endl;
+                    cout << ERROR_LINE << "No step size in theta-direction of spherical grid!" << endl;
                     return false;
                 }
 

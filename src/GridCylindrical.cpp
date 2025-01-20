@@ -393,13 +393,8 @@ bool CGridCylindrical::loadGridFromBinaryFile(parameters & param, uint _data_len
 
                 if(dz == 0)
                 {
-                    cout << ERROR_LINE << "No step size in z-direction of cylindrical grid!" << endl
-                         << "\nHINT: Update of POLARIS v4.02 includes variable phi "
-                            "spacing."
-                         << endl
-                         << "      Please look in the manual or use \"polaris-gen ... "
-                            "--update\""
-                         << endl;
+                    cout << ERROR_LINE << "No step size in z-direction of cylindrical grid!" << endl;
+                    cout << "Please look in the manual" << endl;
                     return false;
                 }
 

@@ -1478,10 +1478,10 @@ bool CGridBasic::writeMidplaneFits(string data_path, parameters & param, uint bi
                 plt_rad_field1 = true;
 
                 if(!spec_length_as_vector)
-                    cout << NOTE_LINE << "The full radiation field can only be saved if it was used by the "
-                            "simulation\n"
-                            "      (when saving the radiation field in the grid or calculating RATs)!"
-                         << endl;
+                {
+                    cout << INFO_LINE << "The full radiation field can only be saved if it was used by the simulation" << endl;
+                    cout << "  (when saving the radiation field in the grid or calculating RATs)!" << endl;
+                }
                 break;
 
             case 3:
@@ -5391,7 +5391,7 @@ uint CGridBasic::CheckSynchrotron(parameters & param)
     {
         if(data_pos_T_e != MAX_UINT)
         {
-            cout << NOTE_LINE << "Grid contains a electron temperature component!" << endl;
+            cout << INFO_LINE << "Grid contains a electron temperature component!" << endl;
             cout << "      This component is currently ignored!          " << endl;
         }
     }
@@ -5504,7 +5504,7 @@ uint CGridBasic::CheckTemp(parameters & param, uint & tmp_data_offset)
             data_ids.push_back(GRIDgas_temp);
             tmp_data_offset++;
             cout << SEP_LINE;
-            cout << NOTE_LINE << "No gas temperature found in grid." << endl;
+            cout << INFO_LINE << "No gas temperature found in grid." << endl;
             cout << "    Add entry and set gas temperature to dust temperature after "
                     "calculation!"
                     << endl;

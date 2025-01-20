@@ -785,11 +785,11 @@ CDetector * CPipeline::createDetectorList(parameters & param, CDustMixture * dus
         detector[pos].setOrientation(axis1, axis2, rot_angle_1, rot_angle_2);
         /*if(param.getPeelOff() && param.getNrOfDustPhotons() != 0)
         {
-            cout << NOTE_LINE << "Peel-off technique disabled for self-scattering of dust grain
+            cout << INFO_LINE << "Peel-off technique disabled for self-scattering of dust grain
         emission!" << endl; param.setPeelOff(false);
         }*/
         if(param.getPeelOff() && param.getAcceptanceAngle() > 1.0)
-            cout << NOTE_LINE << "Peel-off technique needs no acceptance angle!" << endl;
+            cout << INFO_LINE << "Peel-off technique needs no acceptance angle!" << endl;
         else
             detector[pos].setAcceptanceAngle(param.getAcceptanceAngle() * PI / 180.0);
     }
@@ -824,7 +824,7 @@ void CPipeline::createSourceLists(parameters & param, CDustMixture * dust, CGrid
 
         if(param.getNrOfBackgroundSources() == 0)
         {
-            cout << NOTE_LINE << "No background source was defined!" << endl;
+            cout << INFO_LINE << "No background source was defined!" << endl;
             cout << "- Default background source initiated." << endl;
             cout << SEP_LINE;
 

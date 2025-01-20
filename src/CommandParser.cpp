@@ -1225,9 +1225,7 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
         // HINT: +1 because the gas species id is not saved in the gas_species list!
         if(values.size() != (NR_OF_LINE_DET + 1))
         {
-            cout << ERROR_LINE << "Number of parameters in line detector could not be "
-                    "recognized!"
-                 << endl;
+            cout << ERROR_LINE << "Number of parameters in line detector could not be recognized!" << endl;
             return false;
         }
 
@@ -2517,9 +2515,7 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
         }
         else if(P_l < 0)
         {
-            cout << NOTE_LINE << "Chosen polarization of source star is less than 0 (now set "
-                    "to 0)!"
-                 << endl;
+            cout << INFO_LINE << "Chosen polarization of source star is less than 0 (now set to 0)!" << endl;
             values[5] = 0;
             values[6] = 0;
         }
@@ -2582,9 +2578,7 @@ bool CCommandParser::parseLine(parameters * param, string cmd, string data, uint
         }
         else if(P_l < 0)
         {
-            cout << NOTE_LINE << "Chosen polarization of source star is less than 0 (now set "
-                    "to 0)!"
-                 << endl;
+            cout << INFO_LINE << "Chosen polarization of source star is less than 0 (now set to 0)!" << endl;
             values[6] = 0;
             values[7] = 0;
         }

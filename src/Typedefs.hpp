@@ -402,11 +402,10 @@ using namespace std;
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-#define NOTE_LINE      (BOLDBLUE "NOTE: " RESET)
-#define TIP_LINE       (BOLDGREEN "TIP: " RESET)
-#define IMPORTANT_LINE (BOLDMAGENTA "IMPORTANT: " RESET)
-#define WARNING_LINE   (BOLDYELLOW "WARNING: " RESET)
-#define ERROR_LINE     (BOLDRED "ERROR: " RESET)
+#define DEBUG_LINE   (BOLDBLUE "DEBUG: " RESET)
+#define INFO_LINE    (BOLDGREEN "INFO: " RESET)
+#define WARNING_LINE (BOLDYELLOW "WARNING: " RESET)
+#define ERROR_LINE   (BOLDRED "ERROR: " RESET)
 
 // data types
 typedef unsigned int uint;

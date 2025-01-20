@@ -260,7 +260,7 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
                     "temperatures"
                  << endl;
             if(param.getStochasticHeatingMaxSize() > 0)
-                cout << NOTE_LINE << "Stochastic heating was already calculated. This "
+                cout << INFO_LINE << "Stochastic heating was already calculated. This "
                         "should not happen!"
                      << endl;
         }
@@ -395,11 +395,9 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
                  << param.getStochasticHeatingMaxSize() << " [m]" << endl;
         else if(param.getStochasticHeatingMaxSize() > 0 && param.getSaveRadiationField())
         {
-            cout << NOTE_LINE << "Stochastic heating and saving the radiation field is chosen." << endl
-                 << "      The radiation field will be saved and stochastic heating "
-                    "should be set"
-                 << endl
-                 << "      with CMD_DUST_EMISSION simulation." << endl;
+            cout << INFO_LINE << "Stochastic heating and saving the radiation field is chosen." << endl;
+            cout << "  The radiation field will be saved and stochastic heating should be set" << endl;
+            cout << "  with CMD_DUST_EMISSION simulation." << endl;
         }
     }
 
@@ -1607,7 +1605,7 @@ void CDustMixture::scatter(CGridBasic * grid, photon_package * pp, CRandomGenera
                 *pp->getStokesVector() *= getCscaMean(grid, *pp) / getCextMean(grid, *pp);
             else
             {
-                cout << NOTE_LINE << "Mean cross section for extinction is zero or negative!" << endl;
+                cout << INFO_LINE << "Mean cross section for extinction is zero or negative!" << endl;
                 pp->getStokesVector()->clear();
             }
         }
@@ -1710,7 +1708,7 @@ void CDustMixture::getEscapePhoton(CGridBasic * grid,
             *pp_escape->getStokesVector() *= getCscaMean(grid, *pp) / getCextMean(grid, *pp);
         else
         {
-            cout << NOTE_LINE << "Mean cross section for extinction is zero or negative!" << endl;
+            cout << INFO_LINE << "Mean cross section for extinction is zero or negative!" << endl;
             pp_escape->getStokesVector()->clear();
         }
     }

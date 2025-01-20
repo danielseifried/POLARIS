@@ -1409,8 +1409,8 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
 
     if(max_rel_diff > 0.5) // arbitrary limit
     {
-        cout << WARNING_LINE << "Number of scattering angles might be too low (max rel diff = " << max_rel_diff << ").\n"
-             << "         If required, increase 'NANG' or decrease 'MAX_MIE_SCA_REL_DIFF' (for x < 100) in src/Typedefs.h and recompile!" << endl;
+        cout << WARNING_LINE << "Number of scattering angles might be too low (max rel diff = " << max_rel_diff << ")." << endl;
+        cout << "  If required, increase 'NANG' or decrease 'MAX_MIE_SCA_REL_DIFF' (for x < 100) in src/Typedefs.h and recompile!" << endl;
     }
 
     return true;

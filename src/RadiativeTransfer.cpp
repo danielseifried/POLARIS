@@ -1103,7 +1103,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
     if(global_iteration_counter == MC_LVL_POP_MAX_GLOBAL_ITER)
     {
         cout << CLR_LINE;
-        cout << NOTE_LINE << "Global iteration not reached! Continue, but results might be wrong!" << endl;
+        cout << INFO_LINE << "Global iteration not reached! Continue, but results might be wrong!" << endl;
     }
 
     // Format prints
@@ -1820,9 +1820,8 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
         if(peel_off && tm_source->getID() == SRC_DUST)
         {
             cout << CLR_LINE;
-            cout << NOTE_LINE << "MC simulations with dust source and peel-off include only "
-                    "the scattered radiation.\n"
-                 << "Add results from Raytracing simulations for full dust emission!" << endl;
+            cout << INFO_LINE << "MC simulations with dust source and peel-off include only the scattered radiation." << endl;
+            cout << "  Add results from Raytracing simulations for full dust emission!" << endl;
         }
     }
 
@@ -2170,10 +2169,10 @@ bool CRadiativeTransfer::calcSyncMapsViaRaytracing(parameters & param)
             if(tracer[i_det]->getSubpixelWarning())
             {
                 cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
-                cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
+                cout << "  if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << INFO_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
         }
     }
 
@@ -2661,10 +2660,10 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
             if(tracer[i_det]->getSubpixelWarning())
             {
                 cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
-                cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
+                cout << "  if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << INFO_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
         }
     }
 
@@ -3116,10 +3115,10 @@ bool CRadiativeTransfer::calcOPIATEMapsViaRaytracing(parameters& param)
         if(tracer[i_det]->getSubpixelWarning())
         {
             cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
-            cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
+            cout << "  if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
         }
         // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-        //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+        //     cout << INFO_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
     }
 
     cout << CLR_LINE;
@@ -3248,10 +3247,10 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
             if(tracer[i_det]->getSubpixelWarning())
             {
                 cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
-                cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
+                cout << "  if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << INFO_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
 
             // Increment index for line RT
             i_det++;

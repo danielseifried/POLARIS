@@ -514,8 +514,10 @@ void CGasMixture::printParameters(parameters & param, CGridBasic * grid)
     cout << SEP_LINE;
     cout << "- Velocity field                : ";
     if(getKeplerStarMass() > 0)
-        cout << "kepler rotation, M_star: " << getKeplerStarMass() << " [M_sun]\n"
-             << "\nHINT: only available with one central star" << endl;
+    {
+        cout << "kepler rotation, M_star: " << getKeplerStarMass() << " [M_sun]" << endl;
+        cout << INFO_LINE << "Only available with one central star" << endl;
+    }
     else if(grid->isVelocityFieldAvailable())
         cout << "taken from grid" << endl;
     else

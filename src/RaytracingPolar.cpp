@@ -239,15 +239,9 @@ bool CRaytracingPolar::initPolarGridParameter()
 
     if(npix_total > MAX_RT_RAYS)
     {
-        cout << NOTE_LINE << "Very high amount of rays required for DUST EMISSION "
-                "simulation with polar raytracing grid!"
-                << endl
-                << "      Problem: The simulation may take a long time to process all "
-                "rays."
-                << endl
-                << "      Solutions: Decrease max subpixel level or use the cartesian "
-                "raytracing grid."
-                << endl;
+        cout << INFO_LINE << "Very high amount of rays required for DUST EMISSION simulation with polar raytracing grid!" << endl;
+        cout << "  Problem: The simulation may take a long time to process all rays." << endl;
+        cout << "  Solution: Decrease max subpixel level or use the cartesian raytracing grid." << endl;
     }
 
     return true;
@@ -334,13 +328,13 @@ bool CRaytracingPolar::postProcessing()
     if(map_pixel_x * map_pixel_y > npix_total)
     {
         detector->setProcessingMethod(INTERP);
-        cout << "HINT: Using 'interpolation' method to post process from polar to cartesian detector" << endl;
+        cout << INFO_LINE << "Using 'interpolation' method to post process from polar to cartesian detector" << endl;
         return postProcessingUsingInterpolation();
     }
     else
     {
         detector->setProcessingMethod(NEAREST);
-        cout << "HINT: Using 'nearest' method to post process from polar to cartesian detector" << endl;
+        cout << INFO_LINE << "Using 'nearest' method to post process from polar to cartesian detector" << endl;
         return postProcessingUsingNearest();
     }
 
