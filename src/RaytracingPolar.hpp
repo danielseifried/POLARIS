@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRAYTRACING_POLAR_H
+#define CRAYTRACING_POLAR_H
 
 #include "Detector.hpp"
 #include "GasSpecies.hpp"
@@ -11,13 +17,9 @@
 #include "Typedefs.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef RAYTRACING_POLAR_H
-#define RAYTRACING_POLAR_H
-
 class CRaytracingPolar : public CRaytracingBasic
 {
-  public:
+public:
     CRaytracingPolar(CGridBasic * _grid)
     {
         npix_ph = 0;
@@ -101,7 +103,7 @@ class CRaytracingPolar : public CRaytracingBasic
 
     long getNpix();
 
-  private:
+private:
     void getCoordinateIDs(uint i_pix, uint & rID, uint & phID);
 
     double getRingElementArea(uint rID);
@@ -112,4 +114,4 @@ class CRaytracingPolar : public CRaytracingBasic
     StokesVector *** tmpStokes;
 };
 
-#endif
+#endif /* CRAYTRACING_POLAR_H */

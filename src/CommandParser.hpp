@@ -1,10 +1,13 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CCOMMAND_PARSER_H
+#define CCOMMAND_PARSER_H
+
 #include "Parameters.hpp"
 #include "Typedefs.hpp"
-
-
-#ifndef COMMAND_PARSER_H
-#define COMMAND_PARSER_H
 
 #define id_tsk 1
 #define id_cmn 2
@@ -14,7 +17,7 @@ typedef vector<parameters> parameter_list;
 
 class CCommandParser
 {
-  public:
+public:
     CCommandParser(void)
     {
         cmd_filename = "";
@@ -45,16 +48,22 @@ class CCommandParser
     }
 
     bool checkPixel(dlist & values, dlist nr_of_pixel, bool nsides_as_pixel = false);
+
     bool checkVelChannels(dlist & values, dlist nr_of_channels);
 
     dlist parseValues(string & str);
+
     void formatLine(string & line);
+
     bool parse();
+
     bool parseLine(parameters * param, string cmd, string data, uint id);
+
     dlist parseDataString(string data);
+
     string seperateString(string & str);
 
-  private:
+private:
     int tag;
     string cmd_filename;
     // parameter param;
@@ -69,4 +78,4 @@ class CCommandParser
     }
 };
 
-#endif
+#endif /* CCOMMAND_PARSER_H */

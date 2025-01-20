@@ -1,5 +1,9 @@
-#include "MathProbList.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "MathProbList.hpp"
 
 uint prob_list::size()
 {
@@ -28,7 +32,7 @@ void prob_list::setValue(uint pos, double _x)
 #ifdef DEBUG
     if(x == 0)
     {
-        cout << "\nERROR: Spline was not initiated!" << endl;
+        cout << ERROR_LINE << "Spline was not initiated!" << endl;
         return;
     }
 #endif
@@ -59,7 +63,7 @@ void prob_list::normalize(double integValue)
 prob_list operator-(prob_list & list1, prob_list & list2)
 {
     if(list1.size() != list2.size())
-        cout << "\nERROR: Probability lists have different lengths!";
+        cout << ERROR_LINE << "Probability lists have different lengths!";
     prob_list diff_list(list1.size());
 
     for(uint i = 0; i < list1.size(); i++)

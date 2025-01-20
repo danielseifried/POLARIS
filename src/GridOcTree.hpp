@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGRID_OCTREE_H
+#define CGRID_OCTREE_H
 
 #include "GridBasic.hpp"
 #include "RandomGenerator.hpp"
@@ -8,16 +14,9 @@
 #include "CellOcTree.hpp"
 #include "Photon.hpp"
 
-
-#ifndef CGRID_OCTREE_H
-#define CGRID_OCTREE_H
-
-
-class parameters;
-
 class CGridOcTree : public CGridBasic
 {
-  public:
+public:
     CGridOcTree(void)
     {
         basic_path = 0;
@@ -250,7 +249,7 @@ class CGridOcTree : public CGridBasic
                               string str_magy,
                               string str_magz);
 
-  private:
+private:
     void clear(cell_oc * cell);
     cell_oc * cell_oc_root;
     cell_oc * cell_oc_pos;
@@ -291,4 +290,4 @@ class CGridOcTree : public CGridBasic
     void setRndPositionInCell(photon_package * pp, CRandomGenerator * rand_gen);
 };
 
-#endif
+#endif /* CGRID_OCTREE_H */

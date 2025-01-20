@@ -1,16 +1,17 @@
-#pragma once
-
-#include "Matrix2D.hpp"
-#include "Typedefs.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CVECTOR3D_H
 #define CVECTOR3D_H
 
+#include "Matrix2D.hpp"
+#include "Typedefs.hpp"
 
 class Vector3D
 {
-  public:
+public:
     Vector3D(void)
     {
         x = 0;
@@ -170,8 +171,8 @@ class Vector3D
 
     friend ostream & operator<<(ostream & out, const Vector3D & rhs);
 
-  private:
+private:
     double x, y, z;
 };
 
-#endif
+#endif /* CVECTOR3D_H */

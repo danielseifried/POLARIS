@@ -1,5 +1,9 @@
-#include "RaytracingCartesian.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RaytracingCartesian.hpp"
 
 bool CRaytracingCartesian::setDustDetector(uint pos,
                                            const parameters & param,

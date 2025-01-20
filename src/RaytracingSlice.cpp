@@ -1,5 +1,9 @@
-#include "RaytracingSlice.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RaytracingSlice.hpp"
 
 bool CRaytracingSlice::setDustDetector(uint pos,
                                        const parameters & param,

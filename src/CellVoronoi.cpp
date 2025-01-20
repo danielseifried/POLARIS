@@ -1,5 +1,9 @@
-#include "CellVoronoi.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "CellVoronoi.hpp"
 
 void cell_vo::initNeighbors(short nr)
 {

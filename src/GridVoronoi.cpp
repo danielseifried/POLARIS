@@ -1,8 +1,11 @@
-#include <vector>
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include <vector>
 #include "GridVoronoi.hpp"
 #include "CellOcTree.hpp"
-
 
 bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 {
@@ -19,7 +22,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
     if(bin_reader.fail())
     {
-        cout << "\nERROR: Cannot load binary Voronoi grid file: \n";
+        cout << ERROR_LINE << "Cannot load binary Voronoi grid file: \n";
         cout << filename << "\n\n";
         return false;
     }
@@ -62,13 +65,13 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
     }
     else
     {
-        cout << "\nERROR: A Voronoi grid requires an ID of \"" << GRID_ID_VOR << "\"!               \n";
+        cout << ERROR_LINE << "A Voronoi grid requires an ID of \"" << GRID_ID_VOR << "\"!               \n";
         return false;
     }
 
     if(max_cells < 4)
     {
-        cout << "\nERROR: A minimum amount of at least four Voronoi cells is required!   "
+        cout << ERROR_LINE << "A minimum amount of at least four Voronoi cells is required!   "
                 "  \n";
         return false;
     }
@@ -120,7 +123,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
         if(tmp_vol == 0)
         {
-            cout << "\nERROR: A Voronoi cell requires a non-zero volume                  "
+            cout << ERROR_LINE << "A Voronoi cell requires a non-zero volume                  "
                     "   \n";
             return false;
         }
@@ -147,7 +150,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
         if(nr_neighbors == 0)
         {
-            cout << "\nWARNING: Voronoi cell nr. " << line_counter + 1
+            cout << WARNING_LINE << "Voronoi cell nr. " << line_counter + 1
                  << " without neighbors!                     \n";
             cout << "           Check your grid for identical cell positions!            "
                     "         \n";
@@ -179,7 +182,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
         if(!stree->addCell(tmp_cell))
         {
-            cout << "\nERROR: Failed attempt to add Voronoi cell to the search tree!     "
+            cout << ERROR_LINE << "Failed attempt to add Voronoi cell to the search tree!     "
                     "                \n";
             cout << "       Voronoi cell center nr. " << line_counter + 1
                  << " outside of grid boundaries!                     \n";
@@ -192,7 +195,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
         if(uint(tmp_cell->getData(data_pos_id)) < 0 ||
            uint(tmp_cell->getData(data_pos_id)) > param.getMaxDustComponentChoice())
         {
-            cout << "\nERROR: Dust ID in grid exceeds maximum number of dust choices "
+            cout << ERROR_LINE << "Dust ID in grid exceeds maximum number of dust choices "
                     "available!   \n";
             return false;
         }
@@ -209,7 +212,7 @@ bool CGridVoronoi::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
     if(max_cells != uint(line_counter))
     {
-        cout << "\nERROR: Amount of read in Voronoi cells (" << uint(line_counter)
+        cout << ERROR_LINE << "Amount of read in Voronoi cells (" << uint(line_counter)
              << ")\n does not match the maximal number (" << max_cells << ") of expected cells!  \n";
         return false;
     }
@@ -245,7 +248,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
     if(max_cells == 0)
     {
-        cout << "\nERROR: Cannot plot Voronoi grid to:\n";
+        cout << ERROR_LINE << "Cannot plot Voronoi grid to:\n";
         cout << path;
         cout << "Not enough Voronoi cells available! \n";
         return false;
@@ -326,7 +329,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
     if(point_fields[0].fail())
     {
-        cout << "\nERROR: Cannot write to:\n " << grid_filename << "          \n";
+        cout << ERROR_LINE << "Cannot write to:\n " << grid_filename << "          \n";
         return false;
     }
 
@@ -336,7 +339,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[1].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << dens_gas_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << dens_gas_filename << "          \n";
             return false;
         }
     }
@@ -347,7 +350,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[2].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << dens_dust_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << dens_dust_filename << "          \n";
             return false;
         }
     }
@@ -358,7 +361,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[3].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << temp_gas_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << temp_gas_filename << "          \n";
             return false;
         }
     }
@@ -369,7 +372,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[4].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << temp_dust_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << temp_dust_filename << "          \n";
             return false;
         }
     }
@@ -380,7 +383,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[5].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << rat_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << rat_filename << "          \n";
             return false;
         }
     }
@@ -391,7 +394,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[6].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << delta_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << delta_filename << "          \n";
             return false;
         }
     }
@@ -402,7 +405,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[7].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << larm_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << larm_filename << "          \n";
             return false;
         }
     }
@@ -413,7 +416,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(point_fields[8].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << mach_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << mach_filename << "          \n";
             return false;
         }
     }
@@ -424,7 +427,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(vec_fields[0].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << mag_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << mag_filename << "          \n";
             return false;
         }
     }
@@ -435,7 +438,7 @@ bool CGridVoronoi::writePlotFiles(string path, parameters & param)
 
         if(vec_fields[1].fail())
         {
-            cout << "\nERROR: Cannot write to:\n " << vel_filename << "          \n";
+            cout << ERROR_LINE << "Cannot write to:\n " << vel_filename << "          \n";
             return false;
         }
     }
@@ -829,7 +832,7 @@ bool CGridVoronoi::saveBinaryGridFile(string filename, ushort id, ushort data_si
 {
     if(max_cells == 0)
     {
-        cout << "\nERROR: Cannot save Voronoi grid file to:\n";
+        cout << ERROR_LINE << "Cannot save Voronoi grid file to:\n";
         cout << filename;
         cout << "Not enough cells available! \n";
         return false;
@@ -839,7 +842,7 @@ bool CGridVoronoi::saveBinaryGridFile(string filename, ushort id, ushort data_si
 
     if(bin_writer.fail())
     {
-        cout << "\nERROR: Cannot open Voronoi grid file: \n";
+        cout << ERROR_LINE << "Cannot open Voronoi grid file: \n";
         cout << filename;
         return false;
     }
@@ -857,7 +860,7 @@ bool CGridVoronoi::saveBinaryGridFile(string filename, ushort id, ushort data_si
     }
     else
     {
-        cout << "\nERROR: Cannot save Voronoi grid file to:\n";
+        cout << ERROR_LINE << "Cannot save Voronoi grid file to:\n";
         cout << filename;
         cout << "A Voronoi grid requires an ID of " << GRID_ID_VOR << "!               \n";
         return false;
@@ -1028,7 +1031,7 @@ bool CGridVoronoi::createArtificialGrid(string path)
 
     if(bin_writer.fail())
     {
-        cout << "\nERROR: Cannot open file: \n";
+        cout << ERROR_LINE << "Cannot open file: \n";
         cout << filename;
         return false;
     }
@@ -1116,7 +1119,7 @@ void CGridVoronoi::printParameters()
 {
     if(max_cells == 0)
     {
-        cout << "\nERROR: No Voronoi cells available! \n";
+        cout << ERROR_LINE << "No Voronoi cells available! \n";
     }
     else
     {
@@ -1210,7 +1213,7 @@ bool CGridVoronoi::positionPhotonInGrid(photon_package * pp)
 
     if(cell == 0)
     {
-        cout << "\nERROR: Photon package cannot be positioned in Voronoi grid!           "
+        cout << ERROR_LINE << "Photon package cannot be positioned in Voronoi grid!           "
                 "             \n";
         return false;
     }
@@ -1367,7 +1370,7 @@ bool CGridVoronoi::goToNextCellBorder(photon_package * pp)
 
     if(pos == pp->getPosition())
     {
-        cout << "\nERROR: Could not transfer photon to the next cell border!   " << endl;
+        cout << ERROR_LINE << "Could not transfer photon to the next cell border!   " << endl;
         return false;
     }
 

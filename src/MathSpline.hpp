@@ -1,16 +1,18 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CMATH_SPLINE_H
+#define CMATH_SPLINE_H
 
 #include "Matrix2D.hpp"
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef CMATH_SPLINE_H
-#define CMATH_SPLINE_H
-
 class spline
 {
-  public:
+public:
     spline()
     {
         N = 0;
@@ -111,7 +113,7 @@ class spline
 
     friend spline operator*(double val, spline & spline2);
 
-  private:
+private:
     uint N;
     double * d;
     double * u;
@@ -123,4 +125,4 @@ class spline
     dlist dx, dy;
 };
 
-#endif
+#endif /* CMATH_SPLINE_H */

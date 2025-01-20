@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRAYTRACING_BASIC_H
+#define CRAYTRACING_BASIC_H
 
 #include "Detector.hpp"
 #include "GasSpecies.hpp"
@@ -10,14 +16,9 @@
 #include "Typedefs.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef RAYTRACING_BASIC_H
-#define RAYTRACING_BASIC_H
-
-
 class CRaytracingBasic
 {
-  public:
+public:
     CRaytracingBasic()
     {
         rt_detector_shape = 0;
@@ -176,7 +177,7 @@ class CRaytracingBasic
 
     double getVelocityChannel(uint vch);
 
-  protected:
+protected:
     uint rt_detector_shape;
     uint dID, sID;
     uint map_pixel_x, map_pixel_y;
@@ -202,4 +203,4 @@ class CRaytracingBasic
     Vector3D ex, ey, ez;
 };
 
-#endif
+#endif /* CRAYTRACING_BASIC_H */

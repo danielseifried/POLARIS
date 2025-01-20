@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "GasMixture.hpp"
 #include "CommandParser.hpp"
-
 
 // This function is based on
 // Mol3d: 3D line and dust continuum radiative transfer code
@@ -428,7 +432,7 @@ bool CGasMixture::createGasSpecies(parameters & param)
             single_species[i_species].getLevelPopType() == POP_LVG) &&
            single_species[i_species].getNrOfCollisionPartner() == 0)
         {
-            cout << "\nERROR: FEP and LVG level population approximations require a gas "
+            cout << ERROR_LINE << "FEP and LVG level population approximations require a gas "
                     "parameters file \n"
                     "       with collisional data (e.g. from Leiden Atomic and Molecular "
                     "Database)"
@@ -532,7 +536,7 @@ void CGasMixture::printParameters(parameters & param, CGridBasic * grid)
 
         if(single_species[i_species].getNrOfSpectralLines() == 0)
         {
-            cout << "\nWARNING: No spectral lines selected!" << endl;
+            cout << WARNING_LINE << "No spectral lines selected!" << endl;
             return;
         }
 
@@ -573,7 +577,7 @@ void CGasMixture::printParameters(parameters & param, CGridBasic * grid)
                 cout << "LVG (Deguchi & Watson 1984)" << endl;
                 break;
             default:
-                cout << "\nERROR: UNKNOWN!" << endl;
+                cout << ERROR_LINE << "UNKNOWN!" << endl;
         }
 
         if(isZeemanSplit(i_species))

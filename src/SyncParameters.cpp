@@ -1,5 +1,9 @@
-#include "SyncParameters.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "SyncParameters.hpp"
 
 void syn_param::scale()
 {

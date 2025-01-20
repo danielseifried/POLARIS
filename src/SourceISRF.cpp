@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "SourceISRF.hpp"
 #include "CommandParser.hpp"
-
 
 bool CSourceISRF::initSource(uint id, uint max, bool use_energy_density)
 {
@@ -78,7 +82,7 @@ bool CSourceISRF::setParameterFromFile(parameters & param, uint p)
 
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open file: " << filename << endl;
+        cout << ERROR_LINE << "Cannot open file: " << filename << endl;
         return false;
     }
 
@@ -100,7 +104,7 @@ bool CSourceISRF::setParameterFromFile(parameters & param, uint p)
         {
             if(value.size() != 3)
             {
-                cout << "\nERROR: In ISRF file:\n" << filename << endl;
+                cout << ERROR_LINE << "In ISRF file:\n" << filename << endl;
                 cout << "Wrong amount of values in line " << line_counter + 1 << "!" << endl;
                 return false;
             }
@@ -123,7 +127,7 @@ bool CSourceISRF::setParameterFromFile(parameters & param, uint p)
             }
             else
             {
-                cout << "\nERROR: In ISRF file:\n" << filename << endl;
+                cout << ERROR_LINE << "In ISRF file:\n" << filename << endl;
                 cout << "Wrong amount of values in line " << line_counter + 1 << "!" << endl;
                 return false;
             }

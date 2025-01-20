@@ -1,5 +1,9 @@
-#include "CellOcTree.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "CellOcTree.hpp"
 
 void cell_oc::setXmin(double _x_min)
 {

@@ -1,5 +1,9 @@
-#include "RaytracingPolar.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RaytracingPolar.hpp"
 
 bool CRaytracingPolar::setDustDetector(uint pos,
                                        const parameters & param,
@@ -216,7 +220,7 @@ bool CRaytracingPolar::initPolarGridParameter()
     double max_len = 0.5 * sqrt(sidelength_x * sidelength_x + sidelength_y * sidelength_y);
     if(!grid->getPolarRTGridParameter(max_len, pixel_width, max_subpixel_lvl, listR, npix_r, npix_ph))
     {
-        cout << "\nERROR: Polar detector can only be used with spherical or "
+        cout << ERROR_LINE << "Polar detector can only be used with spherical or "
                 "cylindrical grids!";
         return false;
     }
@@ -235,7 +239,7 @@ bool CRaytracingPolar::initPolarGridParameter()
 
     if(npix_total > MAX_RT_RAYS)
     {
-        cout << "\nHINT: Very high amount of rays required for DUST EMISSION "
+        cout << NOTE_LINE << "Very high amount of rays required for DUST EMISSION "
                 "simulation with polar raytracing grid!"
                 << endl
                 << "      Problem: The simulation may take a long time to process all "
@@ -349,7 +353,7 @@ bool CRaytracingPolar::postProcessingUsingNearest()
     ullong per_counter = 0;
     float last_percentage = 0;
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(int i_pix = 0; i_pix < npix_total; i_pix++)
     {
         photon_package pp = photon_package(nr_spectral_bins * nr_extra);
@@ -360,7 +364,7 @@ bool CRaytracingPolar::postProcessingUsingNearest()
         double cx = 0, cy = 0;
 
         // Increase counter used to show progress
-#pragma omp atomic update
+        #pragma omp atomic update
         per_counter++;
 
         // Calculate percentage of total progress per source
@@ -370,7 +374,7 @@ bool CRaytracingPolar::postProcessingUsingNearest()
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Interpolating from polar grid to detector map: " << percentage
                         << " [%]            \r" << flush;
@@ -418,7 +422,7 @@ bool CRaytracingPolar::postProcessingUsingInterpolation()
     for(uint i_r = 0; i_r < npix_r; i_r++)
         r_center_pos.push_back(0.5 * (listR[i_r] + listR[i_r + 1]));
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(int i_pix = 0; i_pix < int(map_pixel_x * map_pixel_y); i_pix++)
     {
         photon_package pp = photon_package(nr_spectral_bins * nr_extra);
@@ -432,7 +436,7 @@ bool CRaytracingPolar::postProcessingUsingInterpolation()
         double cx = 0, cy = 0;
 
         // Increase counter used to show progress
-#pragma omp atomic update
+        #pragma omp atomic update
         per_counter++;
 
         // Calculate percentage of total progress per source
@@ -442,7 +446,7 @@ bool CRaytracingPolar::postProcessingUsingInterpolation()
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Interpolating from polar grid to detector map: " << percentage
                         << " [%]            \r" << flush;

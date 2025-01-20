@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "MathFunctions.hpp"
 #include "Faddeeva.hh"
-
 
 bool CMathFunctions::isPowerOfTwo(int num)
 {
@@ -1458,7 +1462,7 @@ double CMathFunctions::findRootBrent(double a, double b, double (*func)(double, 
     fb = func(sb, args);
 
     if(fa * fb > 0.0) {
-        cout << "\nERROR: No root found. f(a) and f(b) must have different signs." << endl;
+        cout << ERROR_LINE << "No root found. f(a) and f(b) must have different signs." << endl;
         cout << "f(a) = " << fa << ", f(b) = " << fb << endl;
         for(uint i = 0; i < args.size(); i++) {
             cout << "arg(" << i << ") = " << args[i] << endl;
@@ -1547,7 +1551,7 @@ double CMathFunctions::findRootBrent(double a, double b, double (*func)(double, 
 
     if(iter == maxiter)
     {
-        cout << "\nERROR: No root found. Maximum number of iterations reached." << endl;
+        cout << ERROR_LINE << "No root found. Maximum number of iterations reached." << endl;
         for(uint i = 0; i < args.size(); i++) {
             cout << "arg(" << i << ") = " << args[i] << endl;
         }
@@ -1773,7 +1777,7 @@ bool calcBHMie(double x,
 
     if(nmx >= MAX_MIE_ITERATIONS)
     {
-        cout << "\nERROR: Failure in Mie-scattering calculation (NMX = " << nmx
+        cout << ERROR_LINE << "Failure in Mie-scattering calculation (NMX = " << nmx
                 << " >= MAX_MIE_ITERATIONS = " << MAX_MIE_ITERATIONS << ")" << endl;
         return false;
     }
@@ -1935,7 +1939,7 @@ bool CMathFunctions::calcWVMie(double x,
     double factor = 1e250;
 
     if(x <= MIN_MIE_SIZE_PARAM) {
-        cout << "\nERROR: Mie scattering limit exceeded, current size parameter: " << x << endl;
+        cout << ERROR_LINE << "Mie scattering limit exceeded, current size parameter: " << x << endl;
         return false;
     }
 
@@ -1957,7 +1961,7 @@ bool CMathFunctions::calcWVMie(double x,
     }
 
     if(num > MAX_MIE_ITERATIONS) {
-        cout << "\nERROR: Maximum number of terms : " << MAX_MIE_ITERATIONS << ", number of terms required: " << num << endl;
+        cout << ERROR_LINE << "Maximum number of terms : " << MAX_MIE_ITERATIONS << ", number of terms required: " << num << endl;
         cout << "  increase default value of MAX_MIE_ITERATIONS in src/Typedefs.h" << endl;
         return false;
         // return calcGeometricOptics(x, refractive_index, qext, qabs,
@@ -2082,7 +2086,7 @@ bool CMathFunctions::calcWVMie(double x,
 
         // leaving-the-loop with error criterion
         if(isnan(qext)) {
-            cout << "\nERROR: Qext is not a number" << endl;
+            cout << ERROR_LINE << "Qext is not a number" << endl;
             return false;
         }
 

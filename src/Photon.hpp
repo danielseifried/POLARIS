@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef PHOTONPACKAGE_H
+#define PHOTONPACKAGE_H
 
 #include "CellBasic.hpp"
 #include "MathFunctions.hpp"
@@ -6,13 +12,9 @@
 #include "Typedefs.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef PHOTON_H
-#define PHOTON_H
-
 class photon_package
 {
-  public:
+public:
     photon_package(uint nr_bins = 1)
     {
         // Photon package for dust simulations
@@ -210,7 +212,7 @@ class photon_package
 
     ullong getPhotonID();
 
-  private:
+private:
     Vector3D pos;
     Vector3D backup_pos;
     Vector3D ex; // r-axis, based on O. Fischer (1993)
@@ -235,4 +237,4 @@ class photon_package
     cell_basic * cell_pos;
 };
 
-#endif
+#endif /* PHOTONPACKAGE_H */

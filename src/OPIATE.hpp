@@ -23,24 +23,20 @@
 /* History:   05.12.2016                                                    */
 /****************************************************************************/
 
-#pragma once
+#ifndef OPIATE_H
+#define OPIATE_H
 
 #include <CCfits/CCfits>
-
 #include "CommandParser.hpp"
 #include "GridBasic.hpp"
 #include "Parameters.hpp"
 
-
 using namespace std;
 using namespace CCfits;
 
-#ifndef OPIATE_H
-#define OPIATE_H
-
 class COpiateDataBase
 {
-  public:
+public:
     COpiateDataBase()
     {
         current_index = MAX_UINT;
@@ -159,7 +155,7 @@ class COpiateDataBase
 
     double getMaxVelocity();
 
-  private:
+private:
     class COpiateEntry
     {
       public:
@@ -245,4 +241,4 @@ class COpiateDataBase
     vector < COpiateEntry * > entries;
 };
 
-#endif
+#endif /* OPIATE_H */

@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_LASER_H
+#define CSOURCE_LASER_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,17 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_LASER_H
-#define CSOURCE_LASER_H
-
-
 class CSourceLaser : public CSourceBasic
 {
-  public:
+public:
     CSourceLaser()
     {
         source_id = SRC_LASER;
@@ -35,9 +33,9 @@ class CSourceLaser : public CSourceBasic
 
     void setParameter(parameters & param, uint p);
 
-  protected:
+protected:
     Vector3D dir;
     double wl, sigma_sq, fwhm;
 };
 
-#endif
+#endif /* CSOURCE_LASER_H */

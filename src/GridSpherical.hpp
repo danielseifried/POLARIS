@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGRID_SPHERICAL_H
+#define CGRID_SPHERICAL_H
 
 #include "GridBasic.hpp"
 #include "Typedefs.hpp"
@@ -6,15 +12,9 @@
 #include "CellSpherical.hpp"
 #include "Photon.hpp"
 
-
-#ifndef CGRID_SPHERICAL_H
-#define CGRID_SPHERICAL_H
-
-class parameters;
-
 class CGridSpherical : public CGridBasic
 {
-  public:
+public:
     CGridSpherical(void)
     {
         basic_path = 0;
@@ -282,7 +282,7 @@ class CGridSpherical : public CGridBasic
                                  uint & N_polar_r,
                                  uint *& N_polar_ph);
 
-  private:
+private:
     double Rmin, Rmax;
     uint N_r, N_ph, N_th;
     double log_factorR, log_factorPh, log_factorTh;
@@ -297,4 +297,4 @@ class CGridSpherical : public CGridBasic
     bool isInside(const Vector3D & pos) const;
 };
 
-#endif
+#endif /* CGRID_SPHERICAL_H */

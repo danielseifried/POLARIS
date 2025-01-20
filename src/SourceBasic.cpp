@@ -1,10 +1,14 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "SourceBasic.hpp"
 #include "CommandParser.hpp"
 #include "GridBasic.hpp"
 #include "MathFunctions.hpp"
 #include "Parameters.hpp"
 #include "Photon.hpp"
-
 
 Vector3D CSourceBasic::getPosition()
 {

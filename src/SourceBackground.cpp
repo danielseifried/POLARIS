@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "SourceBackground.hpp"
 #include "CommandParser.hpp"
-
 
 bool CSourceBackground::initSource(uint id, uint max, bool use_energy_density)
 {
@@ -135,7 +139,7 @@ bool CSourceBackground::setParameterFromFile(parameters & param, uint p)
 
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open file:\n" << filename << endl;
+        cout << ERROR_LINE << "Cannot open file:\n" << filename << endl;
         return false;
     }
 
@@ -157,7 +161,7 @@ bool CSourceBackground::setParameterFromFile(parameters & param, uint p)
         {
             if(value.size() != 1)
             {
-                cout << "\nERROR: Wrong amount of values in:\n " << filename << endl;
+                cout << ERROR_LINE << "Wrong amount of values in:\n " << filename << endl;
                 cout << "1 value expected in line " << line_counter + 5 << " !" << endl;
                 return false;
             }
@@ -175,7 +179,7 @@ bool CSourceBackground::setParameterFromFile(parameters & param, uint p)
         {
             if(line_counter > (int)max_len)
             {
-                cout << "\nERROR: To many background values in : " << filename << endl;
+                cout << ERROR_LINE << "To many background values in : " << filename << endl;
                 cout << max_len << " lines expected!" << endl;
                 return false;
             }
@@ -190,7 +194,7 @@ bool CSourceBackground::setParameterFromFile(parameters & param, uint p)
             }
             else
             {
-                cout << "\nERROR: File : " << filename << endl;
+                cout << ERROR_LINE << "File : " << filename << endl;
                 cout << " 5 values in line " << line_counter + 1 << " expected!" << endl;
                 return false;
             }
@@ -199,7 +203,7 @@ bool CSourceBackground::setParameterFromFile(parameters & param, uint p)
 
     if(line_counter + 1 < (int)max_len)
     {
-        cout << "\nERROR: Not enough background values in : " << filename << endl;
+        cout << ERROR_LINE << "Not enough background values in : " << filename << endl;
         cout << max_len << " lines expected!" << endl;
         return false;
     }

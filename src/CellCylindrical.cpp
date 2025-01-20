@@ -1,5 +1,9 @@
-#include "CellCylindrical.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "CellCylindrical.hpp"
 
 void cell_cyl::setRID(uint id)
 {

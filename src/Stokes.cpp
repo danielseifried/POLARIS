@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "Stokes.hpp"
 #include "Vector3D.hpp"
-
 
 double StokesVector::iPol()
 {

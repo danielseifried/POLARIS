@@ -1,26 +1,23 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGRID_VORONOI_H
+#define CGRID_VORONOI_H
 
 #include "GridBasic.hpp"
 #include "Vector3D.hpp"
 #include "CellVoronoi.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef CGRID_VORONOI_H
-#define CGRID_VORONOI_H
-
-
-class parameters;
-class photon_package;
-
 // search tree parameters
 #define MAX_CELLS 31 // max. cells per tree node
 #define MAX_LEVEL 30 // max. tree level
 
-
 class CGridVoronoi : public CGridBasic
 {
-  public:
+public:
     CGridVoronoi(void)
     {
         basic_path = 0;
@@ -223,13 +220,13 @@ class CGridVoronoi : public CGridBasic
 
     void printParameters();
 
-  private:
+private:
     uint pos_counter;
 
     // list of convex hull points
     class h_list
     {
-      public:
+    public:
         h_list()
         {
             id = 0;
@@ -248,11 +245,11 @@ class CGridVoronoi : public CGridBasic
     // search tree class
     class search_tree
     {
-      public:
+    public:
         // list element of for linked Voronoi cell lists
         class list_element
         {
-          public:
+        public:
             list_element()
             {
                 cell = 0;
@@ -266,7 +263,7 @@ class CGridVoronoi : public CGridBasic
         // node object for the search tree
         class tree_node
         {
-          public:
+        public:
             tree_node()
             {
                 first = 0;
@@ -358,7 +355,7 @@ class CGridVoronoi : public CGridBasic
 
             void setBranch(tree_node * b);
 
-          private:
+        private:
             list_element * first;
             list_element * last;
 
@@ -403,7 +400,7 @@ class CGridVoronoi : public CGridBasic
         // find closest cell for given point in the entire tree
         cell_vo * findClosestCell(Vector3D point, cell_basic ** cell_list);
 
-      private:
+    private:
         // check neighboring nodes for shortest distance
         cell_vo * checkNeighboringNodes(tree_node * node,
                                         tree_node * f_node,
@@ -454,4 +451,4 @@ class CGridVoronoi : public CGridBasic
     Vector3D getNeighborCenter(cell_vo * cell, uint nID);
 };
 
-#endif
+#endif /* CGRID_VORONOI_H */

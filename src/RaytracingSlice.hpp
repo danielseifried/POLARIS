@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRAYTRACING_SLICE_H
+#define CRAYTRACING_SLICE_H
 
 #include "Detector.hpp"
 #include "GasSpecies.hpp"
@@ -11,14 +17,9 @@
 #include "Typedefs.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef RAYTRACING_SLICE_H
-#define RAYTRACING_SLICE_H
-
-
 class CRaytracingSlice : public CRaytracingBasic
 {
-  public:
+public:
     CRaytracingSlice(CGridBasic * _grid)
     {
         grid = _grid;
@@ -56,4 +57,4 @@ class CRaytracingSlice : public CRaytracingBasic
     long getNpix();
 };
 
-#endif
+#endif /* CRAYTRACING_SLICE_H */

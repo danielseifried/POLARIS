@@ -1,5 +1,9 @@
-#include "RaytracingHealPix.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RaytracingHealPix.hpp"
 
 bool CRaytracingHealPix::setDustDetector(uint pos,
                                          const parameters & param,

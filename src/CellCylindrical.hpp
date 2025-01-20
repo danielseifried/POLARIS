@@ -1,13 +1,16 @@
-#pragma once
-#include "CellBasic.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CELL_CYLINDRICAL_H
 #define CELL_CYLINDRICAL_H
 
+#include "CellBasic.hpp"
+
 class cell_cyl : public cell_basic
 {
-  public:
+public:
     cell_cyl()
     {
         rID = 0;
@@ -37,8 +40,8 @@ class cell_cyl : public cell_basic
 
     uint getZID() const;
 
-  private:
+private:
     uint rID, phID, zID;
 };
 
-#endif
+#endif /* CELL_CYLINDRICAL_H */

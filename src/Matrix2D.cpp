@@ -1,5 +1,9 @@
-#include "Matrix2D.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "Matrix2D.hpp"
 
 void Matrix2D::clear()
 {
@@ -100,19 +104,19 @@ double Matrix2D::maxElement()
 
 void Matrix2D::setValue(uint i, uint j, double val)
 {
-#pragma omp atomic write
+    #pragma omp atomic write
     m_data[i * m_n + j] = val;
 }
 
 void Matrix2D::addValue(uint i, uint j, double val)
 {
-#pragma omp atomic update
+    #pragma omp atomic update
     m_data[i * m_n + j] += val;
 }
 
 void Matrix2D::addValue(uint k, double val)
 {
-#pragma omp atomic update
+    #pragma omp atomic update
     m_data[k] += val;
 }
 

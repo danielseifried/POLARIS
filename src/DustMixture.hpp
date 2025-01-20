@@ -1,4 +1,11 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CDUST_MIXTURE_H
+#define CDUST_MIXTURE_H
+
 #include "GridBasic.hpp"
 #include "Matrix2D.hpp"
 #include "Typedefs.hpp"
@@ -9,16 +16,9 @@
 #include "Stokes.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef CDUST_MIXTURE_H
-#define CDUST_MIXTURE_H
-
-
-class parameters;
-
 class CDustMixture
 {
-  public:
+public:
     CDustMixture(void)
     {
         single_component = 0;
@@ -209,7 +209,7 @@ class CDustMixture
 
     void getNrOfUniqueScatTheta(uint ** & nr_of_scat_theta, double *** & scat_theta);
 
-  private:
+private:
     CDustComponent * single_component;
     CDustComponent * mixed_component;
 
@@ -232,4 +232,4 @@ class CDustMixture
     spline diff_y; // diff_y as a function of z
 };
 
-#endif
+#endif /* CDUST_MIXTURE_H */

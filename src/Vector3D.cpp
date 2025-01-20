@@ -1,5 +1,9 @@
-#include "Vector3D.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "Vector3D.hpp"
 
 void Vector3D::printValues() const
 {

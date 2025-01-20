@@ -1,5 +1,9 @@
-#include "CellSpherical.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "CellSpherical.hpp"
 
 void cell_sp::setRID(uint id)
 {

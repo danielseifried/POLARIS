@@ -1,15 +1,17 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef STOKESVECTOR_H
+#define STOKESVECTOR_H
 
 #include "Matrix2D.hpp"
 #include "Typedefs.hpp"
 
-#ifndef STOKES_H
-#define STOKES_H
-
-
 class StokesVector
 {
-  public:
+public:
     StokesVector()
     {
         sI = 0;
@@ -188,8 +190,8 @@ class StokesVector
 
     friend StokesVector operator/(const StokesVector & v, double val);
 
-  private:
+private:
     double sI, sQ, sU, sV, sT, sSp;
 };
 
-#endif
+#endif /* STOKESVECTOR_H */

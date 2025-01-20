@@ -1,5 +1,9 @@
-#include "MathInterp.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "MathInterp.hpp"
 
 uint interp::size() const
 {
@@ -18,7 +22,7 @@ void interp::setValue(uint pos, double _x, double _y)
 #ifdef DEBUG
     if(x == 0)
     {
-        cout << "\nERROR: Linear interpolation was not initiated!" << endl;
+        cout << ERROR_LINE << "Linear interpolation was not initiated!" << endl;
         return;
     }
 #endif

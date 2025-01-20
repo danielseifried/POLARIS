@@ -1,7 +1,11 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "RandomGenerator.hpp"
 #include "catch2/catch.hpp"
 #include <algorithm>
-
 
 TEST_CASE("CRandomGenerator::getRND", "[MathFunctions][CRandomGenerator]") {
     CRandomGenerator rng{};

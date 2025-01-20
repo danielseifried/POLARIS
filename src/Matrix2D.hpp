@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef MATRIX2D_H
+#define MATRIX2D_H
 
 #include "Typedefs.hpp"
 
@@ -6,15 +12,11 @@
 // row    -> m (zeile)
 // column |  n (spalte)
 
-
 typedef vector<vector<vector<double> > > Matrix3D;
-
-#ifndef MATRIX2D_H
-#define MATRIX2D_H
 
 class Matrix2D
 {
-  public:
+public:
     Matrix2D()
     {
         m_n = 0;
@@ -159,7 +161,7 @@ class Matrix2D
 
     friend ostream & operator<<(ostream & out, const Matrix2D & mat);
 
-  private:
+private:
     uint m_n; // column
     uint m_m; // row
     uint m_size;
@@ -167,4 +169,4 @@ class Matrix2D
     double * m_data;
 };
 
-#endif
+#endif /* MATRIX2D_H */

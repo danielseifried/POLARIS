@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGAS_SPECIES_H
+#define CGAS_SPECIES_H
 
 #include "Faddeeva.hh"
 #include "GridBasic.hpp"
@@ -9,22 +15,13 @@
 #include "Photon.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef CGAS_SPECIES_H
-#define CGAS_SPECIES_H
-
-
 #define TRANS_SIGMA_P +1
 #define TRANS_PI 0
 #define TRANS_SIGMA_M -1
 
-
-class StokesVector;
-class cell_basic;
-
 class CGasSpecies
 {
-  public:
+public:
 
     //uint tmp_counter;
 
@@ -416,7 +413,7 @@ class CGasSpecies
                                    double energy,
                                    double * J_nu) const;
 
-  private:
+private:
     double ** collision_temp;
     uint **col_upper, **col_lower;
     double **trans_einstA, **trans_einstB_lu, **trans_einstB_ul;
@@ -439,8 +436,6 @@ class CGasSpecies
     uint nr_of_spectral_lines;
     uint nr_zeeman_spectral_lines;
     uint lvl_pop_type;
-
-
 
     uint ** level_to_index;
     uint *** trans_to_index;
@@ -469,4 +464,4 @@ class CGasSpecies
     ostringstream velocity_information;
 };
 
-#endif
+#endif /* CGAS_SPECIES_H */

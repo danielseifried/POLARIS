@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_GAS_H
+#define CSOURCE_GAS_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,16 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_GAS_H
-#define CSOURCE_GAS_H
-
 class CSourceGas : public CSourceBasic
 {
-  public:
+public:
     CSourceGas(void)
     {
         source_id = SRC_GAS_LVL;
@@ -32,4 +31,4 @@ class CSourceGas : public CSourceBasic
     ullong getNrOfPhotons();
 };
 
-#endif
+#endif /* CSOURCE_GAS_H */

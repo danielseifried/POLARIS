@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "DustComponent.hpp"
 #include "catch2/catch.hpp"
-
 
 TEST_CASE("CDustComponent::henyeygreen", "[Dust][CDustComponent]")
 {

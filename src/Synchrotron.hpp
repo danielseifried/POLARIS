@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSYNCHROTRON_H
+#define CSYNCHROTRON_H
 
 #include "MathFunctions.hpp"
 #include "MathSpline.hpp"
@@ -6,14 +12,10 @@
 #include "Matrix2D.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef SYNCHROTRON_H
-#define SYNCHROTRON_H
-
 // class for the physics of sync. RT
 class CSynchrotron
 {
-  public:
+public:
     CSynchrotron()
     {
         initGamma();
@@ -54,7 +56,7 @@ class CSynchrotron
                                       double g_max,
                                       double p);
 
-  private:
+private:
     // Gamma numerator coefficients for approximation over the interval (1,2)
     double * p;
 
@@ -110,4 +112,4 @@ class CSynchrotron
     double planck_hz(double nu, double Theta);
 };
 
-#endif
+#endif /* CSYNCHROTRON_H */

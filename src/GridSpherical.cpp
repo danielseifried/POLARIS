@@ -1,10 +1,14 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "GridSpherical.hpp"
 #include "CommandParser.hpp"
 #include "CellOcTree.hpp"
 #include "MathFunctions.hpp"
 #include "Typedefs.hpp"
 #include "Parameters.hpp"
-
 
 bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 {
@@ -22,7 +26,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
     if(bin_reader.fail())
     {
-        cout << "\nERROR: Cannot write to:\n Cannot load binary spherical grid file:" << endl;
+        cout << ERROR_LINE << "Cannot write to:\n Cannot load binary spherical grid file:" << endl;
         cout << filename << "\n" << endl;
         return false;
     }
@@ -60,7 +64,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
     }
     else
     {
-        cout << "\nERROR: Cannot write to:\n A spherical grid requires an ID of \"" << GRID_ID_SPH << "\"!"
+        cout << ERROR_LINE << "Cannot write to:\n A spherical grid requires an ID of \"" << GRID_ID_SPH << "\"!"
              << endl;
         return false;
     }
@@ -187,21 +191,21 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
     // -----------------------------------------
     if(Rmin <= 0)
     {
-        cout << "\nERROR: Cannot write to:\n Inner radius (Rmin = " << Rmin << ") must be larger than zero!"
+        cout << ERROR_LINE << "Cannot write to:\n Inner radius (Rmin = " << Rmin << ") must be larger than zero!"
              << endl;
         return false;
     }
 
     if(Rmax <= 0)
     {
-        cout << "\nERROR: Cannot write to:\n Outer radius (Rmax = " << Rmax << ") must be larger than zero!"
+        cout << ERROR_LINE << "Cannot write to:\n Outer radius (Rmax = " << Rmax << ") must be larger than zero!"
              << endl;
         return false;
     }
 
     if(Rmax <= Rmin)
     {
-        cout << "\nERROR: Cannot write to:\n Outer radius (Rmax = " << Rmax
+        cout << ERROR_LINE << "Cannot write to:\n Outer radius (Rmax = " << Rmax
              << ") must be larger than inner radius (Rmin = " << Rmin << ")!" << endl;
         return false;
     }
@@ -243,7 +247,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
             if(dr == 0)
             {
-                cout << "\nERROR: Cannot write to:\n No step size in r-direction of "
+                cout << ERROR_LINE << "Cannot write to:\n No step size in r-direction of "
                         "spherical grid!"
                      << endl;
                 return false;
@@ -263,7 +267,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
                 if(dph == 0)
                 {
-                    cout << "\nERROR: Cannot write to:\n No step size in phi-direction "
+                    cout << ERROR_LINE << "Cannot write to:\n No step size in phi-direction "
                             "of spherical grid!"
                          << endl;
                     return false;
@@ -283,7 +287,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
                 if(dth == 0)
                 {
-                    cout << "\nERROR: Cannot write to:\n No step size in theta-direction "
+                    cout << ERROR_LINE << "Cannot write to:\n No step size in theta-direction "
                             "of spherical grid!"
                          << endl
                          << "\nHINT: Update of POLARIS v4.02 includes variable phi "
@@ -364,7 +368,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
         if(uint(tmp_cell->getData(data_pos_id)) < 0 ||
            uint(tmp_cell->getData(data_pos_id)) > param.getMaxDustComponentChoice())
         {
-            cout << "\nERROR: Cannot write to:\n Dust ID in grid exceeds maximum number "
+            cout << ERROR_LINE << "Cannot write to:\n Dust ID in grid exceeds maximum number "
                     "of dust choices available! "
                  << endl;
             return false;
@@ -382,7 +386,7 @@ bool CGridSpherical::loadGridFromBinaryFile(parameters & param, uint _data_len)
 
     if(max_cells != uint(line_counter))
     {
-        cout << "\nERROR: Cannot write to:\n Number of read in cells do not match the "
+        cout << ERROR_LINE << "Cannot write to:\n Number of read in cells do not match the "
                 "maximal number of expected cells!"
              << endl;
         return false;
@@ -411,7 +415,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
     if(max_cells == 0)
     {
-        cout << "\nERROR: Cannot plot spherical plot file to:" << endl;
+        cout << ERROR_LINE << "Cannot plot spherical plot file to:" << endl;
         cout << path;
         cout << "Not enough tree cells available! " << endl;
         return false;
@@ -485,7 +489,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
     if(point_fields[0].fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << grid_filename << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << grid_filename << endl;
         return false;
     }
 
@@ -495,7 +499,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[1].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << dens_gas_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << dens_gas_filename << endl;
             return false;
         }
     }
@@ -506,7 +510,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[2].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << dens_dust_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << dens_dust_filename << endl;
             return false;
         }
     }
@@ -517,7 +521,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[3].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << temp_gas_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << temp_gas_filename << endl;
             return false;
         }
     }
@@ -528,7 +532,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[4].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << temp_dust_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << temp_dust_filename << endl;
             return false;
         }
     }
@@ -539,7 +543,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[5].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << rat_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << rat_filename << endl;
             return false;
         }
     }
@@ -550,7 +554,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[6].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << delta_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << delta_filename << endl;
             return false;
         }
     }
@@ -561,7 +565,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[7].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << larm_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << larm_filename << endl;
             return false;
         }
     }
@@ -572,7 +576,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(point_fields[8].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << mach_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << mach_filename << endl;
             return false;
         }
     }
@@ -583,7 +587,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(vec_fields[0].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << mag_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << mag_filename << endl;
             return false;
         }
     }
@@ -594,7 +598,7 @@ bool CGridSpherical::writePlotFiles(string path, parameters & param)
 
         if(vec_fields[1].fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << vel_filename << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << vel_filename << endl;
             return false;
         }
     }
@@ -1092,7 +1096,7 @@ bool CGridSpherical::saveBinaryGridFile(string filename, ushort id, ushort data_
 {
     if(max_cells == 0)
     {
-        cout << "\nERROR: Cannot save spherical grid file to:" << endl;
+        cout << ERROR_LINE << "Cannot save spherical grid file to:" << endl;
         cout << filename;
         cout << "Not enough cells available! " << endl;
         return false;
@@ -1102,7 +1106,7 @@ bool CGridSpherical::saveBinaryGridFile(string filename, ushort id, ushort data_
 
     if(bin_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n Cannot open spherical grid file:" << endl;
+        cout << ERROR_LINE << "Cannot write to:\n Cannot open spherical grid file:" << endl;
         cout << filename;
         return false;
     }
@@ -1120,7 +1124,7 @@ bool CGridSpherical::saveBinaryGridFile(string filename, ushort id, ushort data_
     }
     else
     {
-        cout << "\nERROR: Cannot save spherical grid file to:" << endl;
+        cout << ERROR_LINE << "Cannot save spherical grid file to:" << endl;
         cout << filename;
         cout << "A spherical grid requires an ID of " << GRID_ID_SPH << "!" << endl;
         return false;
@@ -1215,7 +1219,7 @@ bool CGridSpherical::createArtificialGrid(string path)
 
     if(bin_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << endl;
         cout << filename;
         return false;
     }
@@ -1318,7 +1322,7 @@ bool CGridSpherical::createArtificialGrid(string path)
 void CGridSpherical::printParameters()
 {
     if(max_cells == 0)
-        cout << "\nERROR: No tree parameters available! " << endl;
+        cout << ERROR_LINE << "No tree parameters available! " << endl;
     else
     {
         cout << CLR_LINE;
@@ -1610,7 +1614,7 @@ bool CGridSpherical::goToNextCellBorder(photon_package * pp)
 
     if(!hit)
     {
-        cout << "\nERROR: Wrong cell border!                                   " << endl;
+        cout << ERROR_LINE << "Wrong cell border!                                   " << endl;
         return false;
     }
 
@@ -1618,7 +1622,7 @@ bool CGridSpherical::goToNextCellBorder(photon_package * pp)
 
     if(p == pp->getPosition())
     {
-        cout << "\nERROR: Could not transfer photon to the next cell border!   " << endl;
+        cout << ERROR_LINE << "Could not transfer photon to the next cell border!   " << endl;
         return false;
     }
 
@@ -1814,7 +1818,7 @@ bool CGridSpherical::createCellList()
 {
     if(max_cells == 0)
     {
-        cout << "\nERROR: Spherical grid contains no cells!" << endl;
+        cout << ERROR_LINE << "Spherical grid contains no cells!" << endl;
         cout << "       Cell list cannot be created!" << endl;
         return false;
     }

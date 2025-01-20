@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "CellBasic.hpp"
 #include "GridBasic.hpp"
-
 
 bool cell_basic::isValid()
 {
@@ -23,19 +27,19 @@ double cell_basic::getData(uint i) const
 
 void cell_basic::setData(uint i, double d)
 {
-#pragma omp atomic write
+    #pragma omp atomic write
     data[i] = d;
 }
 
 void cell_basic::updateData(uint i, double d)
 {
-#pragma omp atomic update
+    #pragma omp atomic update
     data[i] += d;
 }
 
 void cell_basic::convertData(uint i, double c)
 {
-#pragma omp atomic update
+    #pragma omp atomic update
     data[i] *= c;
 }
 

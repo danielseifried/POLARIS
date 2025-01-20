@@ -1,5 +1,9 @@
-#include "Parameters.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "Parameters.hpp"
 
 string parameters::getOpiatePathEmission()
 {
@@ -961,7 +965,7 @@ void parameters::set3dMidplane(uint plane, uint nr_of_slices, double z_min, doub
         midplane_3d_param.push_back(z_max);
     }
     else
-        cout << "\nHINT: Multiple 3D midplane plot commands found. The first command "
+        cout << NOTE_LINE << "Multiple 3D midplane plot commands found. The first command "
                 "will be considered!";
 }
 
@@ -1105,7 +1109,7 @@ void parameters::setSIConvVField(double val)
 void parameters::updateSIConvLength(double val)
 {
     if(conv_l_in_SI != 1 && val != 1)
-        cout << "\nHINT: <conv_len> may not be used multiple times!" << endl
+        cout << NOTE_LINE << "<conv_len> may not be used multiple times!" << endl
                 << "      -> No problem if <path_grid_cgs> was used!" << endl;
     conv_l_in_SI *= val;
 }
@@ -1113,7 +1117,7 @@ void parameters::updateSIConvLength(double val)
 void parameters::updateSIConvDH(double val)
 {
     if(conv_dH_in_SI != 1 && val != 1)
-        cout << "\nHINT: <conv_dens> may not be used multiple times!" << endl
+        cout << NOTE_LINE << "<conv_dens> may not be used multiple times!" << endl
                 << "      -> No problem if <path_grid_cgs> was used!" << endl;
     conv_dH_in_SI *= val;
 }
@@ -1121,7 +1125,7 @@ void parameters::updateSIConvDH(double val)
 void parameters::updateSIConvBField(double val)
 {
     if(conv_B_in_SI != 1 && val != 1)
-        cout << "\nHINT: <conv_mag> may not be used multiple times!" << endl
+        cout << NOTE_LINE << "<conv_mag> may not be used multiple times!" << endl
                 << "      -> No problem if <path_grid_cgs> was used!" << endl;
     conv_B_in_SI *= val;
 }
@@ -1129,7 +1133,7 @@ void parameters::updateSIConvBField(double val)
 void parameters::updateSIConvVField(double val)
 {
     if(conv_V_in_SI != 1 && val != 1)
-        cout << "\nHINT: <conv_vel> may not be used multiple times!" << endl
+        cout << NOTE_LINE << "<conv_vel> may not be used multiple times!" << endl
                 << "      -> No problem if <path_grid_cgs> was used!" << endl;
     conv_V_in_SI *= val;
 }

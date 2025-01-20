@@ -1,15 +1,17 @@
-#pragma once
-
-#include "Typedefs.hpp"
-#include "Vector3D.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include "Typedefs.hpp"
+#include "Vector3D.hpp"
+
 class parameters
 {
-  public:
+public:
     parameters()
     {
         path_grid = "";
@@ -717,7 +719,7 @@ class parameters
 
     class plot_parameter
     {
-      public:
+    public:
         plot_parameter()
         {
             label = "";
@@ -770,7 +772,7 @@ class parameters
         uchar vec_color[3];
     };
 
-  private:
+private:
     int cmd;
     string path_grid;
     string path_input;
@@ -923,4 +925,4 @@ class parameters
     string opiata_path_abs;
 };
 
-#endif
+#endif /* PARAMETERS_H */

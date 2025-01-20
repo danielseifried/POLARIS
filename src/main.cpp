@@ -1,3 +1,8 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "Pipeline.hpp"
 
 int main(int argc, char ** argv)

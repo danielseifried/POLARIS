@@ -1,5 +1,9 @@
-#include "SourceLaser.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "SourceLaser.hpp"
 
 bool CSourceLaser::initSource(uint id, uint max, bool use_energy_density)
 {
@@ -13,7 +17,7 @@ bool CSourceLaser::initSource(uint id, uint max, bool use_energy_density)
         cout << "- Source (" << id + 1 << " of " << max << ") LASER: " << float(L)
              << " [W] (wavelength = " << float(wl) << " [m], FWHM = " << float(fwhm) << " [m])" << endl;
         cout << "    photons FOR EACH wavelength: " << float(nr_of_photons) << "      " << endl;
-        // cout << "\nERROR: Laser source cannot be used for dust temperature calculation!\n" << endl;
+        // cout << ERROR_LINE << "Laser source cannot be used for dust temperature calculation!\n" << endl;
         // return false;
     }
     else

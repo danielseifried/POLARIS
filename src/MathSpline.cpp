@@ -1,5 +1,9 @@
-#include "MathSpline.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "MathSpline.hpp"
 
 uint spline::size() const
 {
@@ -79,7 +83,7 @@ void spline::setValue(uint pos, double _x, double _y)
 #ifdef DEBUG
     if(x == 0)
     {
-        cout << "\nERROR: Spline was not initiated!" << endl;
+        cout << ERROR_LINE << "Spline was not initiated!" << endl;
         return;
     }
 #endif
@@ -105,7 +109,7 @@ void spline::addYValueExt(uint pos, double _x, double _y)
 #ifdef DEBUG
     if(x == 0)
     {
-        cout << "\nERROR: Spline was not initiated!" << endl;
+        cout << ERROR_LINE << "Spline was not initiated!" << endl;
         return;
     }
 #endif
@@ -139,7 +143,7 @@ void spline::createSpline()
     for(uint i = 0; i < N; i++)
     {
         // if((x[i + 1] - x[i]) == 0.0)
-        //    cout << "\nERROR: Spline broken!" << endl;
+        //    cout << ERROR_LINE << "Spline broken!" << endl;
         u[i] = x[i + 1] - x[i];
     }
 
@@ -221,7 +225,7 @@ void spline::createDynSpline()
 
         if(u[i] == 0)
         {
-            cout << "\nERROR:  Identical values in x[" << i << "] and x[" << i + 1
+            cout << ERROR_LINE << "Identical values in x[" << i << "] and x[" << i + 1
                     << "]!\n                        ";
             cout << u[i]
                     << "        Try smaller step sizes in Spline. \n                    "

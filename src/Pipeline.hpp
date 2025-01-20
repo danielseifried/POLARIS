@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CPIPELINE_H
+#define CPIPELINE_H
 
 #include "CommandParser.hpp"
 #include "Detector.hpp"
@@ -10,12 +16,9 @@
 #include "GridBasic.hpp"
 #include "Vector3D.hpp"
 
-#ifndef CPIPELINE_H
-#define CPIPELINE_H
-
 class CPipeline
 {
-  public:
+public:
     CPipeline(void)
     {
         begin = 0;
@@ -36,14 +39,21 @@ class CPipeline
     {}
 
     bool calcMonteCarloRadiationField(parameters & param);
+
     bool calcPolarizationMapsViaRayTracing(parameters & param);
+
     bool calcPolarizationMapsViaSynchrotron(parameters & param);
+
     bool calcChMapsViaRayTracing(parameters & param);
+
     bool calcPolarizationMapsViaMC(parameters & param);
+
     bool calcOpiateMapsViaRayTracing(parameters & param);
+
     bool proberobeLineOfSight(parameters & param);
 
     bool assignDustMixture(parameters & param, CDustMixture * dust, CGridBasic * grid);
+
     bool assignGasSpecies(parameters & param, CGasMixture * gas, CGridBasic * grid);
 
     // bool calcRadPressure(parameter & param);
@@ -57,8 +67,11 @@ class CPipeline
     void printParameters(parameters & param, uint max_id);
 
     bool Init(int argc, char ** argv);
+
     void Finish();
+
     void Error();
+
     void Run();
 
     bool createOutputPaths(string path);
@@ -89,9 +102,11 @@ class CPipeline
 
     double getNrOfRayDetector(parameters & param);
 
-  private:
+private:
     bool writeSources(parameters & param, CGridBasic * grid);
+
     void createSourceLists(parameters & param, CDustMixture * dust, CGridBasic * grid);
+
     CDetector * createDetectorList(parameters & param, CDustMixture * dust, CGridBasic * grid);
 
     string path_plot, path_data;
@@ -106,5 +121,4 @@ class CPipeline
     Vector3D ** det_coord_systems;
 };
 
-#endif
-
+#endif /* CPIPELINE_H */

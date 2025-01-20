@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_DUST_H
+#define CSOURCE_DUST_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,16 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_DUST_H
-#define CSOURCE_DUST_H
-
 class CSourceDust : public CSourceBasic
 {
-  public:
+public:
     CSourceDust(void)
     {
         total_energy = 0;
@@ -48,10 +47,10 @@ class CSourceDust : public CSourceBasic
 
     ullong getNrOfPhotons();
 
-  private:
+private:
     double * total_energy;
     prob_list * cell_prob;
     ullong nr_of_photons_per_cell;
 };
 
-#endif
+#endif /* CSOURCE_DUST_H */

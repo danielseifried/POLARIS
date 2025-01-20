@@ -127,7 +127,7 @@ void COpiateDataBase::printParameters(parameters & param, CGridBasic * grid)
 
     if(database_counter==0)
     {
-        cout << "\nERROR: No OPIATE database available!               \n" ;
+        cout << ERROR_LINE << "No OPIATE database available!               \n" ;
         return;
     }
 
@@ -212,7 +212,7 @@ bool COpiateDataBase::readOpiateDataBase(parameters & param)
     else
     {
         cout << CLR_LINE;
-        cout << "\nERROR: A path to an OPIATE emissivity database is required!               \n" ;
+        cout << ERROR_LINE << "A path to an OPIATE emissivity database is required!               \n" ;
         return false;
     }
 
@@ -244,7 +244,7 @@ bool COpiateDataBase::readDataBase(string filename)
     catch(CCfits::FITS::CantOpen)
     {
         cout << CLR_LINE;
-        cout << "\nERROR: Cannot open OPIATE file:\n" << filename << "   \n" ;
+        cout << ERROR_LINE << "Cannot open OPIATE file:\n" << filename << "   \n" ;
         cout << "         Check path and file format!                   \n" ;
         return false;
     }
@@ -309,7 +309,7 @@ bool COpiateDataBase::readDataBase(string filename)
         catch(CCfits::HDU::NoSuchKeyword)
         {
             cout << CLR_LINE;
-            cout << "\nERROR: Keyword \""<< key_name << "\" is required in file:\n       " << filename <<  "               \n" ;
+            cout << ERROR_LINE << "Keyword \""<< key_name << "\" is required in file:\n       " << filename <<  "               \n" ;
             return false;
         }
 
@@ -320,7 +320,7 @@ bool COpiateDataBase::readDataBase(string filename)
         catch(CCfits::HDU::NoSuchKeyword)
         {
             cout << CLR_LINE;
-            cout << "\nERROR: Keyword \""<< key_weight << "\" is required in file:\n       " << filename <<  "               \n" ;
+            cout << ERROR_LINE << "Keyword \""<< key_weight << "\" is required in file:\n       " << filename <<  "               \n" ;
             return false;
         }
 
@@ -331,7 +331,7 @@ bool COpiateDataBase::readDataBase(string filename)
         catch(CCfits::HDU::NoSuchKeyword)
         {
             cout << CLR_LINE;
-            cout << "\nERROR: Keyword \""<< key_freq << "\" is required in file:\n       " << filename <<  "               \n" ;
+            cout << ERROR_LINE << "Keyword \""<< key_freq << "\" is required in file:\n       " << filename <<  "               \n" ;
             return false;
         }
 
@@ -381,7 +381,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
         catch(CCfits::FITS::CantOpen)
         {
             cout << CLR_LINE;
-            cout << "\nERROR: Cannot open OPIATE file:\n" << filename << "   \n" ;
+            cout << ERROR_LINE << "Cannot open OPIATE file:\n" << filename << "   \n" ;
             cout << "         Check path and file format!                   \n" ;
             return false;
         }
@@ -410,7 +410,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             if(max_species!=max_col-1)
             {
                 cout << CLR_LINE;
-                cout << "\nERROR: Ammount of species in differen OPIATE files do not match!            \n" ;
+                cout << ERROR_LINE << "Ammount of species in differen OPIATE files do not match!            \n" ;
                 cout << "         Identical order and values are required in all files!           \n" ;
                 return false;
             }
@@ -418,7 +418,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             if(max_ids!=max_row)
             {
                 cout << CLR_LINE;
-                cout << "\nERROR: Ammount of unique OPIATE files do not match!            \n" ;
+                cout << ERROR_LINE << "Ammount of unique OPIATE files do not match!            \n" ;
                 cout << "         Identical order and values are required in all files!           \n" ;
                 return false;
             }
@@ -427,7 +427,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
         if(database_counter>1)
         {
             cout << CLR_LINE;
-            cout << "\nERROR: Only two databases are currently supported!              \n" ;
+            cout << ERROR_LINE << "Only two databases are currently supported!              \n" ;
             return false;
         }
 
@@ -463,7 +463,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             catch(CCfits::HDU::NoSuchKeyword)
             {
                 cout << CLR_LINE;
-                cout << "\nERROR: Keyword \""<< key_name << "\" is required in file:\n       " << filename <<  "               \n" ;
+                cout << ERROR_LINE << "Keyword \""<< key_name << "\" is required in file:\n       " << filename <<  "               \n" ;
                 return false;
             }
 
@@ -474,7 +474,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             catch(CCfits::HDU::NoSuchKeyword)
             {
                 cout << CLR_LINE;
-                cout << "\nERROR: Keyword \""<< key_weight << "\" is required in file:\n       " << filename <<  "               \n" ;
+                cout << ERROR_LINE << "Keyword \""<< key_weight << "\" is required in file:\n       " << filename <<  "               \n" ;
                 return false;
             }
 
@@ -485,7 +485,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             catch(CCfits::HDU::NoSuchKeyword)
             {
                 cout << CLR_LINE;
-                cout << "\nERROR: Keyword \""<< key_freq << "\" is required in file:\n       " << filename <<  "               \n" ;
+                cout << ERROR_LINE << "Keyword \""<< key_freq << "\" is required in file:\n       " << filename <<  "               \n" ;
                 return false;
             }
 
@@ -504,7 +504,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
                 if(list_freq[i]!=s_frequ)
                 {
                     cout << CLR_LINE;
-                    cout << "\nERROR: Frequencies of different OPIATE files do not match!            \n" ;
+                    cout << ERROR_LINE << "Frequencies of different OPIATE files do not match!            \n" ;
                     cout << "         Identical order and values are required in all files!           \n" ;
                     return false;
                 }
@@ -512,7 +512,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
                 if(list_names[i].compare(s_name)!=0)
                 {
                     cout << CLR_LINE;
-                    cout << "\nERROR: Names of different OPIATE files do not match!            \n" ;
+                    cout << ERROR_LINE << "Names of different OPIATE files do not match!            \n" ;
                     cout << "         Identical order and values are required in all files!           \n" ;
                     return false;
                 }
@@ -520,7 +520,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
                 if(list_weight[i]!=s_weight)
                 {
                     cout << CLR_LINE;
-                    cout << "\nERROR: Weigths of different OPIATE files do not match!            \n" ;
+                    cout << ERROR_LINE << "Weigths of different OPIATE files do not match!            \n" ;
                     cout << "         Identical order and values are required in all files!           \n" ;
                     return false;
                 }
@@ -564,7 +564,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
             {
                 if(list_IDs[i]!=tmp_mat(i,0))
                 {
-                    cout << "\nERROR: Unique OPIATE IDs of different OPIATE files do not match!            \n" ;
+                    cout << ERROR_LINE << "Unique OPIATE IDs of different OPIATE files do not match!            \n" ;
                     return false;
                 }
             }
@@ -576,7 +576,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
                 if(list_IDs[i-1]>list_IDs[i])
                 {
                     cout << CLR_LINE;
-                    cout << "\nERROR: OPIATE IDs are not in ascending order!               \n" ;
+                    cout << ERROR_LINE << "OPIATE IDs are not in ascending order!               \n" ;
                     cout << "         Check first column of your input fits file!                   \n" ;
                     return false;
                 }
@@ -584,7 +584,7 @@ bool COpiateDataBase::readFitsData(string filename, Matrix2D & mat)
                 if(list_IDs[i-1]==list_IDs[i])
                 {
                     cout << CLR_LINE;
-                    cout << "\nERROR: Identical OPIATE IDs detected!               \n" ;
+                    cout << ERROR_LINE << "Identical OPIATE IDs detected!               \n" ;
                     cout << "         Check first column of your input fits file!                   \n" ;
                     return false;
                 }
@@ -624,7 +624,7 @@ void COpiateDataBase::calcLineBroadening(CGridBasic * grid)
     cout << CLR_LINE;
     cout << "-> Calculating line broadening for each grid cell ...     \r" << flush;
     
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
@@ -762,7 +762,7 @@ bool COpiateDataBase::findIndexByName(string name)
     }
 
     cout << CLR_LINE;
-    cout << "\nERROR: A species by the name of \"" << name
+    cout << ERROR_LINE << "A species by the name of \"" << name
             << "\" is not listed in the loaded OPIATE databases!              \n";
     return false;
 }
@@ -822,7 +822,7 @@ bool COpiateDataBase::initVelChannels(uint nr_of_channels, double max_vel)
     else
     {
         cout << CLR_LINE;
-        cout << "\nERROR: Number of velocity channels is not larger than zero!                 \n";
+        cout << ERROR_LINE << "Number of velocity channels is not larger than zero!                 \n";
         return false;
     }
 

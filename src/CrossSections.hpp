@@ -1,14 +1,16 @@
-#pragma once
-#include "Typedefs.hpp"
-#include "Vector3D.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CROSS_SECTIONS_H
 #define CROSS_SECTIONS_H
 
+#include "Typedefs.hpp"
 
 class cross_sections
 {
-  public:
+public:
     cross_sections()
     {
         Cext = 0;
@@ -37,4 +39,4 @@ class cross_sections
     double Ccirc;
 };
 
-#endif
+#endif /* CROSS_SECTIONS_H */

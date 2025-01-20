@@ -1,5 +1,9 @@
-#include "SourceGas.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "SourceGas.hpp"
 
 bool CSourceGas::initSource(uint id, uint max, bool use_energy_density)
 {

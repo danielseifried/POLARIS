@@ -1,16 +1,18 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRANDOM_GENERATOR_H
+#define CRANDOM_GENERATOR_H
 
 #include "Matrix2D.hpp"
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef RANDOM_GENERATOR_H
-#define RANDOM_GENERATOR_H
-
 class CRandomGenerator
 {
-  public:
+public:
     CRandomGenerator()
     {
         // The standard seed values as proposed by George Marsaglia
@@ -33,8 +35,8 @@ class CRandomGenerator
 
     double getRNDnormal(double mu, double sigma);
 
-  private:
+private:
     ullong KISS_state[4];
 };
 
-#endif
+#endif /* CRANDOM_GENERATOR_H */

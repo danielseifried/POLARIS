@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_STARFIELD_H
+#define CSOURCE_STARFIELD_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,16 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_STARFIELD_H
-#define CSOURCE_STARFIELD_H
-
 class CSourceStarField : public CSourceBasic
 {
-  public:
+public:
     CSourceStarField(void)
     {
         pos = 0;
@@ -37,8 +36,8 @@ class CSourceStarField : public CSourceBasic
     bool setParameterFromFile(parameters & param, uint p);
     void setParameter(parameters & param, uint p);
 
-  private:
+private:
     double var;
 };
 
-#endif
+#endif /* CSOURCE_STARFIELD_H */

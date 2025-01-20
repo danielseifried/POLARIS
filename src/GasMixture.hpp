@@ -1,23 +1,20 @@
-#pragma once
-
-#include "GasSpecies.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CGAS_MIXTURE_H
 #define CGAS_MIXTURE_H
 
+#include "GasSpecies.hpp"
 
 #define TRANS_SIGMA_P +1
 #define TRANS_PI 0
 #define TRANS_SIGMA_M -1
 
-
-class StokesVector;
-class cell_basic;
-
 class CGasMixture
 {
-  public:
+public:
     CGasMixture()
     {
         nr_of_species = 0;
@@ -193,7 +190,7 @@ class CGasMixture
 
     void printParameters(parameters & param, CGridBasic * grid);
 
-  private:
+private:
     CGasSpecies * single_species;
 
     uint *** level_to_pos;
@@ -203,4 +200,4 @@ class CGasMixture
 
 };
 
-#endif
+#endif /* CGAS_MIXTURE_H */

@@ -1,5 +1,9 @@
-#include "RaytracingBasic.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RaytracingBasic.hpp"
 
 bool CRaytracingBasic::setSyncDetector(uint pos,
                                        const parameters & param,

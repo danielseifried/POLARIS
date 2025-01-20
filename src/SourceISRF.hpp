@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_ISRF_H
+#define CSOURCE_ISRF_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,17 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_ISRF_H
-#define CSOURCE_ISRF_H
-
-
 class CSourceISRF : public CSourceBasic
 {
-  public:
+public:
     CSourceISRF()
     {
         init = false;
@@ -55,9 +53,10 @@ class CSourceISRF : public CSourceBasic
     void setParameter(parameters & param, uint p);
 
     void createNextRay(photon_package * pp, CRandomGenerator * rand_gen);
+
     void createDirectRay(photon_package * pp, CRandomGenerator * rand_gen, Vector3D dir_obs);
 
-  private:
+private:
     Vector3D e, l;
 
     int kill_count;
@@ -67,4 +66,4 @@ class CSourceISRF : public CSourceBasic
     double *c_w, *c_f;
 };
 
-#endif
+#endif /* CSOURCE_ISRF_H */

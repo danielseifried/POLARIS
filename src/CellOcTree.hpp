@@ -1,13 +1,16 @@
-#pragma once
-#include "CellBasic.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CELL_OCTREE_H
 #define CELL_OCTREE_H
 
+#include "CellBasic.hpp"
+
 class cell_oc : public cell_basic
 {
-  public:
+public:
     cell_oc()
     {
         parent = 0;
@@ -62,14 +65,10 @@ class cell_oc : public cell_basic
 
     uchar getLevel();
 
-    /*
-    get the position ID within the parent cube (0-7)
-    */
+    // get the position ID within the parent cube (0-7)
     uint getID() const;
 
-    /*
-    get the actual ID of the cell (globally unique)
-    */
+    // get the actual ID of the cell (globally unique)
     ulong getUniqueID() const;
 
     cell_oc * getParent();
@@ -78,7 +77,7 @@ class cell_oc : public cell_basic
 
     cell_oc * getChild(uint i);
 
-  private:
+private:
     double x_min, y_min, z_min, length;
     cell_oc * children;
     cell_oc * parent;
@@ -86,4 +85,4 @@ class cell_oc : public cell_basic
     ulong unique_id;
 };
 
-#endif
+#endif /* CELL_OCTREE_H */

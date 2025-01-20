@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_BASIC_H
+#define CSOURCE_BASIC_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -8,17 +14,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_BASIC_H
-#define CSOURCE_BASIC_H
-
-
 class CSourceBasic
 {
-  public:
+public:
     CSourceBasic(void)
     {
         L = 0;
@@ -96,7 +94,7 @@ class CSourceBasic
 
     virtual uint getBins();
 
-  protected:
+protected:
     CDustMixture * dust;
     CGridBasic * grid;
 
@@ -123,4 +121,4 @@ class CSourceBasic
 
 typedef vector<CSourceBasic *> slist;
 
-#endif
+#endif /* CSOURCE_BASIC_H */

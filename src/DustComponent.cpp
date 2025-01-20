@@ -1,13 +1,16 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include <string.h>
 #include <cmath>
-
 #include "DustComponent.hpp"
 #include "CommandParser.hpp"
 #include "GridBasic.hpp"
 #include "MathFunctions.hpp"
 #include "Typedefs.hpp"
 #include "Parameters.hpp"
-
 
 void CDustComponent::initDustProperties()
 {
@@ -265,7 +268,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
     // Error message if the read does not work
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open dust parameters file:" << endl;
+        cout << ERROR_LINE << "Cannot open dust parameters file:" << endl;
         cout << path << endl;
         return false;
     }
@@ -320,7 +323,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 // The second line needs 8 values
                 if(values.size() != 8)
                 {
-                    cout << "\nERROR: Line " << line_counter << " wrong amount of numbers!" << endl;
+                    cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers!" << endl;
                     return false;
                 }
 
@@ -342,7 +345,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                     if(values[4] == 0)
                     {
                         printIDs();
-                        cout << "\nERROR: dust bulk mass is zero!" << endl;
+                        cout << ERROR_LINE << "dust bulk mass is zero!" << endl;
                         return false;
                     }
                     material_density = values[4];
@@ -376,7 +379,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 // The second line needs a values per dust grain size
                 if(values.size() != nr_of_dust_species)
                 {
-                    cout << "\nERROR: Line " << line_counter << " wrong amount of effective radii!" << endl;
+                    cout << ERROR_LINE << "Line " << line_counter << " wrong amount of effective radii!" << endl;
                     return false;
                 }
 
@@ -399,7 +402,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 // The fourth line needs a values per wavelength of the dust grain catalog
                 if(values.size() != nr_of_wavelength_dustcat)
                 {
-                    cout << "\nERROR: Line " << line_counter << " wrong amount of wavelength!" << endl;
+                    cout << ERROR_LINE << "Line " << line_counter << " wrong amount of wavelength!" << endl;
                     return false;
                 }
 
@@ -413,7 +416,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 if(wavelength_list[0] < wavelength_list_dustcat[0] ||
                     wavelength_list[nr_of_wavelength - 1] > wavelength_list_dustcat[nr_of_wavelength_dustcat - 1])
                 {
-                    cout << "\nWARNING: The wavelength range is out of the limits of the catalog. This may cause problems!\n"
+                    cout << WARNING_LINE << "The wavelength range is out of the limits of the catalog. This may cause problems!\n"
                         << "         wavelength range          : " << wavelength_list[0] << " [m] to "
                         << wavelength_list[nr_of_wavelength - 1] << " [m]\n"
                         << "         wavelength range (catalog): " << wavelength_list_dustcat[0] << " [m] to "
@@ -668,7 +671,7 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
     if(eff_counter != nr_of_dust_species * nr_of_wavelength_dustcat)
     {
         cout << stringID << endl;
-        cout << "\nERROR: Wrong amount of efficiencies in file!" << endl;
+        cout << ERROR_LINE << "Wrong amount of efficiencies in file!" << endl;
         return false;
     }
 
@@ -762,28 +765,28 @@ bool CDustComponent::readDustParameterFile(parameters & param, uint dust_compone
                 double avg_HG_g3_factor = HG_g3_factor[w * nr_of_dust_species + a].getAverageY();
 
                 if(avg_HG_g_factor <= -1.0 || avg_HG_g_factor >= 1.0) {
-                    cout << "\nERROR: Henyey-Greenstein g factor is invalid: " << avg_HG_g_factor << endl;
+                    cout << ERROR_LINE << "Henyey-Greenstein g factor is invalid: " << avg_HG_g_factor << endl;
                     return false;
                 }
 
                 if(param.getPhaseFunctionID(dust_component_choice) == PH_DHG) {
                     if(avg_HG_g2_factor < 0.0 || avg_HG_g2_factor > 1.0) {
-                        cout << "\nERROR: Henyey-Greenstein factor alpha is invalid: " << avg_HG_g2_factor << endl;
+                        cout << ERROR_LINE << "Henyey-Greenstein factor alpha is invalid: " << avg_HG_g2_factor << endl;
                         return false;
                     }
                 } else if(param.getPhaseFunctionID(dust_component_choice) == PH_TTHG) {
                     if(avg_HG_g2_factor <= -1.0 || avg_HG_g2_factor >= 1.0) {
-                        cout << "\nERROR: Henyey-Greenstein factor g2 is invalid: " << avg_HG_g2_factor << endl;
+                        cout << ERROR_LINE << "Henyey-Greenstein factor g2 is invalid: " << avg_HG_g2_factor << endl;
                         return false;
                     }
                     if(avg_HG_g2_factor * avg_HG_g3_factor > 0.0) {
-                        cout << "\nERROR: Henyey-Greenstein g1 and g2 must have different signs." << endl;
+                        cout << ERROR_LINE << "Henyey-Greenstein g1 and g2 must have different signs." << endl;
                         return false;
                     }
                 }
 
                 if(avg_HG_g3_factor < 0.0 || avg_HG_g3_factor > 1.0) {
-                    cout << "\nERROR: Henyey-Greenstein weight factor is invalid: " << avg_HG_g3_factor << endl;
+                    cout << ERROR_LINE << "Henyey-Greenstein weight factor is invalid: " << avg_HG_g3_factor << endl;
                     return false;
                 }
 
@@ -902,7 +905,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
     // Error message if the read does not work
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open dust refractive index file:" << endl;
+        cout << ERROR_LINE << "Cannot open dust refractive index file:" << endl;
         cout << path << endl;
         return false;
     }
@@ -957,7 +960,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
                 // The second line needs 7 values
                 if(values.size() != 7)
                 {
-                    cout << "\nERROR: Line " << line_counter << " wrong amount of numbers!" << endl;
+                    cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers!" << endl;
                     return false;
                 }
 
@@ -1041,7 +1044,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
     if(wavelength_list[0] < refractive_index_real.getX(0) ||
         wavelength_list[nr_of_wavelength - 1] > refractive_index_real.getX(nr_of_wavelength_dustcat - 1))
     {
-        cout << "\nWARNING: The wavelength range is out of the limits of the catalog. This may cause problems!\n"
+        cout << WARNING_LINE << "The wavelength range is out of the limits of the catalog. This may cause problems!\n"
             << "         wavelength range          : " << wavelength_list[0] << " [m] to "
             << wavelength_list[nr_of_wavelength - 1] << " [m]\n"
             << "         wavelength range (catalog): " << refractive_index_real.getX(0) << " [m] to "
@@ -1062,7 +1065,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
     if(wl_counter != nr_of_wavelength_dustcat)
     {
         cout << stringID << endl;
-        cout << "\nERROR: Wrong amount of efficiencies in file!" << endl;
+        cout << ERROR_LINE << "Wrong amount of efficiencies in file!" << endl;
         return false;
     }
 
@@ -1397,7 +1400,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
 
     if(error)
     {
-        cout << "\nERROR: Problem with optical properties calculation" << endl;
+        cout << ERROR_LINE << "Problem with optical properties calculation" << endl;
         return false;
     }
 
@@ -1406,7 +1409,7 @@ bool CDustComponent::readDustRefractiveIndexFile(parameters & param,
 
     if(max_rel_diff > 0.5) // arbitrary limit
     {
-        cout << "\nWARNING: Number of scattering angles might be too low (max rel diff = " << max_rel_diff << ").\n"
+        cout << WARNING_LINE << "Number of scattering angles might be too low (max rel diff = " << max_rel_diff << ").\n"
              << "         If required, increase 'NANG' or decrease 'MAX_MIE_SCA_REL_DIFF' (for x < 100) in src/Typedefs.h and recompile!" << endl;
     }
 
@@ -1442,7 +1445,7 @@ bool CDustComponent::readScatteringMatrices(string path,
     // Error message if the read does not work
     if(inf_reader.fail())
     {
-        cout << "\nERROR: Cannot open scattering matrix info file:" << endl;
+        cout << ERROR_LINE << "Cannot open scattering matrix info file:" << endl;
         cout << inf_filename << endl;
         return false;
     }
@@ -1482,7 +1485,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The first line needs 5 values
                 if(values.size() != 5)
                 {
-                    cout << "\nERROR: Wrong amount of dust component parameters in:" << endl;
+                    cout << ERROR_LINE << "Wrong amount of dust component parameters in:" << endl;
                     cout << inf_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1490,7 +1493,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The number of dust grain sizes
                 if(values[0] != nr_of_dust_species)
                 {
-                    cout << "\nERROR: " << inf_filename.c_str() << " line " << line_counter << "!" << endl;
+                    cout << ERROR_LINE << inf_filename.c_str() << " line " << line_counter << "!" << endl;
                     cout << "Number of dust species does not match the number in the "
                             "dust parameters file!"
                          << endl;
@@ -1500,7 +1503,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The number of wavelength used by the dust catalog
                 if(values[1] != nr_of_wavelength_dustcat)
                 {
-                    cout << "\nERROR: " << inf_filename.c_str() << " line " << line_counter << "!" << endl;
+                    cout << ERROR_LINE << inf_filename.c_str() << " line " << line_counter << "!" << endl;
                     cout << "Number of wavelength does not match the number in the dust "
                             "parameters file!"
                          << endl;
@@ -1510,7 +1513,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The number of incident angles
                 if(values[2] != nr_of_incident_angles)
                 {
-                    cout << "\nERROR: " << inf_filename.c_str() << " line " << line_counter << "!" << endl;
+                    cout << ERROR_LINE << inf_filename.c_str() << " line " << line_counter << "!" << endl;
                     cout << "Number of incident angles does not match the number in the "
                             "dust parameters file!"
                          << endl;
@@ -1529,7 +1532,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The second line needs one value
                 if(values.size() != 1)
                 {
-                    cout << "\nERROR: Wrong amount of scattering matrix elements in:" << endl;
+                    cout << ERROR_LINE << "Wrong amount of scattering matrix elements in:" << endl;
                     cout << inf_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1542,7 +1545,7 @@ bool CDustComponent::readScatteringMatrices(string path,
                 // The third line needs 16 values
                 if(values.size() != 16)
                 {
-                    cout << "\nERROR: Wrong amount of matrix elements in:" << endl;
+                    cout << ERROR_LINE << "Wrong amount of matrix elements in:" << endl;
                     cout << inf_filename.c_str() << " line 3!" << endl;
                     return false;
                 }
@@ -1664,7 +1667,7 @@ bool CDustComponent::readScatteringMatrices(string path,
         // Error message if the read does not work
         if(bin_reader.fail())
         {
-            cout << "\nERROR: Cannot open scattering matrix file:" << endl;
+            cout << ERROR_LINE << "Cannot open scattering matrix file:" << endl;
             cout << bin_filename.c_str() << endl;
             bin_reader.close();
             error = true;
@@ -1796,7 +1799,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
     // Error message if the read does not work
     if(calo_reader.fail())
     {
-        cout << "\nERROR: Cannot open calorimetry file:" << endl;
+        cout << ERROR_LINE << "Cannot open calorimetry file:" << endl;
         cout << calo_filename << endl;
         return false;
     }
@@ -1834,7 +1837,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
                 // The first line needs one value
                 if(values.size() != 1)
                 {
-                    cout << "\nERROR: Wrong amount of calorimetry temperatures in:" << endl;
+                    cout << ERROR_LINE << "Wrong amount of calorimetry temperatures in:" << endl;
                     cout << calo_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1857,7 +1860,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
                 // The second line needs a value per calorimetric temperature
                 if(values.size() != nr_of_calorimetry_temperatures)
                 {
-                    cout << "\nERROR: Wrong calorimetry temperatures in:" << endl;
+                    cout << ERROR_LINE << "Wrong calorimetry temperatures in:" << endl;
                     cout << calo_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1871,7 +1874,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
                 // The second line needs one value
                 if(values.size() != 1)
                 {
-                    cout << "\nERROR: Wrong calorimetry type in:" << endl;
+                    cout << ERROR_LINE << "Wrong calorimetry type in:" << endl;
                     cout << calo_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1882,7 +1885,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
                 // Only heat capacity or enthalpy are possible
                 if(calorimetry_type != CALO_HEAT_CAP && calorimetry_type != CALO_ENTHALPY)
                 {
-                    cout << "\nERROR: Wrong calorimetry type in:" << endl;
+                    cout << ERROR_LINE << "Wrong calorimetry type in:" << endl;
                     cout << calo_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1892,7 +1895,7 @@ bool CDustComponent::readCalorimetryFile(parameters & param, uint dust_component
                 // The other lines have either one or a value per dust grain size
                 if(values.size() != 1 && values.size() != nr_of_dust_species)
                 {
-                    cout << "\nERROR: Wrong amount of dust species in:" << endl;
+                    cout << ERROR_LINE << "Wrong amount of dust species in:" << endl;
                     cout << calo_filename.c_str() << " line " << line_counter << "!" << endl;
                     return false;
                 }
@@ -1995,7 +1998,7 @@ bool CDustComponent::writeComponentData(string path_data)
         // Error message if the write does not work
         if(mueller_matrix_file.fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << path_cross << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << path_cross << endl;
             return false;
         }
 
@@ -2066,7 +2069,7 @@ bool CDustComponent::writeComponentData(string path_data)
     // Error message if the write does not work
     if(data_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_data << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_data << endl;
         return false;
     }
 
@@ -2177,7 +2180,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
         // Error message if the write does not work
         if(mueller_matrix_file.fail())
         {
-            cout << "\nERROR: Cannot write to:\n" << path_cross << endl;
+            cout << ERROR_LINE << "Cannot write to:\n" << path_cross << endl;
             return false;
         }
 
@@ -2260,7 +2263,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(cross_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_cross << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_cross << endl;
         return false;
     }
 
@@ -2370,7 +2373,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(eff_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_eff << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_eff << endl;
         return false;
     }
 
@@ -2480,7 +2483,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(kappa_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_eff << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_eff << endl;
         return false;
     }
 
@@ -2591,7 +2594,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(diff_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_cross << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_cross << endl;
         return false;
     }
 
@@ -2670,7 +2673,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(g_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_g << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_g << endl;
         return false;
     }
 
@@ -2729,7 +2732,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
         // Error message if the write does not work
         if(scat_writer.fail())
         {
-            cout << "\nERROR: Cannot write to " << path_scat << endl;
+            cout << ERROR_LINE << "Cannot write to " << path_scat << endl;
             return false;
         }
 
@@ -2878,7 +2881,7 @@ bool CDustComponent::writeComponentPlot(string path_plot)
     // Error message if the write does not work
     if(size_dist_writer.fail())
     {
-        cout << "\nERROR: Cannot write to:\n" << path_size_dist << endl;
+        cout << ERROR_LINE << "Cannot write to:\n" << path_size_dist << endl;
         return false;
     }
 
@@ -3071,7 +3074,7 @@ void CDustComponent::preCalcAbsorptionRates()
     // Init counter for progress
     ullong per_counter = 0;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for(int a = 0; a < int(nr_of_dust_species); a++)
     {
         // Resize tabulated absorption/emission rates spline
@@ -3112,18 +3115,6 @@ void CDustComponent::preCalcAbsorptionRates()
         if(calorimetry_loaded)
             tab_em_inv[a].createSpline();
 
-// #pragma omp critical
-//         {
-//             // Show progress
-//             if(per_counter % 2 == 0)
-//             {
-//                 printIDs();
-//                 cout << "- pre-calculation of absorption rates: "
-//                      << 100.0 * float(per_counter) / float(nr_of_dust_species - 1)
-//                      << " [%]                         \r";
-//             }
-//         }
-
         // Increase progress counter
         per_counter++;
 
@@ -3141,7 +3132,7 @@ void CDustComponent::preCalcMieScatteringProb()
     // Init counter for progress
     ullong per_counter = 0;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for(int a = 0; a < int(nr_of_dust_species); a++)
     {
         // Init arrays of interp
@@ -3201,18 +3192,6 @@ void CDustComponent::preCalcMieScatteringProb()
                 delete[] tmp_scat_frac;
             }
 
-// #pragma omp critical
-//             {
-//                 // Show progress
-//                 if(per_counter % 2 == 0)
-//                 {
-//                     printIDs();
-//                     cout << "- pre-calculation of Mie probabilities: "
-//                         << 100.0 * float(per_counter) / float(nr_of_dust_species - 1)
-//                         << " [%]                         \r";
-//                 }
-//             }
-
             // Increase progress counter
             per_counter++;
         }
@@ -3230,7 +3209,7 @@ void CDustComponent::preCalcWaveProb()
     // Init counter for progress
     ullong per_counter = 0;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     // Set each entry of avg_planck_frac with integrated value of pl_mean
     for(int t = 0; t < int(nr_of_temperatures); t++)
     {
@@ -3271,17 +3250,6 @@ void CDustComponent::preCalcWaveProb()
         for(uint a = 0; a < nr_of_dust_species; a++)
             delete[] pl_mean[a];
         delete[] pl_mean;
-
-// #pragma omp critical
-//         {
-//             // Show progress
-//             if(per_counter % 10 == 0)
-//             {
-//                 printIDs();
-//                 cout << "- precalculation of wavelength-probabilities: "
-//                      << 100.0 * float(per_counter) / float(nr_of_temperatures - 1) << " [%]           \r";
-//             }
-//         }
 
         // Increase progress counter
         per_counter++;
@@ -3398,7 +3366,7 @@ bool CDustComponent::calcSizeDistribution(dlist values, double * mass)
         // Log-normal distribution
         if(size_parameter[0] == 0 || size_parameter[1] == 0)
         {
-            cout << "\nERROR: Centroid or sigma of log-normal cannot be 0!" << endl;
+            cout << ERROR_LINE << "Centroid or sigma of log-normal cannot be 0!" << endl;
             return false;
         }
         for(uint a = 0; a < nr_of_dust_species; a++)
@@ -3524,7 +3492,7 @@ bool CDustComponent::add(double ** size_fraction, CDustComponent * comp, uint **
         // Check if the dust grain size is really the same
         if(a_eff[a] != comp->getEffectiveRadius(a))
         {
-            cout << "\nERROR: Wrong grain size at position " << a + 1 << " ( " << comp->getEffectiveRadius(a)
+            cout << ERROR_LINE << "Wrong grain size at position " << a + 1 << " ( " << comp->getEffectiveRadius(a)
                  << " )" << endl;
             return false;
         }
@@ -3544,7 +3512,7 @@ bool CDustComponent::add(double ** size_fraction, CDustComponent * comp, uint **
             // Check if the calorimetry data is really the same
             if(calorimetry_temperatures[t] != comp->getCalorimetricTemperature(t))
             {
-                cout << "\nERROR: Wrong calorimetric temperature at position " << t + 1 << " ( "
+                cout << ERROR_LINE << "Wrong calorimetric temperature at position " << t + 1 << " ( "
                      << comp->getCalorimetricTemperature(t) << " )" << endl;
                 return false;
             }
@@ -4554,7 +4522,7 @@ void CDustComponent::calcStochasticHeatingPropabilities(CGridBasic * grid,
     // size of wl_list must equal WL_STEPS
     if(wl_list.size() != WL_STEPS)
     {
-        cout << "\nERROR: Size of the wavelength array does not match (stochastic heating)" << endl;
+        cout << ERROR_LINE << "Size of the wavelength array does not match (stochastic heating)" << endl;
         return;
     }
 
@@ -4628,7 +4596,7 @@ double CDustComponent::getCalorimetryA(uint a, uint f, uint i, const spline & ab
         }
     }
     else
-        cout << "\nERROR: Error at the getCalorimetryA fuction (stochastic heating)";
+        cout << ERROR_LINE << "Error at the getCalorimetryA fuction (stochastic heating)";
 
     // Returning A needs to be at least zero
     return max(double(0), res);
@@ -4694,7 +4662,7 @@ long double * CDustComponent::getStochasticProbability(uint a, const spline & ab
     {
         for(uint t = 0; t < nr_of_calorimetry_temperatures; t++)
             X_vec[t] = 0;
-        cout << "\nERROR: Wrong values in stochastic heating calculation!" << endl;
+        cout << ERROR_LINE << "Wrong values in stochastic heating calculation!" << endl;
     }
     else
     {
@@ -5246,9 +5214,9 @@ void CDustComponent::getEscapePhotonMie(CGridBasic * grid,
     else
     {
         if(tmp_stokes.I() <= 0.0)
-            cout << "\nERROR: Photon package intensity is zero or negative!\n" << endl;
+            cout << ERROR_LINE << "Photon package intensity is zero or negative!\n" << endl;
         if(mat_sca(0, 0) <= 0.0)
-            cout << "\nERROR: First scattering matrix element is zero or negative!\n" << endl;
+            cout << ERROR_LINE << "First scattering matrix element is zero or negative!\n" << endl;
         
         tmp_stokes.clear();
         pp_escape->setStokesVector(tmp_stokes);
@@ -5364,7 +5332,7 @@ void CDustComponent::henyeygreen(photon_package * pp, uint a, CRandomGenerator *
     double g = getHGg(a, w);
 
     if(g <= -1.0 || g >= 1.0) {
-        cout << "\nERROR: Henyey-Greenstein g factor is invalid: " << g << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein g factor is invalid: " << g << endl;
         return;
     }
 
@@ -5410,12 +5378,12 @@ void CDustComponent::drainehenyeygreen(photon_package * pp, uint a, CRandomGener
     double alpha = getHGg2(a, w);
 
     if(g <= -1.0 || g >= 1.0) {
-        cout << "\nERROR: Henyey-Greenstein g factor is invalid: " << g << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein g factor is invalid: " << g << endl;
         return;
     }
 
     if(alpha < 0.0 || alpha > 1.0) {
-        cout << "\nERROR: Henyey-Greenstein alpha factor is invalid: " << alpha << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein alpha factor is invalid: " << alpha << endl;
         return;
     }
 
@@ -5484,22 +5452,22 @@ void CDustComponent::threeparamhenyeygreen(photon_package * pp, uint a, CRandomG
     double weight = getHGg3(a, w);
 
     if(g1 <= -1.0 || g1 >= 1.0) {
-        cout << "\nERROR: Henyey-Greenstein g factor is invalid: " << g1 << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein g factor is invalid: " << g1 << endl;
         return;
     }
 
     if(g2 <= -1.0 || g2 >= 1.0) {
-        cout << "\nERROR: Henyey-Greenstein g2 factor is invalid: " << g2 << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein g2 factor is invalid: " << g2 << endl;
         return;
     }
 
     if(g1 * g2 > 0.0) {
-        cout << "\nERROR: Henyey-Greenstein g1 and g2 must have different signs." << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein g1 and g2 must have different signs." << endl;
         return;
     }
     
     if(weight < 0.0 || weight > 1.0) {
-        cout << "\nERROR: Henyey-Greenstein weight factor is invalid: " << weight << endl;
+        cout << ERROR_LINE << "Henyey-Greenstein weight factor is invalid: " << weight << endl;
         return;
     }
 
@@ -5558,10 +5526,10 @@ void CDustComponent::miesca(photon_package * pp, uint a, CRandomGenerator * rand
         phipar = sqrt(q_i * q_i + u_i * u_i) * (-mat_sca(0, 1) / mat_sca(0, 0));
     } else {
         if(tmp_stokes.I() <= 0.0) {
-            cout << "\nERROR: Photon package intensity is zero or negative!\n" << endl;
+            cout << ERROR_LINE << "Photon package intensity is zero or negative!\n" << endl;
         }
         if(mat_sca(0, 0) <= 0.0) {
-            cout << "\nERROR: First scattering matrix element is zero or negative!\n" << endl;
+            cout << ERROR_LINE << "First scattering matrix element is zero or negative!\n" << endl;
         }
 
         tmp_stokes.clear();
@@ -6794,7 +6762,7 @@ bool CDustComponent::checkGrainSizeLimits(double a_min, double a_max)
     }
     else
     {
-        cout << "\nERROR: Minimum grain size must be smaller than " << a_eff[nr_of_dust_species - 1]
+        cout << ERROR_LINE << "Minimum grain size must be smaller than " << a_eff[nr_of_dust_species - 1]
                 << "!        " << endl;
         return false;
     }
@@ -6811,14 +6779,14 @@ bool CDustComponent::checkGrainSizeLimits(double a_min, double a_max)
     }
     else
     {
-        cout << "\nERROR: Maximum grain size must be larger than " << a_eff[0] << "!        " << endl;
+        cout << ERROR_LINE << "Maximum grain size must be larger than " << a_eff[0] << "!        " << endl;
         return false;
     }
 
     // If the minimum grain size is larger than the maximum, no calculation possible
     if(a_min_global > a_max_global)
     {
-        cout << "\nERROR: Minimum grain size (" << a_min_global
+        cout << ERROR_LINE << "Minimum grain size (" << a_min_global
                 << ") must be smaller than maximum grain size (" << a_max_global << ")!" << endl;
         return false;
     }
@@ -7359,7 +7327,7 @@ uint CDustComponent::getWavelengthID(double wavelength)
     if(it != wavelength_list.end())
         return distance(wavelength_list.begin(), it);
 
-    cout << "\nWARNING: Wavelength not found!" << endl;
+    cout << WARNING_LINE << "Wavelength not found!" << endl;
     return 0;
 }
 

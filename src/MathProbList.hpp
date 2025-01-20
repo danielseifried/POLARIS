@@ -1,16 +1,18 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CMATH_PROBLIST_H
+#define CMATH_PROBLIST_H
 
 #include "Matrix2D.hpp"
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef CMATH_PROBLIST_H
-#define CMATH_PROBLIST_H
-
 class prob_list
 {
-  public:
+public:
     prob_list()
     {
         N = 0;
@@ -46,9 +48,9 @@ class prob_list
 
     friend prob_list operator-(prob_list & list1, prob_list & list2);
 
-  private:
+private:
     uint N;
     double * x;
 };
 
-#endif
+#endif /* CMATH_PROBLIST_H */

@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGRID_CYLINCDRICAL_H
+#define CGRID_CYLINCDRICAL_H
 
 #include "GridBasic.hpp"
 #include "Typedefs.hpp"
@@ -6,16 +12,9 @@
 #include "CellCylindrical.hpp"
 #include "Photon.hpp"
 
-
-#ifndef CGRID_CYLINCDRICAL_H
-#define CGRID_CYLINCDRICAL_H
-
-
-class parameters;
-
 class CGridCylindrical : public CGridBasic
 {
-  public:
+public:
     CGridCylindrical(void)
     {
         basic_path = 0;
@@ -301,7 +300,7 @@ class CGridCylindrical : public CGridBasic
                                  uint & N_polar_r,
                                  uint *& N_polar_ph);
 
-  private:
+private:
     double Rmin, Rmax, Zmax;
     uint N_r, N_z;
     uint * N_ph;
@@ -319,4 +318,4 @@ class CGridCylindrical : public CGridBasic
     void setRndPositionInCell(photon_package * pp, CRandomGenerator * rand_gen);
 };
 
-#endif
+#endif /* CGRID_CYLINCDRICAL_H */

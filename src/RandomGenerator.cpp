@@ -1,5 +1,9 @@
-#include "RandomGenerator.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "RandomGenerator.hpp"
 
 void CRandomGenerator::init(ullong seed)
 {

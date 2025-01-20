@@ -1,13 +1,16 @@
-#pragma once
-#include "CellBasic.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CELL_VORONOI_H
 #define CELL_VORONOI_H
 
+#include "CellBasic.hpp"
+
 class cell_vo : public cell_basic
 {
-  public:
+public:
     cell_vo()
     {
         id = 0;
@@ -52,11 +55,11 @@ class cell_vo : public cell_basic
 
     ushort getNrOfNeighbors();
 
-  private:
+private:
     Vector3D center;
     ushort nr_neighbors;
     int * neighbors;
     double volume;
 };
 
-#endif
+#endif /* CELL_VORONOI_H */

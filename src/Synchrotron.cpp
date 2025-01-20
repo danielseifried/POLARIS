@@ -1,5 +1,9 @@
-#include "Synchrotron.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "Synchrotron.hpp"
 
 double CSynchrotron::Gamma(double x)
 {
@@ -10,7 +14,7 @@ double CSynchrotron::Gamma(double x)
     // However, this case shouldn't happen anyway for any power law index 2<p<3.
     if(x <= 0.0)
     {
-        cout << "\nERROR: Gamma(0)                                            \n";
+        cout << ERROR_LINE << "Gamma(0)                                            \n";
         return 0;
     }
 
@@ -64,7 +68,7 @@ double CSynchrotron::Gamma(double x)
     // However, this shouldn't happen anyway for any power law index 2<p<3.
     if(x > 171.624)
     {
-        cout << "\nERROR: Gamma(171.624)                                      \n";
+        cout << ERROR_LINE << "Gamma(171.624)                                      \n";
         return 0;
     }
 
@@ -300,7 +304,7 @@ double CSynchrotron::BesselK(uint n, double x)
             break;
 
         default:
-            // cout << "\nERROR: BesselK_"<<n<<" is not defined \n";
+            // cout << ERROR_LINE << "BesselK_"<<n<<" is not defined \n";
             return 0;
     }
 

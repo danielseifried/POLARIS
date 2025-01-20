@@ -1,5 +1,9 @@
-#include "CrossSections.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "CrossSections.hpp"
 
 void cross_sections::operator/=(double w)
 {

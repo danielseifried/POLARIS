@@ -1,18 +1,19 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CGRID_BASIC_H
+#define CGRID_BASIC_H
 
 #include "Parameters.hpp"
 #include "Photon.hpp"
 #include "Vector3D.hpp"
-#include "CellBasic.hpp"
 #include "MathFunctions.hpp"
 #include "RandomGenerator.hpp"
 #include "MathSpline.hpp"
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
-
-
-#ifndef CGRID_BASIC_H
-#define CGRID_BASIC_H
 
 // Additional Structure
 struct VelFieldInterp
@@ -25,26 +26,26 @@ struct VelFieldInterp
 // Additional Structures
 class MagFieldInfo
 {
-    public:
-        MagFieldInfo()
-        {
-            cos_theta=0;
-            sin_theta=0;
-            cos_2_phi=0;
-            sin_2_phi=0;
-        }
+public:
+    MagFieldInfo()
+    {
+        cos_theta=0;
+        sin_theta=0;
+        cos_2_phi=0;
+        sin_2_phi=0;
+    }
 
 
-        double cos_theta;
-        double sin_theta;
-        double cos_2_phi;
-        double sin_2_phi;
-        Vector3D mag_field;
+    double cos_theta;
+    double sin_theta;
+    double cos_2_phi;
+    double sin_2_phi;
+    Vector3D mag_field;
 };
 
 class LineBroadening
 {
-    public:
+public:
     LineBroadening()
     {
         gauss_a=0;
@@ -57,7 +58,7 @@ class LineBroadening
 
 class CGridBasic
 {
-  public:
+public:
     CGridBasic()
     {
         basic_path = 0;
@@ -849,7 +850,7 @@ class CGridBasic
 
     uint CheckProbing(parameters & param);
 
-  protected:
+protected:
     // uint grid_type;
     ulong max_cells;
     uint max_data;
@@ -1091,13 +1092,13 @@ class CGridBasic
     uint max_wavelengths;
 
     bool getPolarRTGridParameterWorker(double max_len,
-                       double pixel_width,
-                       uint max_subpixel_lvl,
-                       dlist & _listR,
-                       uint & N_polar_r,
-                       uint *& N_polar_phi,
-                       const uint &N_r,
-                       const double *listR);
+                                       double pixel_width,
+                                       uint max_subpixel_lvl,
+                                       dlist & _listR,
+                                       uint & N_polar_r,
+                                       uint *& N_polar_phi,
+                                       const uint &N_r,
+                                       const double *listR);
 };
 
-#endif
+#endif /* CGRID_BASIC_H */

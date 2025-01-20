@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRADIATIVE_TRANSFER_H
+#define CRADIATIVE_TRANSFER_H
 
 #include "Detector.hpp"
 #include "DustMixture.hpp"
@@ -20,13 +26,9 @@
 #include "Stokes.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef CRADIATIVE_TRANSFER_H
-#define CRADIATIVE_TRANSFER_H
-
 class CRadiativeTransfer
 {
-  public:
+public:
     CRadiativeTransfer(parameters & param)
     {
         grid = 0;
@@ -86,18 +88,26 @@ class CRadiativeTransfer
     }
 
     bool initiateDustRaytrace(parameters & param);
+
     bool initiateSyncRaytrace(parameters & param);
+
     bool initiateLineRaytrace(parameters & param);
+
     bool initiateOPIATERaytrace(parameters & param);
+
     bool initiateProbing(parameters & param);
+
     void initiateRadFieldMC(parameters & param);
+
     void initiateDustMC(parameters & param);
 
     void initiateRungeKuttaFehlberg();
 
     // Temperature calculation and RATs
     bool calcMonteCarloRadiationField(uint command, bool use_energy_density, bool disable_reemission = false);
+
     bool calcMonteCarloLvlPopulation(uint i_species, uint global_seed);
+
     void rayThroughCellForLvlPop(photon_package * pp,
                                  uint i_species,
                                  uint i_trans,
@@ -111,6 +121,7 @@ class CRadiativeTransfer
 
     // Dust emission
     bool calcPolMapsViaRaytracing(parameters & param);
+
     void getDustPixelIntensity(CSourceBasic * tmp_source,
                                double cx,
                                double cy,
@@ -124,10 +135,12 @@ class CRadiativeTransfer
                           uint i_det,
                           uint subpixel_lvl);
     void rayThroughCellDust(photon_package * pp, uint i_det, uint nr_used_wavelengths);
+
     void calcStellarEmission(uint i_det, CRandomGenerator * rand_gen);
 
     // Synchrontron emission
     bool calcSyncMapsViaRaytracing(parameters & param);
+
     void getSyncPixelIntensity(CSourceBasic * tmp_source,
                                double cx,
                                double cy,
@@ -140,12 +153,13 @@ class CRadiativeTransfer
                           double cy,
                           uint i_det,
                           uint subpixel_lvl);
+                        
     void rayThroughCellSync(photon_package * pp1, uint i_det, uint nr_used_wavelengths);
-
 
     //OPIATE database RT
 
     bool calcOPIATEMapsViaRaytracing(parameters & param);
+
     void getOPIATEPixelIntensity(CSourceBasic * tmp_source,
                                double cx,
                                double cy,
@@ -227,10 +241,13 @@ class CRadiativeTransfer
     void scaleAddToDetector(photon_package * pp, CDetector * detector, ullong interactions);
 
     bool doMRWStepBW(photon_package * pp);
+
     bool doMRWStepBWWithoutHeating(photon_package * pp);
 
     void calcFinalTemperature(bool use_energy_density);
+
     void calcStochasticHeating();
+
     void calcAlignedRadii();
 
     bool isInvalid(double val);
@@ -243,7 +260,7 @@ class CRadiativeTransfer
 
     void convertTempInQB(double min_gas_density, bool use_gas_temp);
 
-  private:
+private:
     string pathOutput;
 
     int * probing_points;
@@ -278,4 +295,4 @@ class CRadiativeTransfer
     CSynchrotron * synchrotron;
 };
 
-#endif
+#endif /* CRADIATIVE_TRANSFER_H */

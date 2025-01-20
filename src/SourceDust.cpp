@@ -1,12 +1,16 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "SourceDust.hpp"
 #include "SourceBasic.hpp"
-
 
 bool CSourceDust::initSource(uint id, uint max, bool use_energy_density)
 {
     if(!use_energy_density)
     {
-        cout << "\nERROR: The dust source for radiation field calculation "
+        cout << ERROR_LINE << "The dust source for radiation field calculation "
              << "can only be used with energy density!" << endl;
         return false;
     }

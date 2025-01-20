@@ -1,8 +1,12 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "MathFunctions.hpp"
 #include "RandomGenerator.hpp"
-#include "../ext/catch2/catch.hpp"
+#include "catch2/catch.hpp"
 #include <algorithm>
-
 
 TEST_CASE("CMathFunctions::calcWVMie::BH", "[MathFunctions][CMathFunctions]")
 {

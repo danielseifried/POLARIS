@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "Photon.hpp"
 #include "GridBasic.hpp"
-
 
 void photon_package::setStokesVector(StokesVector st, uint i)
 {

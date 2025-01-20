@@ -1,14 +1,17 @@
-#pragma once
-#include "Typedefs.hpp"
-#include "Vector3D.hpp"
-
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
 #ifndef CELL_BASIC_H
 #define CELL_BASIC_H
 
+#include "Typedefs.hpp"
+#include "Vector3D.hpp"
+
 class cell_basic
 {
-  public:
+public:
     cell_basic()
     {
         data = 0;
@@ -40,9 +43,9 @@ class cell_basic
 
     void updateID(uint _id);
 
-  protected:
+protected:
     double * data;
     uint id;
 };
 
-#endif
+#endif /* CELL_BASIC_H */

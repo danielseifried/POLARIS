@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "SourceStar.hpp"
 #include "CommandParser.hpp"
-
 
 bool CSourceStar::initSource(uint id, uint max, bool use_energy_density)
 {
@@ -99,7 +103,7 @@ bool CSourceStar::setParameterFromFile(parameters & param, uint p)
 
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open spectrum file: \n" << filename << "  \n" << endl;
+        cout << ERROR_LINE << "Cannot open spectrum file: \n" << filename << "  \n" << endl;
         return false;
     }
 
@@ -114,7 +118,7 @@ bool CSourceStar::setParameterFromFile(parameters & param, uint p)
 
         if(value.size() != 4 && value.size() != 2)
         {
-            cout << "\nERROR: In spectrum file:\n" << filename << endl;
+            cout << ERROR_LINE << "In spectrum file:\n" << filename << endl;
             cout << "Wrong amount of values in line " << line_counter + 1 << "!" << endl;
             return false;
         }

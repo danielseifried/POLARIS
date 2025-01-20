@@ -1,12 +1,15 @@
-#include <cmath>
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include <cmath>
 #include "DustMixture.hpp"
 #include "CommandParser.hpp"
 #include "GridBasic.hpp"
 #include "MathFunctions.hpp"
 #include "Typedefs.hpp"
 #include "Parameters.hpp"
-
 
 bool CDustMixture::createDustMixtures(parameters & param, string path_data, string path_plot)
 {
@@ -164,7 +167,7 @@ bool CDustMixture::createDustMixtures(parameters & param, string path_data, stri
             if(param.getStochasticHeatingMaxSize() > single_component[i_comp].getSizeMin())
                 if(!single_component[i_comp].readCalorimetryFile(param, dust_component_choice))
                 {
-                    cout << "\nERROR: Cannot open calorimetry file, which is required "
+                    cout << ERROR_LINE << "Cannot open calorimetry file, which is required "
                             "for stochastic heating!"
                          << endl;
                     return false;
@@ -257,7 +260,7 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
                     "temperatures"
                  << endl;
             if(param.getStochasticHeatingMaxSize() > 0)
-                cout << "\nHINT: Stochastic heating was already calculated. This "
+                cout << NOTE_LINE << "Stochastic heating was already calculated. This "
                         "should not happen!"
                      << endl;
         }
@@ -289,7 +292,7 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
             else if(!grid->useDustChoice() && grid->getNrAlignedRadii() == getNrOfMixtures())
                 cout << "found a separate radius for each density distribution" << endl;
             else
-                cout << "\nERROR: This should not happen!" << endl;
+                cout << ERROR_LINE << "This should not happen!" << endl;
         }
 
         cout << "- Include scattered light : ";
@@ -392,7 +395,7 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
                  << param.getStochasticHeatingMaxSize() << " [m]" << endl;
         else if(param.getStochasticHeatingMaxSize() > 0 && param.getSaveRadiationField())
         {
-            cout << "\nHINT: Stochastic heating and saving the radiation field is chosen." << endl
+            cout << NOTE_LINE << "Stochastic heating and saving the radiation field is chosen." << endl
                  << "      The radiation field will be saved and stochastic heating "
                     "should be set"
                  << endl
@@ -494,7 +497,7 @@ bool CDustMixture::mixComponents(parameters & param, uint i_mixture)
         // Check if the components have the same amount of grain sizes
         if(nr_of_dust_species != single_component[i_comp].getNrOfDustSpecies())
         {
-            cout << "\nERROR: Component Nr. " << i_comp + 1 << " has a different amount of dust species!"
+            cout << ERROR_LINE << "Component Nr. " << i_comp + 1 << " has a different amount of dust species!"
                  << endl;
             return false;
         }
@@ -502,7 +505,7 @@ bool CDustMixture::mixComponents(parameters & param, uint i_mixture)
         // Check if the components have the same amount of incident angles
         if(nr_of_incident_angles != single_component[i_comp].getNrOfIncidentAngles())
         {
-            cout << "\nERROR: Component Nr. " << i_comp + 1 << " has a different amount of incident angles!"
+            cout << ERROR_LINE << "Component Nr. " << i_comp + 1 << " has a different amount of incident angles!"
                  << endl;
             return false;
         }
@@ -594,7 +597,7 @@ bool CDustMixture::preCalcDustProperties(parameters & param, uint i_mixture)
     if(param.isTemperatureSimulation() || param.isRatSimulation())
         if(!mixed_component[i_mixture].calcWavelengthDiff())
         {
-            cout << "\nERROR: The wavelength grid only has one wavelength which is not enough for temp calculation!\n"
+            cout << ERROR_LINE << "The wavelength grid only has one wavelength which is not enough for temp calculation!\n"
                  << "       Change WL_STEPS to more than one in the src/Typedefs.h and recompile!" << endl;
             return false;
         }
@@ -695,7 +698,8 @@ void CDustMixture::preCalcRelWeight()
 
 string CDustMixture::getPhaseFunctionStr(uint i_mixture)
 {
-    string str_res = "\nERROR: Phase function is undefined!\n";
+    string str_res = ERROR_LINE;
+    str_res += "Phase function is undefined!";
     if(mixed_component != 0)
     {
         switch(mixed_component[i_mixture].getPhaseFunctionID())
@@ -1105,7 +1109,7 @@ uint CDustMixture::getWavelengthID(double wavelength)
     if(it != wavelength_list.end())
         return distance(wavelength_list.begin(), it);
 
-    cout << "\nWARNING: Wavelength not found!" << endl;
+    cout << WARNING_LINE << "Wavelength not found!" << endl;
     return 0;
 }
 
@@ -1603,7 +1607,7 @@ void CDustMixture::scatter(CGridBasic * grid, photon_package * pp, CRandomGenera
                 *pp->getStokesVector() *= getCscaMean(grid, *pp) / getCextMean(grid, *pp);
             else
             {
-                cout << "\nHINT: Mean cross section for extinction is zero or negative!" << endl;
+                cout << NOTE_LINE << "Mean cross section for extinction is zero or negative!" << endl;
                 pp->getStokesVector()->clear();
             }
         }
@@ -1706,7 +1710,7 @@ void CDustMixture::getEscapePhoton(CGridBasic * grid,
             *pp_escape->getStokesVector() *= getCscaMean(grid, *pp) / getCextMean(grid, *pp);
         else
         {
-            cout << "\nHINT: Mean cross section for extinction is zero or negative!" << endl;
+            cout << NOTE_LINE << "Mean cross section for extinction is zero or negative!" << endl;
             pp_escape->getStokesVector()->clear();
         }
     }

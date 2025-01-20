@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_BACKGROUND_H
+#define CSOURCE_BACKGROUND_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,16 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_BACKGROUND_H
-#define CSOURCE_BACKGROUND_H
-
 class CSourceBackground : public CSourceBasic
 {
-  public:
+public:
     CSourceBackground()
     {
         init = false;
@@ -65,6 +64,7 @@ class CSourceBackground : public CSourceBasic
     StokesVector getStokesVector(photon_package * pp);
 
     bool setParameterFromFile(parameters & param, uint p);
+
     void setParameter(parameters & param, uint p);
 
     ullong getNrOfPhotons();
@@ -73,7 +73,7 @@ class CSourceBackground : public CSourceBasic
 
     void setOrientation(Vector3D n1, Vector3D n2, double _rot_angle1, double _rot_angle2);
 
-  private:
+private:
     Matrix2D temp, f, q, u, v;
     Vector3D ex, ey, ez;
     uint bins;
@@ -91,4 +91,4 @@ class CSourceBackground : public CSourceBasic
     double * L;
 };
 
-#endif
+#endif /* CSOURCE_BACKGROUND_H */

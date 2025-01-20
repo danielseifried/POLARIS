@@ -1,18 +1,22 @@
-#include "Detector.hpp"
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
 
+#include "Detector.hpp"
 
 // Dust scattering detector
 void CDetector::init(string _path,
-            uint _bins_x,
-            uint _bins_y,
-            double _sidelength_x,
-            double _sidelength_y,
-            double _map_shift_x,
-            double _map_shift_y,
-            double _distance,
-            double _l_min,
-            double _l_max,
-            uint _nr_spectral_bins)
+                     uint _bins_x,
+                     uint _bins_y,
+                     double _sidelength_x,
+                     double _sidelength_y,
+                     double _map_shift_x,
+                     double _map_shift_y,
+                     double _distance,
+                     double _l_min,
+                     double _l_max,
+                     uint _nr_spectral_bins)
 {
     rot_angle1 = 0;
     rot_angle2 = 0;
@@ -231,15 +235,15 @@ void CDetector::addToRaytracingSedDetector(const photon_package & pp)
     uint i_spectral = pp.getSpectralID();
     if(sedI != 0)
     {
-#pragma omp atomic update
+        #pragma omp atomic update
         sedI[i_spectral] += st.I();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedQ[i_spectral] += st.Q();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedU[i_spectral] += st.U();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedV[i_spectral] += st.V();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedT[i_spectral] += st.T() / max_cells;
     }
 }
@@ -351,13 +355,13 @@ void CDetector::addToMonteCarloDetector(const photon_package & pp, uint i_det_sp
     // Add to SED
     if(sedI != 0)
     {
-#pragma omp atomic update
+        #pragma omp atomic update
         sedI[i_det_spectral] += st.I();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedQ[i_det_spectral] += st.Q();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedU[i_det_spectral] += st.U();
-#pragma omp atomic update
+        #pragma omp atomic update
         sedV[i_det_spectral] += st.V();
     }
 
@@ -366,7 +370,7 @@ void CDetector::addToMonteCarloDetector(const photon_package & pp, uint i_det_sp
         matrixT[i_det_spectral].addValue(x, y, st.I());
         if(sedI != 0)
         {
-#pragma omp atomic update
+            #pragma omp atomic update
             sedT[i_det_spectral] += st.I();
         }
     }
@@ -375,7 +379,7 @@ void CDetector::addToMonteCarloDetector(const photon_package & pp, uint i_det_sp
         matrixS[i_det_spectral].addValue(x, y, st.I());
         if(sedI != 0)
         {
-#pragma omp atomic update
+            #pragma omp atomic update
             sedS[i_det_spectral] += st.I();
         }
     }
@@ -528,7 +532,7 @@ bool CDetector::writeMap(uint nr, uint results_type)
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -768,7 +772,7 @@ bool CDetector::writeMapStats(uint nr, uint results_type)
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -1155,7 +1159,7 @@ bool CDetector::writeHealMaps(uint nr, uint results_type)
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -1330,7 +1334,7 @@ bool CDetector::writeSyncMap(uint nr)
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -1538,7 +1542,7 @@ bool CDetector::writeSyncHealMap(uint nr)
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -1956,7 +1960,7 @@ bool CDetector::writeOPIATEVelChannelMaps(COpiateDataBase * op, uint det_id)
         long nelements = uint(bins_x) * uint(bins_y);
         if(max_cells != nelements)
         {
-            cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+            cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
             return false;
         }
 
@@ -2132,7 +2136,7 @@ bool CDetector::writeOPIATEVelChannelMaps(COpiateDataBase * op, uint det_id)
     long nelements = uint(bins_x) * uint(bins_y);
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -2335,7 +2339,7 @@ bool CDetector::writeOPIATEIntChannelMaps(COpiateDataBase * op, uint det_id)
     long nelements = uint(bins_x) * uint(bins_y);
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -2530,7 +2534,7 @@ bool CDetector::writeVelChannelMaps(CGasMixture * gas, uint i_species, uint i_li
         long nelements = bins_x * bins_y;
         if(max_cells != nelements)
         {
-            cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+            cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
             return false;
         }
 
@@ -2721,7 +2725,7 @@ bool CDetector::writeVelChannelMaps(CGasMixture * gas, uint i_species, uint i_li
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -2944,7 +2948,7 @@ bool CDetector::writeIntChannelMaps(CGasMixture * gas, uint i_species, uint i_li
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -3240,7 +3244,7 @@ bool CDetector::writeOPIATEVelChannelHealMaps(COpiateDataBase * op, uint det_id)
         long nelements = uint(bins_x) * uint(bins_y);
         if(max_cells != nelements)
         {
-            cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+            cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
             return false;
         }
 
@@ -3357,7 +3361,7 @@ bool CDetector::writeOPIATEVelChannelHealMaps(COpiateDataBase * op, uint det_id)
     long nelements = uint(bins_x) * uint(bins_y);
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -3494,7 +3498,7 @@ bool CDetector::writeVelChannelHealMaps(CGasMixture * gas, uint i_species, uint 
         long nelements = bins_x * bins_y;
         if(max_cells != nelements)
         {
-            cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+            cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
             return false;
         }
 
@@ -3623,7 +3627,7 @@ bool CDetector::writeVelChannelHealMaps(CGasMixture * gas, uint i_species, uint 
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -3790,7 +3794,7 @@ bool CDetector::writeOPIATEIntVelChannelHealMaps(COpiateDataBase * op, uint det_
     long nelements = uint(bins_x) * uint(bins_y);
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 
@@ -3927,7 +3931,7 @@ bool CDetector::writeIntVelChannelHealMaps(CGasMixture * gas, uint i_species, ui
     long nelements = bins_x * bins_y;
     if(max_cells != nelements)
     {
-        cout << "\nWARNING: Max cells are not equal to bins x bins!" << endl;
+        cout << WARNING_LINE << "Max cells are not equal to bins x bins!" << endl;
         return false;
     }
 

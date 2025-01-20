@@ -1,4 +1,11 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CDETECTOR_H
+#define CDETECTOR_H
+
 #include "GasSpecies.hpp"
 #include "GasMixture.hpp"
 #include "Stokes.hpp"
@@ -7,13 +14,9 @@
 #include "OPIATE.hpp"
 #include <CCfits/CCfits>
 
-
-#ifndef DETECTOR_H
-#define DETECTOR_H
-
 class CDetector
 {
-  public:
+public:
     CDetector()
     {
         detector_id = -1;
@@ -654,7 +657,7 @@ class CDetector
 
     string getAlignmentDescription();
 
-  private:
+private:
     double cos_acceptance_angle;
     double rot_angle1, rot_angle2, distance;
     double rad_bubble;
@@ -688,4 +691,4 @@ class CDetector
     Vector3D axis1, axis2, pos;
 };
 
-#endif
+#endif /* CDETECTOR_H */

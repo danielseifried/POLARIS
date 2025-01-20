@@ -1,4 +1,11 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CDUST_COMPONENT_H
+#define CDUST_COMPONENT_H
+
 #include "GridBasic.hpp"
 #include "Matrix2D.hpp"
 #include "CrossSections.hpp"
@@ -10,15 +17,9 @@
 #include "Stokes.hpp"
 #include "Vector3D.hpp"
 
-
-class parameters;
-
-#ifndef CDUST_COMPONENT_H
-#define CDUST_COMPONENT_H
-
 class CDustComponent
 {
-  public:
+public:
     CDustComponent()
     {
         avg_scattering_frac = 0;
@@ -910,7 +911,7 @@ class CDustComponent
                             photon_package * pp_escape) const;
     double getCellEmission(CGridBasic * grid, const photon_package & pp, uint i_density) const;
 
-  private:
+private:
     interp ** avg_scattering_frac;
     interp ** phase_pdf;
 
@@ -994,4 +995,4 @@ class CDustComponent
     uilist dust_choices_to_index;
 };
 
-#endif
+#endif /* CDUST_COMPONENT_H */

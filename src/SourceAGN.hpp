@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CSOURCE_AGN_H
+#define CSOURCE_AGN_H
 
 #include "DustMixture.hpp"
 #include "Vector3D.hpp"
@@ -9,16 +15,9 @@
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-class CGridBasic;
-class photon_package;
-
-#ifndef CSOURCE_AGN_H
-#define CSOURCE_AGN_H
-
 class CSourceAGN : public CSourceBasic
 {
-  public:
+public:
     CSourceAGN()
     {
         pos = 0;
@@ -37,4 +36,4 @@ class CSourceAGN : public CSourceBasic
     void setParameter(parameters & param, uint p);
 };
 
-#endif
+#endif /* CSOURCE_AGN_H */

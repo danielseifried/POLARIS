@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CRAYTRACING_HEALPIX_H
+#define CRAYTRACING_HEALPIX_H
 
 #include "Detector.hpp"
 #include "GasSpecies.hpp"
@@ -11,14 +17,9 @@
 #include "Typedefs.hpp"
 #include "Vector3D.hpp"
 
-
-#ifndef RAYTRACING_HEALPIX_H
-#define RAYTRACING_HEALPIX_H
-
-
 class CRaytracingHealPix : public CRaytracingBasic
 {
-  public:
+public:
     CRaytracingHealPix(CGridBasic * _grid)
     {
         nside = 1;
@@ -106,7 +107,7 @@ class CRaytracingHealPix : public CRaytracingBasic
 
     void ang2ring_ring(double theta, double phi, int * i_pix);
 
-  private:
+private:
     static int isqrt(int v);
 
     static void pix2ang_ring_z_phi(int nside_, int pix, double * z, double * phi);
@@ -129,4 +130,4 @@ class CRaytracingHealPix : public CRaytracingBasic
     long npix;
 };
 
-#endif
+#endif /* CRAYTRACING_HEALPIX_H */

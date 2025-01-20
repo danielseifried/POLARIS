@@ -1,16 +1,18 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CMATH_INTERP_H
+#define CMATH_INTERP_H
 
 #include "Matrix2D.hpp"
 #include "Stokes.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef CMATH_INTERP_H
-#define CMATH_INTERP_H
-
 class interp
 {
-  public:
+public:
     interp()
     {
         N = 0;
@@ -35,10 +37,10 @@ class interp
 
     double getValue(double v, uint interpolation = LINEAR) const;
 
-  private:
+private:
     uint N;
     dlist x;
     dlist y;
 };
 
-#endif
+#endif /* CMATH_INTERP_H */

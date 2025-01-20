@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
+#ifndef CMATH_FUNCTIONS_H
+#define CMATH_FUNCTIONS_H
 
 #include "Matrix2D.hpp"
 #include "MathProbList.hpp"
@@ -6,13 +12,9 @@
 #include "Vector3D.hpp"
 #include "Typedefs.hpp"
 
-
-#ifndef CMATH_FUNCTIONS_H
-#define CMATH_FUNCTIONS_H
-
 class CMathFunctions
 {
-  public:
+public:
     CMathFunctions(void)
     {
         b = 0;
@@ -390,7 +392,7 @@ class CMathFunctions
 
     int IDUM;
 
-  private:
+private:
     // statistics and SED
 
     void CholDec();
@@ -430,4 +432,4 @@ class CMathFunctions
     ullong kiss_c;
 };
 
-#endif
+#endif /* CMATH_FUNCTIONS_H */

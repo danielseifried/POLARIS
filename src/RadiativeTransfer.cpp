@@ -1,3 +1,8 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "RadiativeTransfer.hpp"
 #include "CommandParser.hpp"
 #include "Detector.hpp"
@@ -5,7 +10,6 @@
 #include "GasSpecies.hpp"
 #include "MathFunctions.hpp"
 #include "OPIATE.hpp"
-
 
 #define XAxis 10
 #define YAxis 20
@@ -20,14 +24,14 @@ bool CRadiativeTransfer::initiateDustRaytrace(parameters & param)
     // Check if grid was loaded
     if(grid == 0)
     {
-        cout << "\nERROR: No Grid loaded!" << endl;
+        cout << ERROR_LINE << "No Grid loaded!" << endl;
         return false;
     }
 
     // Check if dust was loaded
     if(dust == 0)
     {
-        cout << "\nERROR: No dust model!" << endl;
+        cout << ERROR_LINE << "No dust model!" << endl;
         return false;
     }
 
@@ -37,7 +41,7 @@ bool CRadiativeTransfer::initiateDustRaytrace(parameters & param)
     // No raytracing without detectors
     if(dust_ray_detectors.size() == 0)
     {
-        cout << "\nERROR: No sequence defined!" << endl;
+        cout << ERROR_LINE << "No sequence defined!" << endl;
         return false;
     }
 
@@ -74,7 +78,7 @@ bool CRadiativeTransfer::initiateDustRaytrace(parameters & param)
         // Check for wrong choice of emission source
         if(nr_source > sources_ray.size())
         {
-            cout << "\nERROR: ID of source (" << nr_source << ") larger than max. amount ("
+            cout << ERROR_LINE << "ID of source (" << nr_source << ") larger than max. amount ("
                  << sources_ray.size() << ") of defined sources!" << endl;
             return false;
         }
@@ -82,7 +86,7 @@ bool CRadiativeTransfer::initiateDustRaytrace(parameters & param)
         // Polar raytracing background grid can only be used with cylindrical or spherical grids
         if(detector_id == DET_POLAR && grid->getDataID() != GRID_ID_SPH && grid->getDataID() != GRID_ID_CYL)
         {
-            cout << "\nERROR: Polar RT grid can only be used with spherical and "
+            cout << ERROR_LINE << "Polar RT grid can only be used with spherical and "
                     "cylindrical grids!"
                  << endl;
             return false;
@@ -127,13 +131,13 @@ bool CRadiativeTransfer::initiateSyncRaytrace(parameters & param)
 {
     if(grid == 0)
     {
-        cout << "\nERROR: No Grid loaded!" << endl;
+        cout << ERROR_LINE << "No Grid loaded!" << endl;
         return false;
     }
 
     if(dust == 0)
     {
-        cout << "\nERROR: No dust model!" << endl;
+        cout << ERROR_LINE << "No dust model!" << endl;
         return false;
     }
 
@@ -141,7 +145,7 @@ bool CRadiativeTransfer::initiateSyncRaytrace(parameters & param)
 
     if(sync_ray_detectors.size() == 0)
     {
-        cout << "\nERROR: No sequence defined!" << endl;
+        cout << ERROR_LINE << "No sequence defined!" << endl;
         return false;
     }
 
@@ -169,14 +173,14 @@ bool CRadiativeTransfer::initiateSyncRaytrace(parameters & param)
 
         if(nr_source > sources_ray.size())
         {
-            cout << "\nERROR: ID of source (" << nr_source << ") larger than max. amount ("
+            cout << ERROR_LINE << "ID of source (" << nr_source << ") larger than max. amount ("
                  << sources_ray.size() << ") of defined sources!" << endl;
             return false;
         }
 
         if(detector_id == DET_POLAR && grid->getDataID() != GRID_ID_SPH && grid->getDataID() != GRID_ID_CYL)
         {
-            cout << "\nERROR: Polar RT grid can only be used with spherical and "
+            cout << ERROR_LINE << "Polar RT grid can only be used with spherical and "
                     "cylindrical grids!"
                  << endl;
             return false;
@@ -202,7 +206,7 @@ bool CRadiativeTransfer::initiateSyncRaytrace(parameters & param)
                 break;
 
             default:
-                cout << "\nERROR: Wrong detector ID" << endl;
+                cout << ERROR_LINE << "Wrong detector ID" << endl;
                 return false;
                 break;
         }
@@ -222,19 +226,19 @@ bool CRadiativeTransfer::initiateLineRaytrace(parameters & param)
 {
     if(grid == 0)
     {
-        cout << "\nERROR: No Grid loaded!" << endl;
+        cout << ERROR_LINE << "No Grid loaded!" << endl;
         return false;
     }
 
     if(dust == 0)
     {
-        cout << "\nERROR: No dust model defined!" << endl;
+        cout << ERROR_LINE << "No dust model defined!" << endl;
         return false;
     }
 
     if(gas == 0)
     {
-        cout << "\nERROR: No gas model loaded!" << endl;
+        cout << ERROR_LINE << "No gas model loaded!" << endl;
         return false;
     }
 
@@ -253,7 +257,7 @@ bool CRadiativeTransfer::initiateLineRaytrace(parameters & param)
 
     if(nr_gas_species == 0)
     {
-        cout << "\nERROR: No gas species transition defined!" << endl;
+        cout << ERROR_LINE << "No gas species transition defined!" << endl;
         return false;
     }
 
@@ -274,7 +278,7 @@ bool CRadiativeTransfer::initiateLineRaytrace(parameters & param)
 
             if(nr_source > sources_ray.size())
             {
-                cout << "\nERROR: ID of source (" << nr_source << ") larger than max. amount ("
+                cout << ERROR_LINE << "ID of source (" << nr_source << ") larger than max. amount ("
                      << sources_ray.size() << ") of defined sources!" << endl;
                 return false;
             }
@@ -282,7 +286,7 @@ bool CRadiativeTransfer::initiateLineRaytrace(parameters & param)
             if(detector_id == DET_POLAR && grid->getDataID() != GRID_ID_SPH &&
                grid->getDataID() != GRID_ID_CYL)
             {
-                cout << "\nERROR: Polar RT grid can only be used with spherical and "
+                cout << ERROR_LINE << "Polar RT grid can only be used with spherical and "
                         "cylindrical grids!"
                      << endl;
                 return false;
@@ -324,19 +328,19 @@ bool CRadiativeTransfer::initiateOPIATERaytrace(parameters & param)
 {
     if(grid == 0)
     {
-        cout << "\nERROR: No Grid loaded!" << endl;
+        cout << ERROR_LINE << "No Grid loaded!" << endl;
         return false;
     }
 
     if(dust == 0)
     {
-        cout << "\nERROR: No dust model defined!" << endl;
+        cout << ERROR_LINE << "No dust model defined!" << endl;
         return false;
     }
 
     if(op == 0)
     {
-        cout << "\nERROR: No OPIATE database loaded!" << endl;
+        cout << ERROR_LINE << "No OPIATE database loaded!" << endl;
         return false;
     }
 
@@ -365,7 +369,7 @@ bool CRadiativeTransfer::initiateOPIATERaytrace(parameters & param)
 
         if(nr_source > sources_ray.size())
         {
-            cout << "\nERROR: ID of source (" << nr_source << ") larger than max. amount ("
+            cout << ERROR_LINE << "ID of source (" << nr_source << ") larger than max. amount ("
                  << sources_ray.size() << ") of defined sources!" << endl;
             return false;
         }
@@ -383,12 +387,12 @@ bool CRadiativeTransfer::initiateOPIATERaytrace(parameters & param)
 
             case DET_SLICE:
                 //tracer[i_det] = new CRaytracingSlice(grid);
-                cout << "\nERROR: Slice detector not yet fully implemented!" << endl;
+                cout << ERROR_LINE << "Slice detector not yet fully implemented!" << endl;
                 break;
 
             default:
                 //tracer[i_det] = new CRaytracingSlice(grid);
-                cout << "\nERROR: Detector not yet fully implemented!" << endl;
+                cout << ERROR_LINE << "Detector not yet fully implemented!" << endl;
                 break;
         }
 
@@ -539,7 +543,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
 
             grid->initPreCalcTables(nr_of_dust_wavelengths);
 
-#pragma omp parallel for schedule(dynamic) collapse(2)
+            #pragma omp parallel for schedule(dynamic) collapse(2)
             for(int wID = 0; wID < nr_of_dust_wavelengths; wID++)
             {
                 for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
@@ -601,7 +605,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
         rand_gen.init(seed);
 
         // A loop for each wavelength
-#pragma omp for schedule(dynamic) collapse(2)
+        #pragma omp for schedule(dynamic) collapse(2)
         for(int wID = 0; wID < int(nr_used_wavelengths); wID++)
         {
             // A loop for each photon
@@ -612,7 +616,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
                 Vector3D old_pos;
 
                 // Increase counter used to show progress
-#pragma omp atomic update
+                #pragma omp atomic update
                 per_counter++;
 
                 // Calculate percentage of total progress per source
@@ -621,7 +625,7 @@ bool CRadiativeTransfer::calcMonteCarloRadiationField(uint command,
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
                 {
-#pragma omp critical
+                    #pragma omp critical
                     {
                         switch(command)
                         {
@@ -838,7 +842,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
     // Check the source
     if(sources_mc.size() != 1 || sources_mc[0]->getID() != SRC_GAS_LVL)
     {
-        cout << "Error: Level population can only be calculated with the GAS MC source!" << endl;
+        cout << ERROR_LINE << "Level population can only be calculated with the GAS MC source!" << endl;
         return false;
     }
 
@@ -877,7 +881,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
     // Calculate the level populations for each cell (initial guess, LTE)
     if(!gas->calcLevelPopulation(grid, i_species))
     {
-        cout << "\nERROR: Level population cannot be calculated!";
+        cout << ERROR_LINE << "Level population cannot be calculated!";
         return false;
     }
 
@@ -912,11 +916,11 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
         rand_gen.init(seed);
 
         // A loop for each cell
-#pragma omp for schedule(dynamic)
+        #pragma omp for schedule(dynamic)
         for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
         {
             // Increase counter used to show progress
-#pragma omp atomic update
+            #pragma omp atomic update
             per_counter++;
 
             // Pointer to final cell
@@ -959,7 +963,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
                 local_iteration_counter++;
 
                 // Show only new percentage number
-#pragma omp critical
+                #pragma omp critical
                 {
                     cout << "-> Calculating MC level population (global = " << global_iteration_counter
                          << ", max local = " << max_local_iterations
@@ -989,7 +993,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
                         {
                             if(!grid->findStartingPoint(&pp))
                             {
-#pragma omp atomic update
+                                #pragma omp atomic update
                                 kill_counter++;
                                 continue;
                             }
@@ -1099,7 +1103,7 @@ bool CRadiativeTransfer::calcMonteCarloLvlPopulation(uint i_species, uint global
     if(global_iteration_counter == MC_LVL_POP_MAX_GLOBAL_ITER)
     {
         cout << CLR_LINE;
-        cout << "\nHINT: Global iteration not reached! Continue, but results might be wrong!" << endl;
+        cout << NOTE_LINE << "Global iteration not reached! Continue, but results might be wrong!" << endl;
     }
 
     // Format prints
@@ -1174,7 +1178,7 @@ void CRadiativeTransfer::rayThroughCellForLvlPop(photon_package * pp,
             // If too many sub steps are needed, kill the photon
             if(kill_counter >= MAX_SOLVER_STEPS)
             {
-                cout << "\nWARNING: Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
+                cout << WARNING_LINE << "Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
                 break;
             }
 
@@ -1301,7 +1305,7 @@ void CRadiativeTransfer::rayThroughCellForLvlPop(photon_package * pp,
 
     cout << CLR_LINE;
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long c_i = 0; c_i < long(max_cells); c_i++)
     {
         cell_basic * cell = grid->getCellFromIndex(c_i);
@@ -1374,14 +1378,6 @@ void CRadiativeTransfer::rayThroughCellForLvlPop(photon_package * pp,
 
         if(adjTgas > 0)
             grid->setGasTemperature(cell, adjTgas * tdust);
-
-#pragma omp critical
-        {
-            per_counter++;
-            if(per_counter % 5000 == 0)
-                cout << "-> Estimating of temperatures: " << 100.0 * float(per_counter) / float(max_cells)
-                     << " [%] " << dust->getMinDustTemp() << " " << dust->getMaxDustTemp() << "        \r";
-        }
     }
 
     cout << CLR_LINE;
@@ -1428,7 +1424,7 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
             #if (USE_PRECALC_TABLE)
                 ulong nr_of_cells = grid->getMaxDataCells();
 
-#pragma omp parallel for schedule(dynamic)
+                #pragma omp parallel for schedule(dynamic)
                 for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
                 {
                     photon_package pp = photon_package();
@@ -1824,7 +1820,7 @@ bool CRadiativeTransfer::calcPolMapsViaMC()
         if(peel_off && tm_source->getID() == SRC_DUST)
         {
             cout << CLR_LINE;
-            cout << "\nHINT: MC simulations with dust source and peel-off include only "
+            cout << NOTE_LINE << "MC simulations with dust source and peel-off include only "
                     "the scattered radiation.\n"
                  << "Add results from Raytracing simulations for full dust emission!" << endl;
         }
@@ -1868,7 +1864,7 @@ void CRadiativeTransfer::convertTempInQB(double min_gas_density, bool use_gas_te
 
     cout << "-> Converting emissivities: 0 [%]        \r" << flush;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for(long c_i = 0; c_i < long(max_cells); c_i++)
     {
         cell_basic * cell = grid->getCellFromIndex(c_i);
@@ -1880,17 +1876,8 @@ void CRadiativeTransfer::convertTempInQB(double min_gas_density, bool use_gas_te
 
         dust->convertTempInQB(grid, cell, min_gas_density, use_gas_temp);
 
-#pragma omp atomic update
+        #pragma omp atomic update
         pos_counter++;
-
-//         if(pos_counter % 10000 == 0)
-//         {
-// #pragma omp critical
-//             {
-//                 cout << "-> Converting emissivities: " << 100.0 * float(pos_counter) / float(max_cells)
-//                      << " [%]       \r";
-//             }
-//         }
     }
 
     cout << CLR_LINE;
@@ -1907,20 +1894,20 @@ void CRadiativeTransfer::calcAlignedRadii()
     cout << CLR_LINE;
     cout << " -> Calc. RAT dust alig. radius: 0.0 [%]  (min: 0 [m]; max: 0 [m])        \r" << flush;
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long c_i = 0; c_i < long(max_cells); c_i++)
     {
         cell_basic * cell = grid->getCellFromIndex(c_i);
         dust->calcAlignedRadii(grid, cell);
 
-#pragma omp atomic update
+        #pragma omp atomic update
         per_counter++;
         float percentage = 100.0 * float(per_counter) / float(max_cells);
 
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << " -> Calc. RAT dust alig. radius: " << 100.0 * float(per_counter) / float(max_cells)
                      << " [%] (min: " << dust->getMinAlignedRadius()
@@ -1947,7 +1934,7 @@ void CRadiativeTransfer::calcFinalTemperature(bool use_energy_density)
     cout << CLR_LINE;
     cout << "-> Calculation of final temperatures : 0.0[%]                        \r";
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long c_i = 0; c_i < long(max_cells); c_i++)
     {
         cell_basic * cell = grid->getCellFromIndex(c_i);
@@ -1956,14 +1943,14 @@ void CRadiativeTransfer::calcFinalTemperature(bool use_energy_density)
         if(adjTgas > 0)
             grid->setGasTemperature(cell, adjTgas * grid->getDustTemperature(*cell));
 
-#pragma omp atomic update
+        #pragma omp atomic update
         per_counter++;
         float percentage = 100.0 * float(per_counter) / float(max_cells);
 
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculation of final temperatures : "
                      << 100.0 * float(per_counter) / float(max_cells) << " [%]              \r";
@@ -1991,21 +1978,21 @@ void CRadiativeTransfer::calcStochasticHeating()
     cout << CLR_LINE;
     cout << "-> Calculation of stochastic heating: 0.0[%]    \r" << flush;
 
-#pragma omp parallel for schedule(dynamic)
+#   pragma omp parallel for schedule(dynamic)
     for(long c_i = 0; c_i < long(max_cells); c_i++)
     {
         cell_basic * cell = grid->getCellFromIndex(c_i);
 
         dust->calcStochasticHeatingPropabilities(grid, cell, wl_list);
 
-#pragma omp atomic update
+        #pragma omp atomic update
         per_counter++;
         float percentage = 100.0 * float(per_counter) / float(max_cells);
 
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculation of stochastic heating: "
                      << 100.0 * float(per_counter) / float(max_cells) << " [%]          \r" << flush;
@@ -2138,7 +2125,7 @@ bool CRadiativeTransfer::calcSyncMapsViaRaytracing(parameters & param)
                  << ") 0.0 [%]   \r" << flush;
 
             // Calculate pixel intensity for each pixel
-#pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(dynamic)
             for(int i_pix = 0; i_pix < int(per_max); i_pix++)
             {
                 double cx = 0, cy = 0;
@@ -2148,7 +2135,7 @@ bool CRadiativeTransfer::calcSyncMapsViaRaytracing(parameters & param)
                 getSyncPixelIntensity(tmp_source, cx, cy, i_det, 0, i_pix);
 
                 // Increase counter used to show progress
-#pragma omp atomic update
+                #pragma omp atomic update
                 per_counter++;
 
                 // Calculate percentage of total progress per source
@@ -2157,7 +2144,7 @@ bool CRadiativeTransfer::calcSyncMapsViaRaytracing(parameters & param)
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
                 {
-#pragma omp critical
+                    #pragma omp critical
                     {
                         cout << "-> Ray tracing synchrotron map(s) (Seq. " << i_det + 1
                              << ", source: " << sID + 1 << ")  "
@@ -2182,11 +2169,11 @@ bool CRadiativeTransfer::calcSyncMapsViaRaytracing(parameters & param)
 
             if(tracer[i_det]->getSubpixelWarning())
             {
-                cout << "\nWARNING: level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
+                cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
                 cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << "\nHINT: a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
         }
     }
 
@@ -2388,10 +2375,10 @@ void CRadiativeTransfer::rayThroughCellSync(photon_package * pp, uint i_det, uin
                     // If too many sub steps are needed, kill the photon
                     if(kill_counter > 2.0 * MAX_SOLVER_STEPS)
                     {
-#pragma omp critical
+                        #pragma omp critical
                         {
                             cout << CLR_LINE;
-                            cout << "\nWARNING: Solver steps > " << 2.0 * MAX_SOLVER_STEPS
+                            cout << WARNING_LINE << "Solver steps > " << 2.0 * MAX_SOLVER_STEPS
                                  << ". Too many steps!" << endl
                                  << flush;
                             cout << "         Skipping entire cell!" << endl << flush;
@@ -2404,10 +2391,10 @@ void CRadiativeTransfer::rayThroughCellSync(photon_package * pp, uint i_det, uin
                         if(!fail)
                         {
                             fail = true;
-#pragma omp critical
+                            #pragma omp critical
                             {
                                 cout << CLR_LINE;
-                                cout << "\nWARNING: Solver steps > " << 1.0 * MAX_SOLVER_STEPS
+                                cout << WARNING_LINE << "Solver steps > " << 1.0 * MAX_SOLVER_STEPS
                                      << ". Too many steps!" << endl
                                      << flush;
                                 cout << "         Switching to approximate solver!" << endl << flush;
@@ -2580,7 +2567,7 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
 
                 ulong nr_of_cells = grid->getMaxDataCells();
 
-#pragma omp parallel for schedule(dynamic) collapse (2)
+                #pragma omp parallel for schedule(dynamic) collapse (2)
                 for(uint wID = 0; wID < nr_used_wavelengths; wID++)
                 {
                     for(long i_cell = 0; i_cell < long(nr_of_cells); i_cell++)
@@ -2622,7 +2609,7 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
                  << flush;
 
             // Calculate pixel intensity for each pixel
-#pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(dynamic)
             for(int i_pix = 0; i_pix < int(per_max); i_pix++)
             {
                 double cx = 0, cy = 0;
@@ -2632,7 +2619,7 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
                 getDustPixelIntensity(tmp_source, cx, cy, i_det, 0, i_pix);
 
                 // Increase counter used to show progress
-#pragma omp atomic update
+                #pragma omp atomic update
                 per_counter++;
 
                 // Calculate percentage of total progress per source
@@ -2641,7 +2628,7 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
                 {
-#pragma omp critical
+                    #pragma omp critical
                     {
                         cout << "-> Ray tracing dust map(s) (Seq. " << i_det + 1 << ", source: " << sID + 1
                              << ") " << percentage << " [%]       \r" << flush;
@@ -2673,11 +2660,11 @@ bool CRadiativeTransfer::calcPolMapsViaRaytracing(parameters & param)
 
             if(tracer[i_det]->getSubpixelWarning())
             {
-                cout << "\nWARNING: level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
+                cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
                 cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << "\nHINT: a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
         }
     }
 
@@ -2886,7 +2873,7 @@ void CRadiativeTransfer::rayThroughCellDust(photon_package * pp, uint i_det, uin
                     // If too many sub steps are needed, kill the photon
                     if(kill_counter >= MAX_SOLVER_STEPS)
                     {
-                        cout << "\nWARNING: Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!"
+                        cout << WARNING_LINE << "Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!"
                              << endl;
                         break;
                     }
@@ -3089,7 +3076,7 @@ bool CRadiativeTransfer::calcOPIATEMapsViaRaytracing(parameters& param)
         float last_percentage = 0;
 
         // Calculate pixel intensity for each pixel
-#pragma omp parallel for schedule(dynamic)
+        #pragma omp parallel for schedule(dynamic)
         for(int i_pix = 0; i_pix < int(per_max); i_pix++)
         {
             double cx = 0, cy = 0;
@@ -3097,7 +3084,7 @@ bool CRadiativeTransfer::calcOPIATEMapsViaRaytracing(parameters& param)
                 continue;
 
             // Increase counter used to show progress
-# pragma omp atomic update
+            # pragma omp atomic update
             per_counter++;
 
             // Calculate percentage of total progress per source
@@ -3106,7 +3093,7 @@ bool CRadiativeTransfer::calcOPIATEMapsViaRaytracing(parameters& param)
             // Show only new percentage number if it changed
             if((percentage - last_percentage) > PERCENTAGE_STEP)
             {
-#pragma omp critical
+                #pragma omp critical
                 {
                     cout << "-> Ray tracing OPIATE map(s): species " << i_det + 1 << " of " << stop + 1
                          << " : " << percentage << " [%]       \r" << flush;
@@ -3128,11 +3115,11 @@ bool CRadiativeTransfer::calcOPIATEMapsViaRaytracing(parameters& param)
 
         if(tracer[i_det]->getSubpixelWarning())
         {
-            cout << "\nWARNING: level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
+            cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
             cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
         }
         // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-        //     cout << "\nHINT: a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+        //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
     }
 
     cout << CLR_LINE;
@@ -3188,7 +3175,7 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
                                  : !gas->calcLevelPopulation(grid, i_species);
         if(lvl_pop_error)
         {
-            cout << "\nERROR: Level population cannot be calculated!";
+            cout << ERROR_LINE << "Level population cannot be calculated!";
             return false;
         }
 
@@ -3205,7 +3192,7 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
             uint nr_velocity_channels = tracer[i_det]->getNrSpectralBins();
             if(gas->isLineZeemanSplit(i_species, i_line) && nr_velocity_channels < 6)
             {
-                cout << "\nERROR: The magnetic field information requires at least 6 "
+                cout << ERROR_LINE << "The magnetic field information requires at least 6 "
                         "channels\n"
                      << "    for simulations with Zeeman splitting" << endl;
                 return false;
@@ -3221,7 +3208,7 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
             float last_percentage = 0;
 
             // Calculate pixel intensity for each pixel
-#pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(dynamic)
             for(int i_pix = 0; i_pix < int(per_max); i_pix++)
             {
                 double cx = 0, cy = 0;
@@ -3229,7 +3216,7 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
                     continue;
 
                 // Increase counter used to show progress
-#pragma omp atomic update
+                #pragma omp atomic update
                 per_counter++;
 
                 // Calculate percentage of total progress per source
@@ -3238,7 +3225,7 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
                 // Show only new percentage number if it changed
                 if((percentage - last_percentage) > PERCENTAGE_STEP)
                 {
-#pragma omp critical
+                    #pragma omp critical
                     {
                         cout << "-> Channel map(s): gas species " << i_species + 1 << " of " << stop + 1
                              << ", line " << i_line + 1 << " of " << nr_of_spectral_lines << ": "
@@ -3260,11 +3247,11 @@ bool CRadiativeTransfer::calcChMapsViaRaytracing(parameters & param)
 
             if(tracer[i_det]->getSubpixelWarning())
             {
-                cout << "\nWARNING: level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
+                cout << WARNING_LINE << "level of subpixeling (" << param.getMaxSubpixelLvl() << ") might be too low" << endl;
                 cout << "if required, increase the maximum level of subpixeling with <max_subpixel_lvl> in the command file" << endl;
             }
             // if(tracer[i_det]->getDetectorShape() == DET_PLANE && (grid->getDataID() == GRID_ID_SPH || grid->getDataID() == GRID_ID_CYL))
-            //     cout << "\nHINT: a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
+            //     cout << NOTE_LINE << "a 'polar' detector should be used for a spherical or cylindrical grid" << endl;
 
             // Increment index for line RT
             i_det++;
@@ -3577,7 +3564,7 @@ void CRadiativeTransfer::rayThroughCellOPIATE(photon_package * pp,
                 // If too many sub steps are needed, kill the photon
                 if(kill_counter >= MAX_SOLVER_STEPS)
                 {
-                    cout << "\nWARNING: Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
+                    cout << WARNING_LINE << "Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
                     break;
                 }
 
@@ -3764,7 +3751,7 @@ void CRadiativeTransfer::rayThroughCellLine(photon_package * pp,
                 // If too many sub steps are needed, kill the photon
                 if(kill_counter >= MAX_SOLVER_STEPS)
                 {
-                    cout << "\nWARNING: Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
+                    cout << WARNING_LINE << "Solver steps > " << MAX_SOLVER_STEPS << ". Too many steps!" << endl;
                     break;
                 }
 

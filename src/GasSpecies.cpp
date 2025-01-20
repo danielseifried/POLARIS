@@ -1,6 +1,10 @@
+/************************************************************************************
+*                      POLARIS: POLArized RadIation Simulator                       *
+*                         Copyright (C) 2018 Stefan Reissl                          *
+************************************************************************************/
+
 #include "GasSpecies.hpp"
 #include "CommandParser.hpp"
-
 
 // This function is based on
 // Mol3d: 3D line and dust continuum radiative transfer code
@@ -17,7 +21,7 @@ bool CGasSpecies::calcLTE(CGridBasic * grid, bool full)
     cout << CLR_LINE;
     cout << "-> Calculating LTE level population  : 0.0 [%]               \r";
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
@@ -27,13 +31,13 @@ bool CGasSpecies::calcLTE(CGridBasic * grid, bool full)
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculating LTE level population  : " << percentage << " [%]               \r";
                 last_percentage = percentage;
             }
         }
-#pragma omp atomic update
+        #pragma omp atomic update
         cell_count++;
         double ** tmp_lvl_pop = new double *[nr_of_energy_level];
         for(uint i_lvl = 0; i_lvl < nr_of_energy_level; i_lvl++)
@@ -111,20 +115,6 @@ bool CGasSpecies::calcLTE(CGridBasic * grid, bool full)
             }
         }
 
-        //         if(i_cell == 500)
-        //         {
-        // #pragma omp critical
-        //             {
-        //                 cout << CLR_LINE;
-        //                 cout << SEP_LINE;
-        //                 for(uint i_lvl = 0; i_lvl < nr_of_energy_level; i_lvl++)
-        //                     for(uint i_sublvl = 0; i_sublvl < nr_of_sublevel[i_lvl]; i_sublvl++)
-        //                         cout << i_lvl << TAB << i_sublvl << TAB << getUniqueLevelIndex(i_lvl,
-        //                         i_sublvl) << TAB
-        //                              << tmp_lvl_pop[i_lvl][i_sublvl] << endl;
-        //             }
-        //         }
-
         delete[] tmp_lvl_pop;
     }
     return no_error;
@@ -158,7 +148,7 @@ bool CGasSpecies::calcFEP(CGridBasic * grid, bool full)
         }
     }
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
@@ -171,7 +161,7 @@ bool CGasSpecies::calcFEP(CGridBasic * grid, bool full)
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculating FEP level population  : " << last_percentage
                      << " [%]                       \r";
@@ -207,7 +197,7 @@ bool CGasSpecies::calcFEP(CGridBasic * grid, bool full)
                     sum_p += tmp_lvl_pop[i_lvl_tot];
                 else
                 {
-                    cout << "\nWARNING: Level population element not greater than zero! Level = " << i_lvl_tot
+                    cout << WARNING_LINE << "Level population element not greater than zero! Level = " << i_lvl_tot
                          << ", Level pop = " << tmp_lvl_pop[i_lvl_tot] << endl;
                     no_error = false;
                 }
@@ -259,20 +249,6 @@ bool CGasSpecies::calcFEP(CGridBasic * grid, bool full)
             }
         }
 
-        //         if(i_cell == 500)
-        //         {
-        // #pragma omp critical
-        //             {
-        //                 cout << CLR_LINE;
-        //                 cout << SEP_LINE;
-        //                 for(uint i_lvl = 0; i_lvl < nr_of_energy_level; i_lvl++)
-        //                     for(uint i_sublvl = 0; i_sublvl < nr_of_sublevel[i_lvl]; i_sublvl++)
-        //                         cout << i_lvl << TAB << i_sublvl << TAB << getUniqueLevelIndex(i_lvl,
-        //                         i_sublvl) << TAB
-        //                              << tmp_lvl_pop[getUniqueLevelIndex(i_lvl, i_sublvl)] << endl;
-        //             }
-        //         }
-
         delete[] tmp_lvl_pop;
     }
 
@@ -309,7 +285,7 @@ bool CGasSpecies::calcLVG(CGridBasic * grid, bool full)
         }
     }
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
@@ -332,7 +308,7 @@ bool CGasSpecies::calcLVG(CGridBasic * grid, bool full)
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculating LVG level population : " << last_percentage
                      << " [%]                       \r";
@@ -391,7 +367,7 @@ bool CGasSpecies::calcLVG(CGridBasic * grid, bool full)
                     sum_p += tmp_lvl_pop[j_lvl];
                 else
                 {
-                    cout << "\nWARNING: Level population element not greater than zero! Level = " << j_lvl
+                    cout << WARNING_LINE << "Level population element not greater than zero! Level = " << j_lvl
                          << ", Level pop = " << tmp_lvl_pop[j_lvl] << endl;
                     no_error = false;
                 }
@@ -415,7 +391,7 @@ bool CGasSpecies::calcLVG(CGridBasic * grid, bool full)
             }
         }
         if(i_iter == MAX_LVG_ITERATIONS)
-            cout << "\nWARNING: Maximum iteration needed in cell: " << i_cell << endl;
+            cout << WARNING_LINE << "Maximum iteration needed in cell: " << i_cell << endl;
 
         if(full)
         {
@@ -497,7 +473,7 @@ bool CGasSpecies::calcDeguchiWatsonLVG(CGridBasic * grid, bool full)
         }
     }
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
@@ -520,7 +496,7 @@ bool CGasSpecies::calcDeguchiWatsonLVG(CGridBasic * grid, bool full)
         // Show only new percentage number if it changed
         if((percentage - last_percentage) > PERCENTAGE_STEP)
         {
-#pragma omp critical
+            #pragma omp critical
             {
                 cout << "-> Calculating LVG level population : " << last_percentage
                      << " [%]                       \r";
@@ -623,7 +599,7 @@ bool CGasSpecies::calcDeguchiWatsonLVG(CGridBasic * grid, bool full)
                     sum_p += tmp_lvl_pop[j_lvl];
                 else
                 {
-                    cout << "\nWARNING: Level population element not greater than zero! Level = " << j_lvl
+                    cout << WARNING_LINE << "Level population element not greater than zero! Level = " << j_lvl
                          << ", Level pop = " << tmp_lvl_pop[j_lvl] << endl;
                     no_error = false;
                 }
@@ -645,7 +621,7 @@ bool CGasSpecies::calcDeguchiWatsonLVG(CGridBasic * grid, bool full)
             }
         }
         if(i_iter == MAX_LVG_ITERATIONS)
-            cout << endl << "\nWARNING: Maximum iteration needed in cell: " << i_cell << endl;
+            cout << WARNING_LINE << "Maximum iteration needed in cell: " << i_cell << endl;
 
         if(full)
         {
@@ -743,7 +719,7 @@ bool CGasSpecies::updateLevelPopulation(CGridBasic * grid, cell_basic * cell, do
                 sum_p += tmp_lvl_pop[i_lvl_tot];
             else
             {
-                cout << "\nWARNING: Level population element not greater than zero!" << endl;
+                cout << WARNING_LINE << "Level population element not greater than zero!" << endl;
                 return false;
             }
         }
@@ -1191,7 +1167,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
 
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open gas_species catalog:" << endl;
+        cout << ERROR_LINE << "Cannot open gas_species catalog:" << endl;
         cout << _filename << endl;
         return false;
     }
@@ -1236,7 +1212,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1246,7 +1222,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1268,7 +1244,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() < 4)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1287,7 +1263,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1327,7 +1303,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 6)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1368,7 +1344,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1400,7 +1376,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values[0] < 1)
             {
-                cout << "\nERROR: Line " << line_counter
+                cout << ERROR_LINE << "Line " << line_counter
                      << " wrong orientation of H2 collision partner (gas species file)!" << endl;
                 return false;
             }
@@ -1410,7 +1386,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1431,7 +1407,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1447,7 +1423,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != uint(nr_of_col_temp[i_col_partner]))
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1461,7 +1437,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values.size() != uint(nr_of_col_temp[i_col_partner] + 3))
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (gas species file)!"
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (gas species file)!"
                      << endl;
                 return false;
             }
@@ -1479,7 +1455,7 @@ bool CGasSpecies::readGasParamaterFile(string _filename, uint id, uint max)
         {
             if(values[0] < 1)
             {
-                cout << "\nERROR: Line " << line_counter
+                cout << ERROR_LINE << "Line " << line_counter
                      << " wrong orientation of H2 collision partner (gas species file)!" << endl;
                 return false;
             }
@@ -1519,7 +1495,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
 
     if(reader.fail())
     {
-        cout << "\nERROR: Cannot open Zeeman splitting catalog:" << endl;
+        cout << ERROR_LINE << "Cannot open Zeeman splitting catalog:" << endl;
         cout << _filename << endl;
         return false;
     }
@@ -1557,7 +1533,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             gas_species_radius = values[0];
@@ -1566,7 +1542,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             nr_zeeman_spectral_lines = uint(values[0]);
@@ -1575,7 +1551,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             for(uint i_trans = 0; i_trans < nr_of_transitions; i_trans++)
@@ -1593,7 +1569,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             // Save the lande factor of the upper energy level
@@ -1604,7 +1580,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             // Save the lande factor of the lower energy level
@@ -1615,7 +1591,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             // Save the number of sublevel per energy level
@@ -1625,7 +1601,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             // Save the number of sublevel per energy level
@@ -1652,7 +1628,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             line_strength_pi.push_back(values[0]);
@@ -1662,7 +1638,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             line_strength_sigma_p.push_back(values[0]);
@@ -1672,7 +1648,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             line_strength_sigma_m.push_back(values[0]);
@@ -1681,7 +1657,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         {
             if(values.size() != 1)
             {
-                cout << "\nERROR: Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
+                cout << ERROR_LINE << "Line " << line_counter << " wrong amount of numbers (Zeeman file)!" << endl;
                 return false;
             }
             for(uint i_trans = 0; i_trans < nr_of_transitions; i_trans++)
@@ -1808,7 +1784,7 @@ bool CGasSpecies::readZeemanParamaterFile(string _filename)
         if(getLandeUpper(i_trans) == 0) // || getLandeLower(i_trans) == 0
         {
             cout << SEP_LINE;
-            cout << "\nERROR: For transition number " << uint(i_trans + 1)
+            cout << ERROR_LINE << "For transition number " << uint(i_trans + 1)
                  << " exists no Zeeman splitting data" << endl;
             return false;
         }
@@ -1828,7 +1804,7 @@ void CGasSpecies::calcLineBroadening(CGridBasic * grid)
     cout << CLR_LINE;
     cout << "-> Calculating line broadening for each grid cell ...     \r" << flush;
 
-#pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(dynamic)
     for(long i_cell = 0; i_cell < long(max_cells); i_cell++)
     {
         cell_basic * cell = grid->getCellFromIndex(i_cell);
