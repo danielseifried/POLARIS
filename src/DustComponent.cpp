@@ -4932,9 +4932,6 @@ StokesVector CDustComponent::calcEmissivityEmi(CGridBasic * grid,
     {
         if(sizeIndexUsed(a, a_min, a_max))
         {
-            // Get index of theta scattering
-            uint thID = phID == PH_MIE ? getScatThetaID(scattering_theta,a,w) : 0;
-
             // Get cross sections and relative weight of the current dust grain size
             calcCrossSections(grid, pp, i_density, a, mag_field_theta, cs);
 
@@ -4983,7 +4980,7 @@ StokesVector CDustComponent::calcEmissivityEmi(CGridBasic * grid,
 
 #if BENCHMARK == CAMPS
                 // To perform Camps et. al (2015) benchmark.
-                tmp_stokes[a].addQ(cs.Cabs * pl;
+                tmp_stokes[a].addI(cs.Cabs * pl);
 #else
                 // Add relative emissivity from this temperature
                 tmp_stokes[a].addI(cs.Cabs * pl);
@@ -5005,6 +5002,9 @@ StokesVector CDustComponent::calcEmissivityEmi(CGridBasic * grid,
 
                 if(phID == PH_MIE)
                 {
+                    // Get index of theta scattering
+                    uint thID = getScatThetaID(scattering_theta, a, w);
+
                     // Get scattering matrix
                     const Matrix2D & mat_sca = getScatteringMatrix(a, w, 0, 0, thID);
 
