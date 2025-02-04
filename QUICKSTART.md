@@ -87,7 +87,7 @@ cd /YOUR/POLARIS/PATH/
 polaris projects/disk/example/temp/POLARIS.cmd
 ```
 The results are stored at `projects/disk/example/temp/data/` as `.fits.gz` files.
-These files can be opened with, for example, [SAOImageDS9](https://sites.google.com/cfa.harvard.edu/saoimageds9/home), or a python script using [astropy](https://docs.astropy.org/en/stable/generated/examples/io/plot_fits-image.html).
+These files can be opened with, for example, [SAOImageDS9](https://sites.google.com/cfa.harvard.edu/saoimageds9/home), or a python script using [astropy](https://learn.astropy.org/tutorials/FITS-images.html).
 
 Simulations are performed similarly for thermal emission (`dust`) and stellar scattered radiation (`dust_mc`).
 Please refer to the [command list](projects/CommandList.cmd) in the `projects` folder or the [manual](manual.pdf) (Table 2.4 - 2.10) for available options of the command file.
