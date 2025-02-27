@@ -209,7 +209,7 @@ void CSourceISRF::createNextRay(photon_package * pp, CRandomGenerator * rand_gen
     pp->updateCoordSystem(phi_direction, theta_direction);
 
     // weight photon energy accordingly
-    double exp_weight = pow(cos(theta_direction), 1.0 - bias_exp);
+    double exp_weight = 2.0 / (bias_exp + 1.0) * pow(cos(theta_direction), 1.0 - bias_exp);
     pp->setStokesVector(tmp_stokes_vector * exp_weight);
 }
 
