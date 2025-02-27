@@ -305,6 +305,9 @@ using namespace std;
 // multiple scattering at dust grains
 #define SCATTERED_DUST_2 3
 
+// Wavelength spacing for single detector (1 = logarithmic, 0 = linear)
+#define USE_LOG_SPACING 1
+
 // Type of emission
 #define RESULTS_RAY 0
 #define RESULTS_MC 1

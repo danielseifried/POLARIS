@@ -347,9 +347,15 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
             uint pos = i / NR_OF_RAY_DET;
 
             if(uint(dust_ray_detectors[i + 2]) > 1)
-                cout << "- Emission detetector " << (pos + 1) << "   : from " << dust_ray_detectors[i + 0]
+                {if(USE_LOG_SPACING)
+                    {cout << "- Emission detetector " << (pos + 1) << "   : from " << dust_ray_detectors[i + 0]
                      << " [m] to " << dust_ray_detectors[i + 1] << " [m] with "
-                     << uint(dust_ray_detectors[i + 2]) << " logarithmic values" << endl;
+                     << uint(dust_ray_detectors[i + 2]) << " logarithmic values" << endl;}
+                else
+                    {cout << "- Emission detetector " << (pos + 1) << "   : from " << dust_ray_detectors[i + 0]
+                     << " [m] to " << dust_ray_detectors[i + 1] << " [m] with "
+                     << uint(dust_ray_detectors[i + 2]) << " linear values" << endl;}
+                }
             else if(uint(dust_ray_detectors[i + 2]) == 1)
                 cout << "- Emission detetector " << (pos + 1) << "   : " << dust_ray_detectors[i + 0]
                      << " [m]" << endl;
@@ -372,9 +378,15 @@ void CDustMixture::printParameters(parameters & param, CGridBasic * grid)
             uint pos = i / NR_OF_MC_DET;
 
             if(uint(dust_mc_detectors[i + 2]) > 1)
-                cout << "- Scattering detetector " << (pos + 1) << " : from " << dust_mc_detectors[i + 0]
+                {if(USE_LOG_SPACING)
+                    {cout << "- Scattering detetector " << (pos + 1) << " : from " << dust_mc_detectors[i + 0]
                      << " [m]) to " << dust_mc_detectors[i + 1] << " [m]) with "
-                     << uint(dust_mc_detectors[i + 2]) << " logarithmic values" << endl;
+                     << uint(dust_mc_detectors[i + 2]) << " logarithmic values" << endl;}
+                else
+                    {cout << "- Scattering detetector " << (pos + 1) << " : from " << dust_mc_detectors[i + 0]
+                     << " [m]) to " << dust_mc_detectors[i + 1] << " [m]) with "
+                     << uint(dust_mc_detectors[i + 2]) << " linear values" << endl;}
+                }
             else if(uint(dust_mc_detectors[i + 2]) == 1)
                 cout << "- Scattering detetector " << (pos + 1) << "   : " << dust_mc_detectors[i + 0]
                      << " [m]" << endl;
